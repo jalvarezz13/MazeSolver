@@ -21,8 +21,42 @@ def inicializar_ventana(lab):
     return screen
 
 
+def algoritmo_wilson():
+    return True
+
+
+def pedir_nombre_fichero():
+    valido = False
+    while not valido:
+        try:
+            nombre_fichero = input("introduce el nombre del fichero con extensión .json:\n")
+            lab = Labyrinth(nombre_fichero)
+            valido = True
+        except FileNotFoundError:
+            print("\nNo se ha encontrado el archivo, vuelve a intentarlo\n")
+
+    return lab
+
+
 def main():
-    lab = Labyrinth("puzzle_90x100.json")
+    valido = False
+    while not valido:
+        try:
+            option = int(input(
+                "Elige una opción [1,2]:\n\t1. Elegir archivo existente\n\t2. Generar algoritmo automáticamente\n\n"))
+            if option == 1:
+                lab = pedir_nombre_fichero()
+                valido = True
+            elif option == 2:
+                algoritmo_wilson()
+                valido = True
+            else:
+                print("Intruduce un valor válido [1, 2]\n")
+                print("ahora aqui")
+        except ValueError:
+            print("aqui")
+            print("Intruduce un valor válido [1, 2]\n")
+
     screen = inicializar_ventana(lab)
     lab.load_data()
 
