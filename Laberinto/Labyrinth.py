@@ -8,14 +8,9 @@ import pygame
 
 class Labyrinth:
     def __init__(self, path):
-        try:
-            with open(path) as file:
-                self.dict_data = json.load(file)
-                self.labyrinth = None
-
-        except FileNotFoundError:
-            print("Error. File '{0}' not found".format(path))
-            exit()
+        with open(path) as file:
+            self.dict_data = json.load(file)
+            self.labyrinth = None
 
     def get_rows(self):
         return int(self.dict_data["rows"])
