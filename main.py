@@ -21,23 +21,23 @@ def inicializar_ventana(lab):
     return screen
 
 
-lab = Labyrinth("prueba.json")
-lab.load_data()
-#lab.check_json()
-screen = inicializar_ventana(lab)
+def main():
+    lab = Labyrinth("puzzle_90x100.json")
+    screen = inicializar_ventana(lab)
+    lab.load_data()
+
+    while True:
+        for event in pygame.event.get():
+            # print(event)
+            if event.type == pygame.QUIT:
+                name = "Laberinto_B02_" + str(lab.get_rows()) + "x" + str(lab.get_cols()) + ".jpg"
+                pygame.image.save(screen, name)
+                sys.exit()
+
+        screen.fill(cnfg.WHITE)
+        lab.dibujar(screen)
+        pygame.display.update()
 
 
-while True:
-    for event in pygame.event.get():
-        # print(event)
-        if event.type == pygame.QUIT:
-            name = "Laberinto_B02_" + str(lab.get_rows()) + "x" + str(lab.get_cols()) + ".jpg"
-            pygame.image.save(screen, name)
-            sys.exit()
-
-    screen.fill(cnfg.WHITE)
-    lab.dibujar(screen)
-    pygame.display.update()
-
-
-
+if __name__ == '__main__':
+    main()
