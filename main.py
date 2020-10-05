@@ -60,13 +60,12 @@ def main():
             if option == 1:
                 lab = pedir_nombre_fichero()
                 valido = True
-            if option == 2:
+            elif option == 2:
                 rows_cols = pedir_filas_columnas()
                 lab = algoritmo_wilson(rows_cols)
                 valido = True
             else:
                 print("Intruduce un valor válido [1, 2]\n")
-                print("ahora aqui")
         except ValueError:
             print("aqui")
             print("Intruduce un valor válido [1, 2]\n")
