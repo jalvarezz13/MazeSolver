@@ -21,7 +21,7 @@ def inicializar_ventana(lab):
     return screen
 
 
-def algoritmo_wilson():
+def algoritmo_wilson(rows_cols):
     return True
 
 
@@ -38,6 +38,18 @@ def pedir_nombre_fichero():
     return lab
 
 
+def pedir_filas_columnas():
+    rows_cols = []
+    valido = False
+    data = "fila"
+    while not valido and len(rows_cols) != 2:
+        try:
+            rows_cols.append(int(input("\nIntroduce el número de {0}: ".format(data))))
+            data = "columna"
+        except ValueError:
+            print("\nIntroduce un número válido\n")
+
+
 def main():
     valido = False
     while not valido:
@@ -47,8 +59,9 @@ def main():
             if option == 1:
                 lab = pedir_nombre_fichero()
                 valido = True
-            elif option == 2:
-                algoritmo_wilson()
+            if option == 2:
+                rows_cols = pedir_filas_columnas()
+                lab = algoritmo_wilson(rows_cols)
                 valido = True
             else:
                 print("Intruduce un valor válido [1, 2]\n")
