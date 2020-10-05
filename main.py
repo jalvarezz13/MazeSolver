@@ -46,6 +46,7 @@ def pedir_filas_columnas():
         try:
             rows_cols.append(int(input("\nIntroduce el número de {0}: ".format(data))))
             data = "columna"
+            print(rows_cols)
         except ValueError:
             print("\nIntroduce un número válido\n")
 
