@@ -90,6 +90,7 @@ def crear_json(rows, cols):
 
 def menu_inicial():
     valido = False
+    dict_manual = None
     while not valido:
         try:
             option = int(input(
