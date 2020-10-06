@@ -76,11 +76,8 @@ def crear_json(rows, cols):
     data["mov"] = [[-1,0], [0,1], [1,0], [0,-1]]
     data["id_mov"] = ["N", "E", "S", "O"]
     data["cells"] = crear_celdas(rows, cols)
-
-    # data["cells"] =
-
     dir = os.getcwd()
-    file_name = "data.json"
+    file_name = "laberinto_wilson_B02_{0}x{1}".format(rows, cols)
 
     with open(os.path.join(dir, file_name), 'w') as file:
         json.dump(data, file)
