@@ -1,5 +1,5 @@
-ancho = 1000
-alto = 1000
+ancho = 800
+alto = 800
 
 # Definir colores
 WHITE = (255, 255, 255)
