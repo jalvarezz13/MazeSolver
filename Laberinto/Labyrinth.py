@@ -7,28 +7,37 @@ import pygame
 
 
 class Labyrinth:
-    def __init__(self, path=None):
+    def __init__(self, path=None, rows=None, cols=None):
         if path is not None:
             with open(path) as file:
                 self.dict_data = json.load(file)
+                self.rows = int(self.dict_data["rows"])
+                self.cols = int(self.dict_data["cols"])
+        else:
+            self.rows = rows
+            self.cols = cols
+
         self.labyrinth = None
 
     def get_rows(self):
-        return int(self.dict_data["rows"])
+        return self.rows
 
     def get_cols(self):
-        return int(self.dict_data["cols"])
+        return self.cols
 
     def get_labyrinth(self):
         return self.labyrinth
 
-    def create_labyrinth(self):
-        self.labyrinth = np.empty([int(self.dict_data["rows"]), int(self.dict_data["cols"])], dtype=object)
+    def create_labyrinth(self, rows=None, cols=None):
+        self.labyrinth = np.empty([self.rows, self.cols], dtype=object)
 
-    def load_data(self):
-        cells = (self.dict_data["cells"])
+    def load_data(self, dic_data_manual):
+        if self.labyrinth is None:
+            cells = (self.dict_data["cells"])
+            self.create_labyrinth()
 
-        self.create_labyrinth()
+        else:
+            cells = dic_data_manual["cells"]
 
         for i in range(0, self.get_rows()):
             for j in range(0, self.get_cols()):
