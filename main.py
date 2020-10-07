@@ -81,25 +81,46 @@ def crear_json(rows, cols):
 
     return data
 
+def elegir_movimiento(celda_actual, diccionario):
+    num_random = random.randrange(0, 4)
+    movimiento = diccionario["mov"][num_random]
+    while esPared(celda_actual, movimiento):
+        num_random = (num_random + 1) % 4
+        movimiento = diccionario["mov"][num_random]
+    return movimiento
 
-def celda_inicial_final(lab, matriz_laberinto):
+def esPared(celda, movimiento, lab):
+    esPared = False
+    if celda.get_rows() == 0 and movimiento == [-1,0]:
+        esPared = True
+    if celda.get_cols() == 0 and movimiento == [0, -1]:
+        esPared = True
+    if celda.get_rows() == lab.get_rows()-1 and movimiento == [1,0]:
+        esPared = True
+    if celda.get_cols() == lab.get_cols()-1 and movimiento == [0,1]:
+        esPared = True
+    return esPared
 
-    y_inicial = random.randrange(0, lab.get_rows())
-    x_inicial = random.randrange(0, lab.get_cols())
+def crear_celda_random(lab, matriz_laberinto):
+    while True:
+        y = random.randrange(0, lab.get_rows())
+        x = random.randrange(0, lab.get_cols())
+        celda_random = matriz_laberinto[y, x]
+        if celda_random.get_visited() is False:
+            break
+    return celda_random
 
-    y_final = random.randrange(0, lab.get_rows())
-    x_final = random.randrange(0, lab.get_cols())
+def crear_camino(celda_final, lab, matriz_laberinto):
+    celda_inicial = crear_celda_random(lab, matriz_laberinto)
 
-    celda_inicial = matriz_laberinto[y_inicial, x_inicial]
-    celda_final = matriz_laberinto[y_final, x_final]
 
-    return [celda_inicial, celda_final]
 
 
 def algoritmo_wilson(lab, diccionario):
     matriz_laberinto = lab.get_labyrinth()
-
-    celda_inicial, celda_final = celda_inicial_final(lab, matriz_laberinto)
+    celda_final = crear_celda_random(lab, matriz_laberinto)
+    celda_final.set_visited(True)
+    crear_camino()
 
 
 
@@ -110,8 +131,7 @@ def menu_inicial():
     dict_manual = None
     while not valido:
         try:
-            option = int(input(
-                "Elige una opción [1,2]:\n\t1. Elegir archivo existente\n\t2. Generar algoritmo automáticamente\n\n"))
+            option = int(input("Elige una opción [1,2]:\n\t1. Elegir archivo existente\n\t2. Generar algoritmo automáticamente\n\n"))
             if option == 1:
                 lab = pedir_nombre_fichero()
                 valido = True

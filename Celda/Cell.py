@@ -6,6 +6,7 @@ class Cell:
         self.column = column
         self.value = value
         self.neighbors = neighbors
+        self.visited = False
 
     def get_row (self):
         return self.row
@@ -18,6 +19,12 @@ class Cell:
 
     def get_neighbors(self):
         return self.neighbors
+
+    def get_visited(self):
+        return self.visited
+    
+    def set_visited(self, valor):
+        self.visited = valor
 
     def to_string(self):
         return ("Fila: '{0}' \nColumna: '{1}' \nValor: '{2}' \nVecinos: '{3}' \n".format(self.row, self.column, self.value, self.neighbors))
