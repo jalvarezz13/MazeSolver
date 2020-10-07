@@ -5,6 +5,7 @@ import cnfg
 import io
 import os
 import json
+import random
 
 
 def inicializar_ventana(lab):
@@ -22,10 +23,6 @@ def inicializar_ventana(lab):
     pygame.display.set_caption("Laberinto de Sistemas Inteligentes")
 
     return screen
-
-
-def algoritmo_wilson(rows_cols):
-    return True
 
 
 def pedir_nombre_fichero():
@@ -77,12 +74,35 @@ def crear_json(rows, cols):
     data["id_mov"] = ["N", "E", "S", "O"]
     data["cells"] = crear_celdas(rows, cols)
     dir = os.getcwd()
-    file_name = "laberinto_wilson_B02_{0}x{1}".format(rows, cols)
+    file_name = "Laberinto_wilson_B02_{0}x{1}.json".format(rows, cols)
 
     with open(os.path.join(dir, file_name), 'w') as file:
         json.dump(data, file)
 
     return data
+
+
+def celda_inicial_final(lab, matriz_laberinto):
+
+    y_inicial = random.randrange(0, lab.get_rows())
+    x_inicial = random.randrange(0, lab.get_cols())
+
+    y_final = random.randrange(0, lab.get_rows())
+    x_final = random.randrange(0, lab.get_cols())
+
+    celda_inicial = matriz_laberinto[y_inicial, x_inicial]
+    celda_final = matriz_laberinto[y_final, x_final]
+
+    return [celda_inicial, celda_final]
+
+
+def algoritmo_wilson(lab, diccionario):
+    matriz_laberinto = lab.get_labyrinth()
+
+    celda_inicial, celda_final = celda_inicial_final(lab, matriz_laberinto)
+
+
+
 
 
 def menu_inicial():
@@ -100,8 +120,8 @@ def menu_inicial():
                 lab = Labyrinth(None, rows_cols[0], rows_cols[1])
                 lab.create_labyrinth(rows_cols[0], rows_cols[1])
                 dict_manual = crear_json(rows_cols[0], rows_cols[1])
-                # lab.load_data(dict_manual)
-                #lab = algoritmo_wilson(rows_cols)
+                lab.load_data(dict_manual)
+                algoritmo_wilson(lab, dict_manual)
                 valido = True
             else:
                 print("Intruduce un valor válido [1, 2]\n")
