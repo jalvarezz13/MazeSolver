@@ -28,7 +28,7 @@ class Labyrinth:
     def get_labyrinth(self):
         return self.labyrinth
 
-    def create_labyrinth(self, rows=None, cols=None):
+    def create_labyrinth(self):
         self.labyrinth = np.empty([self.rows, self.cols], dtype=object)
 
     def load_data(self, dic_data_manual):
@@ -44,8 +44,6 @@ class Labyrinth:
                 coordenadas = cells["({0}, {1})".format(i, j)]
                 cell = Cell(i, j, coordenadas["value"], coordenadas["neighbors"])
                 self.labyrinth[i][j] = cell
-                # Solo para comprobar que se crea, aqui no deberia ir
-                # print(cell.to_string())
 
     def dibujar(self, screen):
         if self.get_rows() > self.get_cols():
