@@ -111,20 +111,15 @@ def crear_celda_random(lab, matriz_laberinto):
     return celda_random
 
 def crear_camino(celda_final, lab, matriz_laberinto):
+    camino = ()
     celda_inicial = crear_celda_random(lab, matriz_laberinto)
-
-
-
+    
 
 def algoritmo_wilson(lab, diccionario):
     matriz_laberinto = lab.get_labyrinth()
     celda_final = crear_celda_random(lab, matriz_laberinto)
     celda_final.set_visited(True)
     crear_camino()
-
-
-
-
 
 def menu_inicial():
     valido = False
