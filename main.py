@@ -89,7 +89,7 @@ def elegir_movimiento(celda_actual, diccionario, lab):
     while esPared(celda_actual, movimiento, lab):
         num_random = (num_random + 1) % 4
         movimiento = diccionario["mov"][num_random]
-    print("EL MOVIMIENTO:" + str(movimiento))
+    #print("EL MOVIMIENTO:" + str(movimiento))
     return numpy.array((movimiento[0], movimiento[1]))
 
 def esPared(celda, movimiento, lab):
@@ -115,25 +115,51 @@ def crear_celda_random(lab, matriz_laberinto):
 
 def check_camino(celda, camino):
     if camino.count(celda) != 0:
-        print("HAY UN BUCLE")
-        sys.exit()
+        #print("HAY UN BUCLE, VOY A BORRAR DE:" + str(len(camino)-1) + " a " + str(camino.index(celda)+1))
+        lim_superior = len(camino)-1
+        lim_inferior = camino.index(celda)+1
+        #print("ANTES DE BORRAR: " + str(camino))
+        for i in range (lim_superior, lim_inferior-1, -1): #Desde el final hasta la primera repetición de ese bucle
+            #camino.pop(len(camino)-1)
+            # print(i)
+            #print("BORRANDO:" + str(camino))
+            camino.remove(camino[i])
     else:
-        print("NO HAY BUCLE")
+        #print("NO HAY BUCLE")
+        camino.append(celda)
+    
+    #print("DESPUES DE BORRAR:" + str(camino))
+    return camino
 
 def crear_camino(celda_final, lab, matriz_laberinto, diccionario):
     camino = []
     celda_inicial = crear_celda_random(lab, matriz_laberinto)
     camino.append(celda_inicial.get_coordenadas())
     print("CELDA INICIAL:" + str([celda_inicial.get_row(), celda_inicial.get_column()]))
-    celda_actual = celda_inicial
-    for i in range(0, 10):
+    i=0
+    while True:
+
+        posicion = camino[len(camino)-1]
+        celda_actual = matriz_laberinto[posicion[0], posicion[1]]
+
         new_posicion = numpy.array((celda_actual.get_row(), celda_actual.get_column())) + elegir_movimiento(celda_actual, diccionario, lab)
         new_celda = matriz_laberinto[new_posicion[0], new_posicion[1]]
-        print("CELDA NUEVA[" + str(i) + "]: " + str(new_celda.get_coordenadas()))
-        celda_actual = new_celda
-        check_camino(new_celda.get_coordenadas(), camino)
-        camino.append(new_celda.get_coordenadas())
-        print(camino)
+       
+        #print("CELDA NUEVA[" + str(i) + "]: " + str(new_celda.get_coordenadas()))
+       
+        camino = check_camino(new_celda.get_coordenadas(), camino)
+
+        #print(camino)
+
+        i += 1
+
+        # if i is 20:
+        #     break
+
+        if camino[len(camino)-1][0] == celda_final.get_row() and camino[len(camino)-1][1] == celda_final.get_column():
+            print("TERMINÉ")
+            print(camino)
+            sys.exit()
 
 
 def algoritmo_wilson(lab, diccionario):
