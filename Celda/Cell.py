@@ -14,6 +14,9 @@ class Cell:
     def get_column(self):
         return self.column
 
+    def get_coordenadas(self):
+        return self.row, self.column
+
     def get_value(self):
         return self.value
 

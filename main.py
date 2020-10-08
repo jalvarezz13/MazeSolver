@@ -6,6 +6,7 @@ import io
 import os
 import json
 import random
+import numpy
 
 
 def inicializar_ventana(lab):
@@ -27,6 +28,7 @@ def inicializar_ventana(lab):
 
 def pedir_nombre_fichero():
     valido = False
+    lab = None
     while not valido:
         try:
             nombre_fichero = input("introduce el nombre del fichero con extensión .json:\n")
@@ -81,23 +83,24 @@ def crear_json(rows, cols):
 
     return data
 
-def elegir_movimiento(celda_actual, diccionario):
+def elegir_movimiento(celda_actual, diccionario, lab):
     num_random = random.randrange(0, 4)
     movimiento = diccionario["mov"][num_random]
-    while esPared(celda_actual, movimiento):
+    while esPared(celda_actual, movimiento, lab):
         num_random = (num_random + 1) % 4
         movimiento = diccionario["mov"][num_random]
-    return movimiento
+    print("EL MOVIMIENTO:" + str(movimiento))
+    return numpy.array((movimiento[0], movimiento[1]))
 
 def esPared(celda, movimiento, lab):
     esPared = False
-    if celda.get_rows() == 0 and movimiento == [-1,0]:
+    if celda.get_row() == 0 and movimiento == [-1,0]:
         esPared = True
-    if celda.get_cols() == 0 and movimiento == [0, -1]:
+    if celda.get_column() == 0 and movimiento == [0, -1]:
         esPared = True
-    if celda.get_rows() == lab.get_rows()-1 and movimiento == [1,0]:
+    if celda.get_row() == lab.get_rows()-1 and movimiento == [1,0]:
         esPared = True
-    if celda.get_cols() == lab.get_cols()-1 and movimiento == [0,1]:
+    if celda.get_column() == lab.get_cols()-1 and movimiento == [0,1]:
         esPared = True
     return esPared
 
@@ -110,20 +113,40 @@ def crear_celda_random(lab, matriz_laberinto):
             break
     return celda_random
 
-def crear_camino(celda_final, lab, matriz_laberinto):
-    camino = ()
+def check_camino(celda, camino):
+    if camino.count(celda) != 0:
+        print("HAY UN BUCLE")
+        sys.exit()
+    else:
+        print("NO HAY BUCLE")
+
+def crear_camino(celda_final, lab, matriz_laberinto, diccionario):
+    camino = []
     celda_inicial = crear_celda_random(lab, matriz_laberinto)
-    
+    camino.append(celda_inicial.get_coordenadas())
+    print("CELDA INICIAL:" + str([celda_inicial.get_row(), celda_inicial.get_column()]))
+    celda_actual = celda_inicial
+    for i in range(0, 10):
+        new_posicion = numpy.array((celda_actual.get_row(), celda_actual.get_column())) + elegir_movimiento(celda_actual, diccionario, lab)
+        new_celda = matriz_laberinto[new_posicion[0], new_posicion[1]]
+        print("CELDA NUEVA[" + str(i) + "]: " + str(new_celda.get_coordenadas()))
+        celda_actual = new_celda
+        check_camino(new_celda.get_coordenadas(), camino)
+        camino.append(new_celda.get_coordenadas())
+        print(camino)
+
 
 def algoritmo_wilson(lab, diccionario):
     matriz_laberinto = lab.get_labyrinth()
     celda_final = crear_celda_random(lab, matriz_laberinto)
     celda_final.set_visited(True)
-    crear_camino()
+    print("CELDA FINAL:" + str([celda_final.get_row(), celda_final.get_column()]))
+    crear_camino(celda_final, lab, matriz_laberinto, diccionario)
 
 def menu_inicial():
     valido = False
     dict_manual = None
+    lab = None
     while not valido:
         try:
             option = int(input("Elige una opción [1,2]:\n\t1. Elegir archivo existente\n\t2. Generar algoritmo automáticamente\n\n"))
@@ -133,15 +156,16 @@ def menu_inicial():
             elif option == 2:
                 rows_cols = pedir_filas_columnas()
                 lab = Labyrinth(None, rows_cols[0], rows_cols[1])
-                lab.create_labyrinth(rows_cols[0], rows_cols[1])
+                lab.create_labyrinth()
                 dict_manual = crear_json(rows_cols[0], rows_cols[1])
                 lab.load_data(dict_manual)
                 algoritmo_wilson(lab, dict_manual)
                 valido = True
             else:
-                print("Intruduce un valor válido [1, 2]\n")
+                print(" ELSE Intruduce un valor válido [1, 2]\n")
         except ValueError:
-            print("Intruduce un valor válido [1, 2]\n")
+            print(ValueError.__cause__)
+            print("VALUE Intruduce un valor válido [1, 2]\n")
 
     return [lab, dict_manual]
 
