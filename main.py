@@ -55,16 +55,14 @@ def pedir_filas_columnas():
 
 
 def crear_celdas(rows, cols):
-    data = {}
-    data2 = {}
+    dic_cell = {}
+    dic_data_cell = {}
     for i in range(0, rows):
         for j in range(0, cols):
-            data2["value"] = 0
-            data2["neighbors"] = [False, False, False, False]
-            datos = data2
-            data["({0}, {1})".format(i, j)] = datos
-
-    return data
+            dic_data_cell["value"] = 0
+            dic_data_cell["neighbors"] = [False, False, False, False]
+            dic_cell["({0}, {1})".format(i, j)] = dic_data_cell
+    return dic_cell
 
 
 def crear_json(rows, cols):
@@ -170,8 +168,37 @@ def crear_camino(celda_final, lab, matriz_laberinto, diccionario):
 
 
 def cambiar_vecinos(camino, lista_movimientos, diccionario):
-    for i in range(0, len(camino)):
-        print(diccionario["cells"]["{0}".format(camino[i])])
+    movimiento = diccionario["mov"]
+    posicion_vecino = None
+    print(lista_movimientos)
+    file_name = "Laberinto_wilson_B02_{0}x{1}.json".format(diccionario["rows"], diccionario["cols"])
+    for i in range(0, (len(camino)-1)):
+        if lista_movimientos[i] == movimiento[0]:
+            posicion_vecino = 0
+        if lista_movimientos[i] == movimiento[1]:
+            posicion_vecino = 1
+        if lista_movimientos[i] == movimiento[2]:
+            posicion_vecino = 2
+        if lista_movimientos[i] == movimiento[3]:
+            posicion_vecino = 3
+        
+        # diccionario["cells"]["{0}".format(camino[i])]["neighbors"][posicion_vecino] = True
+        # diccionario["cells"]["{0}".format(camino[i+1])]["neighbors"][(posicion_vecino+2)%4] = True
+
+        
+        with open(file_name, 'r+') as f:
+            json_data = json.load(f)
+            json_data["cells"][str(camino[i])]["neighbors"][posicion_vecino] = True
+            json_data["cells"][str(camino[i+1])]["neighbors"][(posicion_vecino+2)%4] = True
+            f.seek(0)
+            f.write(json.dumps(json_data))
+            f.truncate()
+    
+    f = open(file_name, "r")
+    content = f.read()
+    diccionario = json.loads(content)
+    return diccionario
+
 
 
 def algoritmo_wilson(lab, diccionario):
@@ -180,7 +207,8 @@ def algoritmo_wilson(lab, diccionario):
     celda_final.set_visited(True)
     print("CELDA FINAL:" + str([celda_final.get_row(), celda_final.get_column()]))
     camino, lista_movimientos = crear_camino(celda_final, lab, matriz_laberinto, diccionario)
-    cambiar_vecinos(camino, lista_movimientos, diccionario)
+    diccionario = cambiar_vecinos(camino, lista_movimientos, diccionario)
+    return diccionario 
 
 
 def menu_inicial():
@@ -199,7 +227,7 @@ def menu_inicial():
                 lab.create_labyrinth()
                 dict_manual = crear_json(rows_cols[0], rows_cols[1])
                 lab.load_data(dict_manual)
-                algoritmo_wilson(lab, dict_manual)
+                dict_manual = algoritmo_wilson(lab, dict_manual)
                 valido = True
             else:
                 print(" ELSE Intruduce un valor válido [1, 2]\n")
