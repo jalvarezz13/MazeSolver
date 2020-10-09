@@ -112,25 +112,41 @@ def crear_celda_random(lab, matriz_laberinto):
     return celda_random
 
 def check_camino(celda, camino, coord_movimiento, lista_movimientos):
+    lista2_mov = []
     if camino.count(celda) != 0:
-        #print("HAY UN BUCLE, VOY A BORRAR DE:" + str(len(camino)-1) + " a " + str(camino.index(celda)+1))
+        # print("HAY UN BUCLE, VOY A BORRAR DE:" + str(len(camino)-1) + " a " + str(camino.index(celda)+1))
         lim_superior = len(camino)-1
         lim_inferior = camino.index(celda)+1
+        # print("limite superior: " + str(lim_superior) + " y limite inferior: " + str(lim_inferior))
+        # print("lista celdas antes de borrar: " + str(camino))
+        # print("lista movimientos antes de borrar: " + str(lista_movimientos))
         #print("ANTES DE BORRAR: " + str(camino))
-        for i in range (lim_superior, lim_inferior-1, -1): #Desde el final hasta la primera repetición de ese bucle
+        for i in range(lim_superior, lim_inferior-1, -1): #Desde el final hasta la primera repetición de ese bucle
             #camino.pop(len(camino)-1)
             # print(i)
             #print("BORRANDO:" + str(camino))
-            if i != 0:
-                lista_movimientos.remove(lista_movimientos[i-1])
             camino.remove(camino[i])
+
+        # print("Camino despues de borrar: " + str(camino))
+
+        # print("MOVIMIENTO: limite superior: " + str(lim_superior) + " y limite inferior: " + str(lim_inferior-1))
+        # print("inferior MOV: " + str(lim_inferior -2) + "Superior MOV : " + str(len(lista_movimientos)-1))
+        # for i in range(lim_inferior, len(lista_movimientos)+1):
+        for i in range(0, lim_inferior-1):
+            #lista_movimientos.remove(lista_movimientos[len(lista_movimientos)-1])
+            lista2_mov.append(lista_movimientos[i])
+
+
+        # print(lista2_mov)
+        # print("\n")
     else:
         #print("NO HAY BUCLE")
         lista_movimientos.append(coord_movimiento)
         camino.append(celda)
+        lista2_mov = lista_movimientos
     
     #print("DESPUES DE BORRAR:" + str(camino))
-    return camino, lista_movimientos
+    return camino, lista2_mov
 
 def crear_camino(celda_final, lab, matriz_laberinto, diccionario):
     camino = []
@@ -149,7 +165,7 @@ def crear_camino(celda_final, lab, matriz_laberinto, diccionario):
         new_celda = matriz_laberinto[new_posicion[0], new_posicion[1]]
        
         #print("CELDA NUEVA[" + str(i) + "]: " + str(new_celda.get_coordenadas()))
-
+        # print("Celda actual: " + str(celda_actual.get_coordenadas()) + "New position: " + str(new_posicion) + " movimiento: " + str(coord_movimiento))
         camino, lista_movimientos = check_camino(new_celda.get_coordenadas(), camino, coord_movimiento, lista_movimientos)
 
         #print(camino)
@@ -170,7 +186,6 @@ def crear_camino(celda_final, lab, matriz_laberinto, diccionario):
 def cambiar_vecinos(camino, lista_movimientos, diccionario):
     movimiento = diccionario["mov"]
     posicion_vecino = None
-    print(lista_movimientos)
     file_name = "Laberinto_wilson_B02_{0}x{1}.json".format(diccionario["rows"], diccionario["cols"])
     for i in range(0, (len(camino)-1)):
         if lista_movimientos[i] == movimiento[0]:
