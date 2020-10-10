@@ -2,7 +2,6 @@ import sys
 from Laberinto.Labyrinth import Labyrinth
 import pygame
 import cnfg
-import io
 import os
 import json
 import random
@@ -67,19 +66,19 @@ def crear_celdas(rows, cols):
 
 def crear_json(rows, cols):
     data = {}
-    data['rows'] = rows
-    data['cols'] = cols
+    data["rows"] = rows
+    data["cols"] = cols
     data["max_n"] = 4,
     data["mov"] = [[-1,0], [0,1], [1,0], [0,-1]]
     data["id_mov"] = ["N", "E", "S", "O"]
     data["cells"] = crear_celdas(rows, cols)
-    dir = os.getcwd()
     file_name = "Laberinto_wilson_B02_{0}x{1}.json".format(rows, cols)
 
-    with open(os.path.join(dir, file_name), 'w') as file:
+    with open(os.path.join(os.getcwd(), file_name), 'w') as file:
         json.dump(data, file)
 
     return data
+
 
 def elegir_movimiento(celda_actual, diccionario, lab):
     num_random = random.randrange(0, 4)
@@ -87,7 +86,7 @@ def elegir_movimiento(celda_actual, diccionario, lab):
     while esPared(celda_actual, movimiento, lab):
         num_random = (num_random + 1) % 4
         movimiento = diccionario["mov"][num_random]
-    #print("EL MOVIMIENTO:" + str(movimiento))
+
     return [int(movimiento[0]), int(movimiento[1])]
 
 def esPared(celda, movimiento, lab):
@@ -96,9 +95,9 @@ def esPared(celda, movimiento, lab):
         esPared = True
     if celda.get_column() == 0 and movimiento == [0, -1]:
         esPared = True
-    if celda.get_row() == lab.get_rows()-1 and movimiento == [1,0]:
+    if celda.get_row() == lab.get_rows()-1 and movimiento == [1, 0]:
         esPared = True
-    if celda.get_column() == lab.get_cols()-1 and movimiento == [0,1]:
+    if celda.get_column() == lab.get_cols()-1 and movimiento == [0, 1]:
         esPared = True
     return esPared
 
@@ -111,42 +110,24 @@ def crear_celda_random(lab, matriz_laberinto):
             break
     return celda_random
 
+
 def check_camino(celda, camino, coord_movimiento, lista_movimientos):
     lista2_mov = []
     if camino.count(celda) != 0:
-        # print("HAY UN BUCLE, VOY A BORRAR DE:" + str(len(camino)-1) + " a " + str(camino.index(celda)+1))
         lim_superior = len(camino)-1
         lim_inferior = camino.index(celda)+1
-        # print("limite superior: " + str(lim_superior) + " y limite inferior: " + str(lim_inferior))
-        # print("lista celdas antes de borrar: " + str(camino))
-        # print("lista movimientos antes de borrar: " + str(lista_movimientos))
-        #print("ANTES DE BORRAR: " + str(camino))
         for i in range(lim_superior, lim_inferior-1, -1): #Desde el final hasta la primera repetición de ese bucle
-            #camino.pop(len(camino)-1)
-            # print(i)
-            #print("BORRANDO:" + str(camino))
             camino.remove(camino[i])
 
-        # print("Camino despues de borrar: " + str(camino))
-
-        # print("MOVIMIENTO: limite superior: " + str(lim_superior) + " y limite inferior: " + str(lim_inferior-1))
-        # print("inferior MOV: " + str(lim_inferior -2) + "Superior MOV : " + str(len(lista_movimientos)-1))
-        # for i in range(lim_inferior, len(lista_movimientos)+1):
         for i in range(0, lim_inferior-1):
-            #lista_movimientos.remove(lista_movimientos[len(lista_movimientos)-1])
             lista2_mov.append(lista_movimientos[i])
-
-
-        # print(lista2_mov)
-        # print("\n")
     else:
-        #print("NO HAY BUCLE")
         lista_movimientos.append(coord_movimiento)
         camino.append(celda)
         lista2_mov = lista_movimientos
-    
-    #print("DESPUES DE BORRAR:" + str(camino))
+
     return camino, lista2_mov
+
 
 def crear_camino(celda_final, lab, matriz_laberinto, diccionario):
     camino = []
@@ -154,30 +135,22 @@ def crear_camino(celda_final, lab, matriz_laberinto, diccionario):
     celda_inicial = crear_celda_random(lab, matriz_laberinto)
     camino.append(celda_inicial.get_coordenadas())
     print("CELDA INICIAL:" + str([celda_inicial.get_row(), celda_inicial.get_column()]))
-    i=0
-    while True:
 
+    while True:
         posicion = camino[len(camino)-1]
         celda_actual = matriz_laberinto[posicion[0], posicion[1]]
 
         coord_movimiento = elegir_movimiento(celda_actual, diccionario, lab)
         new_posicion = numpy.array((celda_actual.get_row(), celda_actual.get_column())) + numpy.array((coord_movimiento[0], coord_movimiento[1]))
         new_celda = matriz_laberinto[new_posicion[0], new_posicion[1]]
-       
-        #print("CELDA NUEVA[" + str(i) + "]: " + str(new_celda.get_coordenadas()))
-        # print("Celda actual: " + str(celda_actual.get_coordenadas()) + "New position: " + str(new_posicion) + " movimiento: " + str(coord_movimiento))
         camino, lista_movimientos = check_camino(new_celda.get_coordenadas(), camino, coord_movimiento, lista_movimientos)
-
-        #print(camino)
-
-        i += 1
-
-        # if i is 20:
-        #     break
 
         if camino[len(camino)-1][0] == celda_final.get_row() and camino[len(camino)-1][1] == celda_final.get_column():
             print("TERMINÉ")
             print(camino)
+            for i in range(0, len(camino)-1):
+                coord = camino[i]
+                matriz_laberinto[coord[0]][coord[1]].set_visited(True)
             break
 
     return camino, lista_movimientos
@@ -187,33 +160,34 @@ def cambiar_vecinos(camino, lista_movimientos, diccionario):
     movimiento = diccionario["mov"]
     posicion_vecino = None
     file_name = "Laberinto_wilson_B02_{0}x{1}.json".format(diccionario["rows"], diccionario["cols"])
-    for i in range(0, (len(camino)-1)):
-        if lista_movimientos[i] == movimiento[0]:
-            posicion_vecino = 0
-        if lista_movimientos[i] == movimiento[1]:
-            posicion_vecino = 1
-        if lista_movimientos[i] == movimiento[2]:
-            posicion_vecino = 2
-        if lista_movimientos[i] == movimiento[3]:
-            posicion_vecino = 3
-        
-        # diccionario["cells"]["{0}".format(camino[i])]["neighbors"][posicion_vecino] = True
-        # diccionario["cells"]["{0}".format(camino[i+1])]["neighbors"][(posicion_vecino+2)%4] = True
 
-        
-        with open(file_name, 'r+') as f:
-            json_data = json.load(f)
-            json_data["cells"][str(camino[i])]["neighbors"][posicion_vecino] = True
-            json_data["cells"][str(camino[i+1])]["neighbors"][(posicion_vecino+2)%4] = True
-            f.seek(0)
-            f.write(json.dumps(json_data))
-            f.truncate()
-    
     f = open(file_name, "r")
     content = f.read()
     diccionario = json.loads(content)
-    return diccionario
 
+    for i in range(0, (len(camino)-1)):
+        if lista_movimientos[i] == movimiento[0]:
+            posicion_vecino = 0
+        elif lista_movimientos[i] == movimiento[1]:
+            posicion_vecino = 1
+        elif lista_movimientos[i] == movimiento[2]:
+            posicion_vecino = 2
+        elif lista_movimientos[i] == movimiento[3]:
+            posicion_vecino = 3
+
+        diccionario["cells"][str(camino[i])]["neighbors"][posicion_vecino] += True
+        diccionario["cells"][str(camino[i + 1])]["neighbors"][(posicion_vecino + 2) % 4] += True
+
+    with open(file_name, 'r+') as f:
+        f.seek(0)
+        f.write(json.dumps(diccionario))
+        f.truncate()
+
+    f = open(file_name, "r")
+    content = f.read()
+    diccionario = json.loads(content)
+
+    return diccionario
 
 
 def algoritmo_wilson(lab, diccionario):
@@ -235,6 +209,7 @@ def menu_inicial():
             option = int(input("Elige una opción [1,2]:\n\t1. Elegir archivo existente\n\t2. Generar algoritmo automáticamente\n\n"))
             if option == 1:
                 lab = pedir_nombre_fichero()
+                lab.load_data(None)
                 valido = True
             elif option == 2:
                 rows_cols = pedir_filas_columnas()
@@ -243,6 +218,7 @@ def menu_inicial():
                 dict_manual = crear_json(rows_cols[0], rows_cols[1])
                 lab.load_data(dict_manual)
                 dict_manual = algoritmo_wilson(lab, dict_manual)
+                lab.load_data(dict_manual)
                 valido = True
             else:
                 print(" ELSE Intruduce un valor válido [1, 2]\n")
@@ -256,7 +232,6 @@ def menu_inicial():
 def main():
     lab, dict_data_manual = menu_inicial()
     screen = inicializar_ventana(lab)
-    lab.load_data(dict_data_manual)
 
     while True:
         for event in pygame.event.get():
