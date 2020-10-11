@@ -128,14 +128,28 @@ def check_camino(celda, camino, coord_movimiento, lista_movimientos):
 
     return camino, lista2_mov
 
+def generar_celdas_visitadas(matriz_laberinto, lab):
+    visitadas = []
+    no_visitadas = []
+    for i in range(0, lab.get_rows()):
+        for j in range(0, lab.get_cols()):
+            if matriz_laberinto[i][j].get_visited() == True:
+                visitadas.append(matriz_laberinto[i][j])
+            else:
+                no_visitadas.append(matriz_laberinto[i][j])
+
+    return no_visitadas, visitadas
+
 
 def crear_camino(celda_final, lab, matriz_laberinto, diccionario):
     camino = []
     lista_movimientos = []
     celda_inicial = crear_celda_random(lab, matriz_laberinto)
     camino.append(celda_inicial.get_coordenadas())
-    print("CELDA INICIAL:" + str([celda_inicial.get_row(), celda_inicial.get_column()]))
+    # print("CELDA INICIAL:" + str([celda_inicial.get_row(), celda_inicial.get_column()]))
+    celdas_no_visitadas, celdas_visitadas = generar_celdas_visitadas(matriz_laberinto, lab)
 
+    # while len(celdas_no_visitadas) != 1:
     while True:
         posicion = camino[len(camino)-1]
         celda_actual = matriz_laberinto[posicion[0], posicion[1]]
@@ -145,15 +159,42 @@ def crear_camino(celda_final, lab, matriz_laberinto, diccionario):
         new_celda = matriz_laberinto[new_posicion[0], new_posicion[1]]
         camino, lista_movimientos = check_camino(new_celda.get_coordenadas(), camino, coord_movimiento, lista_movimientos)
 
-        if camino[len(camino)-1][0] == celda_final.get_row() and camino[len(camino)-1][1] == celda_final.get_column():
-            print("TERMINÉ")
-            print(camino)
-            for i in range(0, len(camino)-1):
+        ultima_celda_anadida = matriz_laberinto[camino[len(camino)-1][0]][camino[len(camino)-1][1]]
+        if ultima_celda_anadida.get_visited() == True:
+        # if camino[len(camino)-1][0] == celda_final.get_row() and camino[len(camino)-1][1] == celda_final.get_column():
+            # print("TERMINÉ")
+
+            for i in range(0, len(camino)):
                 coord = camino[i]
                 matriz_laberinto[coord[0]][coord[1]].set_visited(True)
+                celdas_no_visitadas, celdas_visitadas = generar_celdas_visitadas(matriz_laberinto, lab)
+                # if celdas_no_visitadas.count(str(matriz_laberinto[coord[0]][coord[1]].get_coordenadas())) == 1:
+                #     celdas_no_visitadas.remove(str(matriz_laberinto[coord[0]][coord[1]].get_coordenadas()))
+                #
+                # if celdas_visitadas.count(str(matriz_laberinto[coord[0]][coord[1]].get_coordenadas())) == 0:
+                #     celdas_visitadas.append(str(matriz_laberinto[coord[0]][coord[1]].get_coordenadas()))
+
+            diccionario = cambiar_vecinos(camino, lista_movimientos, diccionario)
+            celda_inicial = crear_celda_random(lab, matriz_laberinto)
+            camino.clear()
+            lista_movimientos.clear()
+            camino.append(celda_inicial.get_coordenadas())
+
+        celdas_no_visitadas, celdas_visitadas = generar_celdas_visitadas(matriz_laberinto, lab)
+
+        if len(celdas_no_visitadas) == 1:
+            celda = celdas_no_visitadas[0]
+            coord_movimiento = elegir_movimiento(celda, diccionario, lab)
+            new_posicion = numpy.array((celda.get_row(), celda.get_column())) + numpy.array(
+                (coord_movimiento[0], coord_movimiento[1]))
+            new_celda = matriz_laberinto[new_posicion[0], new_posicion[1]]
+            camino, lista_movimientos = check_camino(new_celda.get_coordenadas(), camino, coord_movimiento,
+                                                     lista_movimientos)
+            diccionario = cambiar_vecinos(camino, lista_movimientos, diccionario)
+
             break
 
-    return camino, lista_movimientos
+    return camino, lista_movimientos, diccionario
 
 
 def cambiar_vecinos(camino, lista_movimientos, diccionario):
@@ -175,8 +216,8 @@ def cambiar_vecinos(camino, lista_movimientos, diccionario):
         elif lista_movimientos[i] == movimiento[3]:
             posicion_vecino = 3
 
-        diccionario["cells"][str(camino[i])]["neighbors"][posicion_vecino] += True
-        diccionario["cells"][str(camino[i + 1])]["neighbors"][(posicion_vecino + 2) % 4] += True
+        diccionario["cells"][str(camino[i])]["neighbors"][posicion_vecino] = True
+        diccionario["cells"][str(camino[i + 1])]["neighbors"][(posicion_vecino + 2) % 4] = True
 
     with open(file_name, 'r+') as f:
         f.seek(0)
@@ -194,9 +235,10 @@ def algoritmo_wilson(lab, diccionario):
     matriz_laberinto = lab.get_labyrinth()
     celda_final = crear_celda_random(lab, matriz_laberinto)
     celda_final.set_visited(True)
-    print("CELDA FINAL:" + str([celda_final.get_row(), celda_final.get_column()]))
-    camino, lista_movimientos = crear_camino(celda_final, lab, matriz_laberinto, diccionario)
-    diccionario = cambiar_vecinos(camino, lista_movimientos, diccionario)
+    # print("CELDA FINAL:" + str([celda_final.get_row(), celda_final.get_column()]))
+    print("Generando laberinto...")
+    camino, lista_movimientos, diccionario = crear_camino(celda_final, lab, matriz_laberinto, diccionario)
+
     return diccionario 
 
 
