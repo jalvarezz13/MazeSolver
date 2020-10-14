@@ -5,6 +5,14 @@ import Ventana.Ventana as Ventana
 import pygame
 import Cnfg
 import sys
+import os
+
+def checkear_dirs():
+    if not os.path.exists("JSONs"):
+        os.mkdir("JSONs")
+
+    if not os.path.exists("JPGs"):
+        os.mkdir("JPGs")
 
 def pedir_nombre_fichero():
     valido = False
@@ -65,6 +73,7 @@ def menu_inicial():
     return [lab, dict_manual]
 
 def main():
+    checkear_dirs()
     lab, dict_data_manual = menu_inicial()
     screen = Ventana.inicializar_ventana(lab)
 
