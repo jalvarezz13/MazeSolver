@@ -76,3 +76,12 @@ class Labyrinth:
                 if not vecinos[3]:
                     pygame.draw.line(screen, cnfg.BLACK, [x, y + w], [x, y])
                 x = x + w
+
+    def generar_celdas_no_visitadas(matriz_laberinto, lab):
+        no_visitadas = []
+        for i in range(0, lab.get_rows()):
+            for j in range(0, lab.get_cols()):
+                if matriz_laberinto[i][j].get_visited() is False:
+                    no_visitadas.append(matriz_laberinto[i][j])
+
+        return no_visitadas

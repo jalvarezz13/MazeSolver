@@ -29,5 +29,17 @@ class Cell:
     def set_visited(self, valor):
         self.visited = valor
 
+    def esPared(celda, movimiento, lab):
+        esPared = False
+        if celda.get_row() == 0 and movimiento == [-1, 0]:
+            esPared = True
+        if celda.get_column() == 0 and movimiento == [0, -1]:
+            esPared = True
+        if celda.get_row() == lab.get_rows() - 1 and movimiento == [1, 0]:
+            esPared = True
+        if celda.get_column() == lab.get_cols() - 1 and movimiento == [0, 1]:
+            esPared = True
+        return esPared
+
     def to_string(self):
         return ("Fila: '{0}' \nColumna: '{1}' \nValor: '{2}' \nVecinos: '{3}' \n".format(self.row, self.column, self.value, self.neighbors))
