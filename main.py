@@ -3,7 +3,7 @@ from Gestion_Json.GestionJson import GestionJson
 import Alg_Wilson.AlgoritmoWilson as AlgoritmoWilson
 import Ventana.Ventana as Ventana
 import pygame
-import cnfg
+import Cnfg
 import sys
 
 def pedir_nombre_fichero():
@@ -72,7 +72,7 @@ def main():
                 pygame.image.save(screen, "JPGs/{0}".format(name))
                 sys.exit()
 
-        screen.fill(cnfg.WHITE)
+        screen.fill(Cnfg.WHITE)
         Ventana.dibujar(screen, lab)
         pygame.display.update()
 

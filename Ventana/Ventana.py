@@ -1,12 +1,12 @@
 import pygame
-import cnfg
+import Cnfg
 
 def inicializar_ventana(lab):
     pygame.init()
     if lab.get_rows() > lab.get_cols():
-        w = cnfg.ancho / lab.get_rows()
+        w = Cnfg.ancho / lab.get_rows()
     else:
-        w = cnfg.alto / lab.get_cols()
+        w = Cnfg.alto / lab.get_cols()
 
     new_ancho = int(w * lab.get_cols() + 40)
     new_alto = int(w * lab.get_rows() + 40)
@@ -18,9 +18,9 @@ def inicializar_ventana(lab):
 
 def dibujar(screen, lab):
     if lab.get_rows() > lab.get_cols():
-        w = int(cnfg.ancho / lab.get_rows())
+        w = int(Cnfg.ancho / lab.get_rows())
     else:
-        w = int(cnfg.alto / lab.get_cols())
+        w = int(Cnfg.alto / lab.get_cols())
     y = -w + 20
 
     for i in range(0, lab.get_rows()):
@@ -32,15 +32,15 @@ def dibujar(screen, lab):
             vecinos = cell.get_neighbors()
 
             if not vecinos[0]:
-                pygame.draw.line(screen, cnfg.BLACK, [x, y], [x + w, y])
+                pygame.draw.line(screen, Cnfg.BLACK, [x, y], [x + w, y])
 
             if not vecinos[1]:
-                pygame.draw.line(screen, cnfg.BLACK, [x + w, y], [x + w, y + w])
+                pygame.draw.line(screen, Cnfg.BLACK, [x + w, y], [x + w, y + w])
 
             if not vecinos[2]:
-                pygame.draw.line(screen, cnfg.BLACK, [x + w, y + w], [x, y + w])
+                pygame.draw.line(screen, Cnfg.BLACK, [x + w, y + w], [x, y + w])
 
             if not vecinos[3]:
-                pygame.draw.line(screen, cnfg.BLACK, [x, y + w], [x, y])
+                pygame.draw.line(screen, Cnfg.BLACK, [x, y + w], [x, y])
             x = x + w
 
