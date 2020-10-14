@@ -1,5 +1,6 @@
 import os
 import json
+import sys
 
 class GestionJson:
     def __init__(self, rows, cols):
@@ -39,6 +40,13 @@ class GestionJson:
 
         return diccionario
 
+    def open_json_file(file_name):
+        f = open(file_name, "r")
+        content = f.read()
+        diccionario = json.loads(content)
+
+        return diccionario
+
     def escribir_json(file_name, diccionario):
         with open("JSONs/{0}".format(file_name), 'r+') as f:
             f.seek(0)
@@ -70,3 +78,24 @@ class GestionJson:
         diccionario =  GestionJson.leer_json(file_name)
 
         return diccionario
+
+    def check_json(diccionario):        
+        token = True
+        dict_for = {1:0, 2:1, 3:2}       
+        for n in range(0, diccionario["rows"]-1):            
+            if(diccionario["cells"]["(0, {0})".format(n)]["neighbors"][0] == True or            
+                diccionario["cells"]["({0}, 0)".format(n)]["neighbors"][3] == True or            
+                diccionario["cells"]["({0}, {1})".format(diccionario["rows"]-1, n)]["neighbors"][2] == True or            
+                diccionario["cells"]["({0}, {1})".format(n, diccionario["cols"]-1)]["neighbors"][2] == True):                
+                    token = False  
+
+            for i, j in dict_for.items():                
+                if(diccionario["cells"]["({0}, {1})".format(j, n)]["neighbors"][2] != diccionario["cells"]["({0}, {1})".format(i,n)]["neighbors"][0] or                 
+                    diccionario["cells"]["({0}, {1})".format(n, j)]["neighbors"][1] != diccionario["cells"]["({0}, {1})".format(n,i)]["neighbors"][3]):                    
+                    token = False                            
+                
+        if(token == False):            
+            print("JSON INCORRECTED")            
+            sys.exit()        
+        else:             
+            print("JSON CORRECTED")
