@@ -14,7 +14,7 @@ class GestionJson:
         data["cells"] = self.crear_celdas()
         file_name = "Laberinto_wilson_B02_{0}x{1}.json".format(self.rows, self.cols)
 
-        with open(os.path.join(os.getcwd(), file_name), 'w') as file:
+        with open(os.path.join("{0}/JSONs".format(os.getcwd()), file_name), 'w') as file:
             json.dump(data, file)
         
         self.data = data
@@ -33,14 +33,14 @@ class GestionJson:
         return dic_cell
         
     def leer_json(file_name):
-        f = open(file_name, "r")
+        f = open("JSONs/{0}".format(file_name), "r")
         content = f.read()
         diccionario = json.loads(content)
 
         return diccionario
 
     def escribir_json(file_name, diccionario):
-        with open(file_name, 'r+') as f:
+        with open("JSONs/{0}".format(file_name), 'r+') as f:
             f.seek(0)
             f.write(json.dumps(diccionario))
             f.truncate()

@@ -294,7 +294,7 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 name = "Laberinto_B02_" + str(lab.get_rows()) + "x" + str(lab.get_cols()) + ".jpg"
-                pygame.image.save(screen, name)
+                pygame.image.save(screen, "JPGs/{0}".format(name))
                 sys.exit()
 
         screen.fill(cnfg.WHITE)
