@@ -1,9 +1,8 @@
 import sys
 from Laberinto.Labyrinth import Labyrinth
+from Gestion_Json.GestionJson import GestionJson
 import pygame
 import cnfg
-import os
-import json
 import random
 import numpy
 
@@ -53,31 +52,31 @@ def pedir_filas_columnas():
     return rows_cols
 
 
-def crear_celdas(rows, cols):
-    dic_cell = {}
-    dic_data_cell = {}
-    for i in range(0, rows):
-        for j in range(0, cols):
-            dic_data_cell["value"] = 0
-            dic_data_cell["neighbors"] = [False, False, False, False]
-            dic_cell["({0}, {1})".format(i, j)] = dic_data_cell
-    return dic_cell
+# def crear_celdas(rows, cols):
+#     dic_cell = {}
+#     dic_data_cell = {}
+#     for i in range(0, rows):
+#         for j in range(0, cols):
+#             dic_data_cell["value"] = 0
+#             dic_data_cell["neighbors"] = [False, False, False, False]
+#             dic_cell["({0}, {1})".format(i, j)] = dic_data_cell
+#     return dic_cell
 
 
-def crear_json(rows, cols):
-    data = {}
-    data["rows"] = rows
-    data["cols"] = cols
-    data["max_n"] = 4,
-    data["mov"] = [[-1, 0], [0, 1], [1, 0], [0, -1]]
-    data["id_mov"] = ["N", "E", "S", "O"]
-    data["cells"] = crear_celdas(rows, cols)
-    file_name = "Laberinto_wilson_B02_{0}x{1}.json".format(rows, cols)
+# def crear_json(rows, cols):
+#     data = {}
+#     data["rows"] = rows
+#     data["cols"] = cols
+#     data["max_n"] = 4,
+#     data["mov"] = [[-1, 0], [0, 1], [1, 0], [0, -1]]
+#     data["id_mov"] = ["N", "E", "S", "O"]
+#     data["cells"] = crear_celdas(rows, cols)
+#     file_name = "Laberinto_wilson_B02_{0}x{1}.json".format(rows, cols)
 
-    with open(os.path.join(os.getcwd(), file_name), 'w') as file:
-        json.dump(data, file)
+#     with open(os.path.join(os.getcwd(), file_name), 'w') as file:
+#         json.dump(data, file)
 
-    return data
+#     return data
 
 
 def elegir_movimiento(celda_actual, diccionario, lab):
@@ -178,7 +177,7 @@ def actualizar_celdas(camino, matriz_laberinto, celdas_no_visitadas, lista_movim
         if celdas_no_visitadas.count(matriz_laberinto[coord[0]][coord[1]]) == 1:
             celdas_no_visitadas.remove(matriz_laberinto[coord[0]][coord[1]])
 
-    diccionario = cambiar_vecinos(camino, lista_movimientos, diccionario)
+    diccionario = GestionJson.cambiar_vecinos(camino, lista_movimientos, diccionario)
 
     return celdas_no_visitadas, diccionario
 
@@ -193,7 +192,7 @@ def generar_laberinto(lab, matriz_laberinto, diccionario):
             celdas_no_visitadas, diccionario = actualizar_celdas(camino, matriz_laberinto, celdas_no_visitadas, lista_movimientos, diccionario)
             if len(celdas_no_visitadas) == 0:
                 print("Terminé")
-                break;
+                break
             celda_inicial = crear_celda_random(lab, matriz_laberinto, celdas_no_visitadas)
             camino.clear()
             lista_movimientos.clear()
@@ -202,46 +201,46 @@ def generar_laberinto(lab, matriz_laberinto, diccionario):
     return camino, lista_movimientos, diccionario
 
 
-def leer_json(file_name):
-    f = open(file_name, "r")
-    content = f.read()
-    diccionario = json.loads(content)
+# def leer_json(file_name):
+#     f = open(file_name, "r")
+#     content = f.read()
+#     diccionario = json.loads(content)
 
-    return diccionario
-
-
-def escribir_json(file_name, diccionario):
-    with open(file_name, 'r+') as f:
-        f.seek(0)
-        f.write(json.dumps(diccionario))
-        f.truncate()
+#     return diccionario
 
 
-def cambiar_vecinos(camino, lista_movimientos, diccionario):
-    movimiento = diccionario["mov"]
-    posicion_vecino = None
-    file_name = "Laberinto_wilson_B02_{0}x{1}.json".format(diccionario["rows"], diccionario["cols"])
+# def escribir_json(file_name, diccionario):
+#     with open(file_name, 'r+') as f:
+#         f.seek(0)
+#         f.write(json.dumps(diccionario))
+#         f.truncate()
 
-    diccionario = leer_json(file_name)
 
-    for i in range(0, (len(camino) - 1)):
-        if lista_movimientos[i] == movimiento[0]:
-            posicion_vecino = 0
-        elif lista_movimientos[i] == movimiento[1]:
-            posicion_vecino = 1
-        elif lista_movimientos[i] == movimiento[2]:
-            posicion_vecino = 2
-        elif lista_movimientos[i] == movimiento[3]:
-            posicion_vecino = 3
+# def cambiar_vecinos(camino, lista_movimientos, diccionario):
+#     movimiento = diccionario["mov"]
+#     posicion_vecino = None
+#     file_name = "Laberinto_wilson_B02_{0}x{1}.json".format(diccionario["rows"], diccionario["cols"])
 
-        diccionario["cells"][str(camino[i])]["neighbors"][posicion_vecino] = True
-        diccionario["cells"][str(camino[i + 1])]["neighbors"][(posicion_vecino + 2) % 4] = True
+#     diccionario = leer_json(file_name)
 
-    escribir_json(file_name, diccionario)
+#     for i in range(0, (len(camino) - 1)):
+#         if lista_movimientos[i] == movimiento[0]:
+#             posicion_vecino = 0
+#         elif lista_movimientos[i] == movimiento[1]:
+#             posicion_vecino = 1
+#         elif lista_movimientos[i] == movimiento[2]:
+#             posicion_vecino = 2
+#         elif lista_movimientos[i] == movimiento[3]:
+#             posicion_vecino = 3
 
-    diccionario = leer_json(file_name)
+#         diccionario["cells"][str(camino[i])]["neighbors"][posicion_vecino] = True
+#         diccionario["cells"][str(camino[i + 1])]["neighbors"][(posicion_vecino + 2) % 4] = True
 
-    return diccionario
+#     escribir_json(file_name, diccionario)
+
+#     diccionario = leer_json(file_name)
+
+#     return diccionario
 
 
 def algoritmo_wilson(lab, diccionario):
@@ -270,7 +269,8 @@ def menu_inicial():
                 rows_cols = pedir_filas_columnas()
                 lab = Labyrinth(None, rows_cols[0], rows_cols[1])
                 lab.create_labyrinth()
-                dict_manual = crear_json(rows_cols[0], rows_cols[1])
+                json = GestionJson(rows_cols[0], rows_cols[1])
+                dict_manual = GestionJson.get_data(json)
                 lab.load_data(dict_manual)
                 dict_manual = algoritmo_wilson(lab, dict_manual)
                 lab.load_data(dict_manual)
