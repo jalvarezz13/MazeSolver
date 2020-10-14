@@ -138,52 +138,63 @@ def check_camino(celda, camino, coord_movimiento, lista_movimientos):
     return camino, lista2_mov
 
 
-def generar_celdas_visitadas(matriz_laberinto, lab):
-    visitadas = []
+def generar_celdas_no_visitadas(matriz_laberinto, lab):
     no_visitadas = []
     for i in range(0, lab.get_rows()):
         for j in range(0, lab.get_cols()):
-            if matriz_laberinto[i][j].get_visited():
-                visitadas.append(matriz_laberinto[i][j])
-            else:
+            if matriz_laberinto[i][j].get_visited() is False:
                 no_visitadas.append(matriz_laberinto[i][j])
 
-    return no_visitadas, visitadas
+    return no_visitadas
 
 
-def crear_camino(lab, matriz_laberinto, diccionario):
+def iniciar_algoritmo(matriz_laberinto, lab):
     camino = []
-    lista_movimientos = []
-    celdas_no_visitadas, celdas_visitadas = generar_celdas_visitadas(matriz_laberinto, lab)
+    celdas_no_visitadas = generar_celdas_no_visitadas(matriz_laberinto, lab)
     celda_inicial = crear_celda_random(lab, matriz_laberinto, celdas_no_visitadas)
     camino.append(celda_inicial.get_coordenadas())
 
+    return camino, celdas_no_visitadas
+
+
+def calcular_caminos(camino, lista_movimientos, matriz_laberinto, diccionario, lab):
+    posicion = camino[len(camino) - 1]
+    celda_actual = matriz_laberinto[posicion[0], posicion[1]]
+    coord_movimiento = elegir_movimiento(celda_actual, diccionario, lab)
+    new_posicion = numpy.array((celda_actual.get_row(), celda_actual.get_column())) + numpy.array(
+        (coord_movimiento[0], coord_movimiento[1]))
+    new_celda = matriz_laberinto[new_posicion[0], new_posicion[1]]
+    camino, lista_movimientos = check_camino(new_celda.get_coordenadas(), camino, coord_movimiento,
+                                             lista_movimientos)
+
+    return camino, lista_movimientos, new_celda
+
+
+def actualizar_celdas(camino, matriz_laberinto, celdas_no_visitadas, lista_movimientos, diccionario):
+    for i in range(0, len(camino)):
+        coord = camino[i]
+        matriz_laberinto[coord[0]][coord[1]].set_visited(True)
+
+        if celdas_no_visitadas.count(matriz_laberinto[coord[0]][coord[1]]) == 1:
+            celdas_no_visitadas.remove(matriz_laberinto[coord[0]][coord[1]])
+
+    diccionario = cambiar_vecinos(camino, lista_movimientos, diccionario)
+
+    return celdas_no_visitadas, diccionario
+
+
+def generar_laberinto(lab, matriz_laberinto, diccionario):
+    lista_movimientos = []
+    camino, celdas_no_visitadas = iniciar_algoritmo(matriz_laberinto, lab)
 
     while True:
-        posicion = camino[len(camino) - 1]
-        celda_actual = matriz_laberinto[posicion[0], posicion[1]]
-        coord_movimiento = elegir_movimiento(celda_actual, diccionario, lab)
-        new_posicion = numpy.array((celda_actual.get_row(), celda_actual.get_column())) + numpy.array(
-            (coord_movimiento[0], coord_movimiento[1]))
-        new_celda = matriz_laberinto[new_posicion[0], new_posicion[1]]
-        camino, lista_movimientos = check_camino(new_celda.get_coordenadas(), camino, coord_movimiento,
-                                                 lista_movimientos)
+        camino, lista_movimientos, new_celda = calcular_caminos(camino, lista_movimientos, matriz_laberinto, diccionario, lab)
         if new_celda.get_visited():
-            for i in range(0, len(camino)):
-                coord = camino[i]
-                matriz_laberinto[coord[0]][coord[1]].set_visited(True)
-
-                if celdas_no_visitadas.count(matriz_laberinto[coord[0]][coord[1]]) == 1:
-                    celdas_no_visitadas.remove(matriz_laberinto[coord[0]][coord[1]])
-
-            diccionario = cambiar_vecinos(camino, lista_movimientos, diccionario)
-
+            celdas_no_visitadas, diccionario = actualizar_celdas(camino, matriz_laberinto, celdas_no_visitadas, lista_movimientos, diccionario)
             if len(celdas_no_visitadas) == 0:
                 print("Terminé")
                 break;
-
             celda_inicial = crear_celda_random(lab, matriz_laberinto, celdas_no_visitadas)
-
             camino.clear()
             lista_movimientos.clear()
             camino.append(celda_inicial.get_coordenadas())
@@ -191,14 +202,27 @@ def crear_camino(lab, matriz_laberinto, diccionario):
     return camino, lista_movimientos, diccionario
 
 
+def leer_json(file_name):
+    f = open(file_name, "r")
+    content = f.read()
+    diccionario = json.loads(content)
+
+    return diccionario
+
+
+def escribir_json(file_name, diccionario):
+    with open(file_name, 'r+') as f:
+        f.seek(0)
+        f.write(json.dumps(diccionario))
+        f.truncate()
+
+
 def cambiar_vecinos(camino, lista_movimientos, diccionario):
     movimiento = diccionario["mov"]
     posicion_vecino = None
     file_name = "Laberinto_wilson_B02_{0}x{1}.json".format(diccionario["rows"], diccionario["cols"])
 
-    f = open(file_name, "r")
-    content = f.read()
-    diccionario = json.loads(content)
+    diccionario = leer_json(file_name)
 
     for i in range(0, (len(camino) - 1)):
         if lista_movimientos[i] == movimiento[0]:
@@ -213,14 +237,9 @@ def cambiar_vecinos(camino, lista_movimientos, diccionario):
         diccionario["cells"][str(camino[i])]["neighbors"][posicion_vecino] = True
         diccionario["cells"][str(camino[i + 1])]["neighbors"][(posicion_vecino + 2) % 4] = True
 
-    with open(file_name, 'r+') as f:
-        f.seek(0)
-        f.write(json.dumps(diccionario))
-        f.truncate()
+    escribir_json(file_name, diccionario)
 
-    f = open(file_name, "r")
-    content = f.read()
-    diccionario = json.loads(content)
+    diccionario = leer_json(file_name)
 
     return diccionario
 
@@ -230,7 +249,7 @@ def algoritmo_wilson(lab, diccionario):
     celda_final = crear_celda_random(lab, matriz_laberinto)
     celda_final.set_visited(True)
     print("Generando laberinto...")
-    camino, lista_movimientos, diccionario = crear_camino(lab, matriz_laberinto, diccionario)
+    camino, lista_movimientos, diccionario = generar_laberinto(lab, matriz_laberinto, diccionario)
 
     return diccionario
 
