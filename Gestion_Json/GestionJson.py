@@ -12,7 +12,7 @@ class GestionJson:
         data["mov"] = [[-1, 0], [0, 1], [1, 0], [0, -1]]
         data["id_mov"] = ["N", "E", "S", "O"]
         data["cells"] = self.crear_celdas()
-        file_name = "Laberinto_wilson_B02_{0}x{1}.json".format(self.rows, self.cols)
+        file_name = "Laberinto_Wilson_B1_2_{0}x{1}.json".format(self.rows, self.cols)
 
         with open(os.path.join("{0}/JSONs".format(os.getcwd()), file_name), 'w') as file:
             json.dump(data, file)
@@ -48,7 +48,7 @@ class GestionJson:
     def cambiar_vecinos(camino, lista_movimientos, diccionario):
         movimiento = diccionario["mov"]
         posicion_vecino = None
-        file_name = "Laberinto_wilson_B02_{0}x{1}.json".format(diccionario["rows"], diccionario["cols"])
+        file_name = "Laberinto_Wilson_B1_2_{0}x{1}.json".format(diccionario["rows"], diccionario["cols"])
 
         diccionario = GestionJson.leer_json(file_name)
 

@@ -24,7 +24,6 @@ def crear_celda_random(lab, matriz_laberinto, celdas_no_visitadas=None):
             celda_random = random.choice(celdas_no_visitadas)
 
         if celda_random.get_visited() is False:
-            # print("Encontré despues de {0} intentos".format(i))
             break
 
     return celda_random

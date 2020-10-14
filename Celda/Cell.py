@@ -1,7 +1,5 @@
-
 class Cell:
     def __init__(self, row, column, value, neighbors):
-        #fila y columna en la que se encuentra la celda, podria ponerse como tupla
         self.row = row
         self.column = column
         self.value = value
