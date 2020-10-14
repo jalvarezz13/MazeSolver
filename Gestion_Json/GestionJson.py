@@ -82,17 +82,32 @@ class GestionJson:
     def check_json(diccionario):        
         token = True
         dict_for = {1:0, 2:1, 3:2}       
-        for n in range(0, diccionario["rows"]):            
+        for n in range(0, diccionario["cols"]):            
             if(diccionario["cells"]["(0, {0})".format(n)]["neighbors"][0] == True or 
-            diccionario["cells"]["({0}, 0)".format(n)]["neighbors"][3] == True or 
-            diccionario["cells"]["({0}, {1})".format(diccionario["rows"]-1, n)]["neighbors"][2] == True or 
-            diccionario["cells"]["({0}, {1})".format(n, diccionario["cols"]-1)]["neighbors"][1] == True): 
+            diccionario["cells"]["({0}, {1})".format(diccionario["rows"]-1, n)]["neighbors"][2] == True):
+                token = False  
+            
+            if(diccionario["cols"] > diccionario["rows"]):
+                for i in range(1, diccionario["rows"]):
+                    if(diccionario["cells"]["({0}, {1})".format(i-1, n)]["neighbors"][2] != 
+                    diccionario["cells"]["({0}, {1})".format(i,n)]["neighbors"][0]):
+                        token = False
+                for i in range(0, diccionario["rows"]):
+                    if(n == diccionario["cols"]-1): 
+                        break # Salir de este bucle ¿No se si es asi o solo se sale del if?
+                    if(diccionario["cells"]["({0}, {1})".format(i, n)]["neighbors"][1] != 
+                    diccionario["cells"]["({0}, {1})".format(i, n+1)]["neighbors"][3]):
+                        token = False
+
+        for n in range(0, diccionario["rows"]):            
+            if( diccionario["cells"]["({0}, 0)".format(n)]["neighbors"][3] == True or 
+            diccionario["cells"]["({0}, {1})".format(n, diccionario["cols"]-1)]["neighbors"][1] == True):
                 token = False  
 
-            for i in range (1, diccionario["rows"]):                
-                if(diccionario["cells"]["({0}, {1})".format(i-1, n)]["neighbors"][2] != diccionario["cells"]["({0}, {1})".format(i,n)]["neighbors"][0] or                 
-                    diccionario["cells"]["({0}, {1})".format(n, i-1)]["neighbors"][1] != diccionario["cells"]["({0}, {1})".format(n,i)]["neighbors"][3]):                    
-                    token = False                            
+            # for i in range (1, diccionario["rows"]):                
+            #     if(diccionario["cells"]["({0}, {1})".format(i-1, n)]["neighbors"][2] != diccionario["cells"]["({0}, {1})".format(i,n)]["neighbors"][0] or                 
+            #         diccionario["cells"]["({0}, {1})".format(n, i-1)]["neighbors"][1] != diccionario["cells"]["({0}, {1})".format(n,i)]["neighbors"][3]):                    
+            #         token = False                            
                 
         if(token == False):            
             print("JSON INCORRECTED")            
