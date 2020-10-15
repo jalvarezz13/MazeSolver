@@ -9,24 +9,6 @@ import Cnfg
 import sys
 import os
 
-def checkear_dirs():
-    if not os.path.exists("JSONs"):
-        os.mkdir("JSONs")
-
-    if not os.path.exists("JPGs"):
-        os.mkdir("JPGs")
-
-def open_file_dialog():
-    root = tk.Tk()
-    root.withdraw()
-    root.call('wm', 'attributes', '.', '-topmost', True)
-    ruta = os.getcwd()
-    file_name = filedialog.askopenfilename(initialdir = ruta)
-    lab = Labyrinth(file_name)
-    print(file_name)
-
-    return lab, file_name
-
 def pedir_filas_columnas():
     rows_cols = []
     valido = False
@@ -40,6 +22,17 @@ def pedir_filas_columnas():
 
     return rows_cols
 
+def open_file_dialog():
+    root = tk.Tk()
+    root.withdraw()
+    root.call('wm', 'attributes', '.', '-topmost', True)
+    ruta = os.getcwd()
+    file_name = filedialog.askopenfilename(initialdir = ruta)
+    lab = Labyrinth(file_name)
+    print(file_name)
+
+    return lab, file_name
+
 def menu_inicial():
     valido = False
     dict_manual = None
@@ -51,7 +44,7 @@ def menu_inicial():
             if option == 1:
                 lab, file_name = open_file_dialog()
                 lab.load_data(None)
-                dict_to_check = GestionJson.open_json_file(file_name)
+                dict_to_check = GestionJson.leer_json(file_name)
                 GestionJson.check_json(dict_to_check)
                 valido = True
             elif option == 2:
@@ -71,6 +64,13 @@ def menu_inicial():
 
     return [lab, dict_manual]
 
+def checkear_dirs():
+    if not os.path.exists("JSONs"):
+        os.mkdir("JSONs")
+
+    if not os.path.exists("JPGs"):
+        os.mkdir("JPGs")
+
 def main():
     checkear_dirs()
     lab, dict_data_manual = menu_inicial()
@@ -86,7 +86,6 @@ def main():
         screen.fill(Cnfg.WHITE)
         Ventana.dibujar(screen, lab)
         pygame.display.update()
-
 
 if __name__ == '__main__':
     main()

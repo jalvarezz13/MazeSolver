@@ -1,21 +1,7 @@
 import pygame
 import Cnfg
+
 class Ventana:
-    def inicializar_ventana(lab):
-        pygame.init()
-        if lab.get_rows() > lab.get_cols():
-            w = Cnfg.ancho / lab.get_rows()
-        else:
-            w = Cnfg.alto / lab.get_cols()
-
-        new_ancho = int(w * lab.get_cols() + 40)
-        new_alto = int(w * lab.get_rows() + 40)
-
-        screen = pygame.display.set_mode((new_ancho, new_alto))
-        pygame.display.set_caption("Laberinto de Sistemas Inteligentes B1_2")
-
-        return screen
-
     def dibujar(screen, lab):
         if lab.get_rows() > lab.get_cols():
             w = int(Cnfg.ancho / lab.get_rows())
@@ -43,3 +29,18 @@ class Ventana:
                 if not vecinos[3]:
                     pygame.draw.line(screen, Cnfg.BLACK, [x, y + w], [x, y])
                 x = x + w
+
+    def inicializar_ventana(lab):
+        pygame.init()
+        if lab.get_rows() > lab.get_cols():
+            w = Cnfg.ancho / lab.get_rows()
+        else:
+            w = Cnfg.alto / lab.get_cols()
+
+        new_ancho = int(w * lab.get_cols() + 40)
+        new_alto = int(w * lab.get_rows() + 40)
+
+        screen = pygame.display.set_mode((new_ancho, new_alto))
+        pygame.display.set_caption("Laberinto de Sistemas Inteligentes B1_2")
+
+        return screen
