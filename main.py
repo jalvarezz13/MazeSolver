@@ -2,8 +2,12 @@ from Laberinto.Labyrinth import Labyrinth
 from Gestion_Json.GestionJson import GestionJson
 import Alg_Wilson.AlgoritmoWilson as AlgoritmoWilson
 import Ventana.Ventana as Ventana
+# from tkinter import filedialog
+# from tkinter import *
+
+import tkinter as tk
 from tkinter import filedialog
-from tkinter import *
+
 import pygame
 import Cnfg
 import sys
@@ -17,11 +21,14 @@ def checkear_dirs():
         os.mkdir("JPGs")
 
 def open_file_dialog():
-    root = Tk()
+    root = tk.Tk()
     root.withdraw()
+    root.call('wm', 'attributes', '.', '-topmost', True)
     ruta = os.getcwd()
     file_name = filedialog.askopenfilename(initialdir = ruta)
     lab = Labyrinth(file_name)
+    print(file_name)
+    
     return lab, file_name
 
 # def pedir_nombre_fichero():
