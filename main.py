@@ -1,7 +1,7 @@
 from Laberinto.Labyrinth import Labyrinth
 from Gestion_Json.GestionJson import GestionJson
-import Alg_Wilson.AlgoritmoWilson as AlgoritmoWilson
-import Ventana.Ventana as Ventana
+from Alg_Wilson.AlgoritmoWilson import AlgoritmoWilson
+from Ventana.Ventana import Ventana
 from tkinter import filedialog
 import tkinter as tk
 import pygame
@@ -19,7 +19,9 @@ def pedir_filas_columnas():
             data = "columna"
         except ValueError:
             print("\nIntroduce un número válido\n")
-
+    # if(rows_cols <= [1,1]):
+    #     valido = False
+    #     print("Introduce unas filas y columnas mayores que 1")
     return rows_cols
 
 def open_file_dialog():

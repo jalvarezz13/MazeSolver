@@ -1,4 +1,5 @@
 from Celda.Cell import Cell
+from Laberinto.Labyrinth import Labyrinth
 from Gestion_Json.GestionJson import GestionJson
 import random
 import numpy
@@ -46,31 +47,22 @@ class AlgoritmoWilson:
 
         return camino, lista2_mov
 
-    def generar_celdas_no_visitadas(matriz_laberinto, lab):
-        no_visitadas = []
-        for i in range(0, lab.get_rows()):
-            for j in range(0, lab.get_cols()):
-                if matriz_laberinto[i][j].get_visited() is False:
-                    no_visitadas.append(matriz_laberinto[i][j])
-
-        return no_visitadas
-
-    def iniciar_algoritmo(self, matriz_laberinto, lab):
+    def iniciar_algoritmo(matriz_laberinto, lab):
         camino = []
-        celdas_no_visitadas = self.generar_celdas_no_visitadas(matriz_laberinto, lab)
-        celda_inicial = self.crear_celda_random(lab, matriz_laberinto, celdas_no_visitadas)
+        celdas_no_visitadas = Labyrinth.generar_celdas_no_visitadas(matriz_laberinto, lab)
+        celda_inicial = AlgoritmoWilson.crear_celda_random(lab, matriz_laberinto, celdas_no_visitadas)
         camino.append(celda_inicial.get_coordenadas())
 
         return camino, celdas_no_visitadas
 
-    def calcular_caminos(self, camino, lista_movimientos, matriz_laberinto, diccionario, lab):
+    def calcular_caminos(camino, lista_movimientos, matriz_laberinto, diccionario, lab):
         posicion = camino[len(camino) - 1]
         celda_actual = matriz_laberinto[posicion[0], posicion[1]]
-        coord_movimiento = self.elegir_movimiento(celda_actual, diccionario, lab)
+        coord_movimiento = AlgoritmoWilson.elegir_movimiento(celda_actual, diccionario, lab)
         new_posicion = numpy.array((celda_actual.get_row(), celda_actual.get_column())) + numpy.array(
             (coord_movimiento[0], coord_movimiento[1]))
         new_celda = matriz_laberinto[new_posicion[0], new_posicion[1]]
-        camino, lista_movimientos = self.check_camino(new_celda.get_coordenadas(), camino, coord_movimiento,
+        camino, lista_movimientos = AlgoritmoWilson.check_camino(new_celda.get_coordenadas(), camino, coord_movimiento,
                                                 lista_movimientos)
 
         return camino, lista_movimientos, new_celda
@@ -87,29 +79,29 @@ class AlgoritmoWilson:
 
         return celdas_no_visitadas, diccionario
 
-    def generar_laberinto(self, lab, matriz_laberinto, diccionario):
+    def generar_laberinto(lab, matriz_laberinto, diccionario):
         lista_movimientos = []
-        camino, celdas_no_visitadas = self.iniciar_algoritmo(matriz_laberinto, lab)
+        camino, celdas_no_visitadas = AlgoritmoWilson.iniciar_algoritmo(matriz_laberinto, lab)
 
         while True:
-            camino, lista_movimientos, new_celda = self.calcular_caminos(camino, lista_movimientos, matriz_laberinto, diccionario, lab)
+            camino, lista_movimientos, new_celda = AlgoritmoWilson.calcular_caminos(camino, lista_movimientos, matriz_laberinto, diccionario, lab)
             if new_celda.get_visited():
-                celdas_no_visitadas, diccionario = self.actualizar_celdas(camino, matriz_laberinto, celdas_no_visitadas, lista_movimientos, diccionario)
+                celdas_no_visitadas, diccionario = AlgoritmoWilson.actualizar_celdas(camino, matriz_laberinto, celdas_no_visitadas, lista_movimientos, diccionario)
                 if len(celdas_no_visitadas) == 0:
                     print("Terminé")
                     break
-                celda_inicial = self.crear_celda_random(lab, matriz_laberinto, celdas_no_visitadas)
+                celda_inicial = AlgoritmoWilson.crear_celda_random(lab, matriz_laberinto, celdas_no_visitadas)
                 camino.clear()
                 lista_movimientos.clear()
                 camino.append(celda_inicial.get_coordenadas())
 
         return camino, lista_movimientos, diccionario
 
-    def algoritmo_wilson(self, lab, diccionario):
+    def algoritmo_wilson(lab, diccionario):
         matriz_laberinto = lab.get_labyrinth()
-        celda_final = self.crear_celda_random(lab, matriz_laberinto)
+        celda_final = AlgoritmoWilson.crear_celda_random(lab, matriz_laberinto)
         celda_final.set_visited(True)
         print("Generando laberinto...")
-        camino, lista_movimientos, diccionario = self.generar_laberinto(lab, matriz_laberinto, diccionario)
+        camino, lista_movimientos, diccionario = AlgoritmoWilson.generar_laberinto(lab, matriz_laberinto, diccionario)
 
         return diccionario

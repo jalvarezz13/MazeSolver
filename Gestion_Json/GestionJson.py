@@ -33,8 +33,14 @@ class GestionJson:
                 dic_cell["({0}, {1})".format(i, j)] = dic_data_cell
         return dic_cell
         
-    def leer_json(file_name):
-        f = open(file_name, "r")
+    def leer_json(file_name): # REVISAR
+        try:
+            f = open(file_name, "r")
+        except FileNotFoundError:
+            file_name = "JSONs/" + file_name
+            f = open(file_name, "r")
+            content = f.read()
+            diccionario = json.loads(content)
         content = f.read()
         diccionario = json.loads(content)
 
