@@ -2,12 +2,8 @@ from Laberinto.Labyrinth import Labyrinth
 from Gestion_Json.GestionJson import GestionJson
 import Alg_Wilson.AlgoritmoWilson as AlgoritmoWilson
 import Ventana.Ventana as Ventana
-# from tkinter import filedialog
-# from tkinter import *
-
-import tkinter as tk
 from tkinter import filedialog
-
+import tkinter as tk
 import pygame
 import Cnfg
 import sys
@@ -28,22 +24,8 @@ def open_file_dialog():
     file_name = filedialog.askopenfilename(initialdir = ruta)
     lab = Labyrinth(file_name)
     print(file_name)
-    
+
     return lab, file_name
-
-# def pedir_nombre_fichero():
-#     valido = False
-#     lab = None
-#     nombre_fichero = None
-#     while not valido:
-#         try:
-#             nombre_fichero = input("introduce el nombre del fichero con extensión .json:\n")
-#             lab = Labyrinth(nombre_fichero)
-#             valido = True
-#         except FileNotFoundError:
-#             print("\nNo se ha encontrado el archivo, vuelve a intentarlo\n")
-
-    # return lab, nombre_fichero
 
 def pedir_filas_columnas():
     rows_cols = []
