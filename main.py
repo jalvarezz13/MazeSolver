@@ -2,6 +2,8 @@ from Laberinto.Labyrinth import Labyrinth
 from Gestion_Json.GestionJson import GestionJson
 import Alg_Wilson.AlgoritmoWilson as AlgoritmoWilson
 import Ventana.Ventana as Ventana
+from tkinter import filedialog
+from tkinter import *
 import pygame
 import Cnfg
 import sys
@@ -14,19 +16,27 @@ def checkear_dirs():
     if not os.path.exists("JPGs"):
         os.mkdir("JPGs")
 
-def pedir_nombre_fichero():
-    valido = False
-    lab = None
-    nombre_fichero = None
-    while not valido:
-        try:
-            nombre_fichero = input("introduce el nombre del fichero con extensión .json:\n")
-            lab = Labyrinth(nombre_fichero)
-            valido = True
-        except FileNotFoundError:
-            print("\nNo se ha encontrado el archivo, vuelve a intentarlo\n")
+def open_file_dialog():
+    root = Tk()
+    root.withdraw()
+    ruta = os.getcwd()
+    file_name = filedialog.askopenfilename(initialdir = ruta)
+    lab = Labyrinth(file_name)
+    return lab, file_name
 
-    return lab, nombre_fichero
+# def pedir_nombre_fichero():
+#     valido = False
+#     lab = None
+#     nombre_fichero = None
+#     while not valido:
+#         try:
+#             nombre_fichero = input("introduce el nombre del fichero con extensión .json:\n")
+#             lab = Labyrinth(nombre_fichero)
+#             valido = True
+#         except FileNotFoundError:
+#             print("\nNo se ha encontrado el archivo, vuelve a intentarlo\n")
+
+    # return lab, nombre_fichero
 
 def pedir_filas_columnas():
     rows_cols = []
@@ -50,7 +60,7 @@ def menu_inicial():
             option = int(input(
                 "Elige una opción [1,2]:\n\t1. Elegir archivo existente\n\t2. Generar algoritmo automáticamente\n\n"))
             if option == 1:
-                lab, file_name = pedir_nombre_fichero()
+                lab, file_name = open_file_dialog()
                 lab.load_data(None)
                 dict_to_check = GestionJson.open_json_file(file_name)
                 GestionJson.check_json(dict_to_check)
