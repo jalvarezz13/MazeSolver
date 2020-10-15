@@ -10,19 +10,26 @@ import sys
 import os
 
 def pedir_filas_columnas():
-    rows_cols = []
-    valido = False
-    data = "fila"
-    while not valido and len(rows_cols) != 2:
-        try:
-            rows_cols.append(int(input("\nIntroduce el número de {0}: ".format(data))))
-            data = "columna"
-        except ValueError:
-            print("\nIntroduce un número válido\n")
-    # if(rows_cols <= [1,1]):
-    #     valido = False
-    #     print("Introduce unas filas y columnas mayores que 1")
-    return rows_cols
+    valido = True
+    valido2 = True
+    row = None
+    cols = None
+
+    while valido:
+        row = int(input("\nIntroduce el número de filas: "))
+        if(row <= 1):
+            print("ERROR: Introduce un número de filas mayor que 1\n")
+        else:
+            valido = False
+    
+    while valido2:
+        cols = int(input("\nIntroduce el número de columnas: "))
+        if(cols <= 1):
+            print("ERROR: Introduce un número de columnas mayor que 1")
+        else:
+            valido2 = False
+
+    return [row, cols]
 
 def open_file_dialog():
     root = tk.Tk()

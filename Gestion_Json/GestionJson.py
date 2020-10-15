@@ -34,20 +34,14 @@ class GestionJson:
         return dic_cell
         
     def leer_json(file_name): # REVISAR
-        try:
-            f = open(file_name, "r")
-        except FileNotFoundError:
-            file_name = "JSONs/" + file_name
-            f = open(file_name, "r")
-            content = f.read()
-            diccionario = json.loads(content)
+        f = open(file_name, "r")
         content = f.read()
         diccionario = json.loads(content)
 
         return diccionario
 
     def escribir_json(file_name, diccionario):
-        with open("JSONs/{0}".format(file_name), 'r+') as f:
+        with open(file_name, 'r+') as f:
             f.seek(0)
             f.write(json.dumps(diccionario))
             f.truncate()
@@ -55,7 +49,7 @@ class GestionJson:
     def cambiar_vecinos(camino, lista_movimientos, diccionario):
         movimiento = diccionario["mov"]
         posicion_vecino = None
-        file_name = "Laberinto_Wilson_B1_2_{0}x{1}.json".format(diccionario["rows"], diccionario["cols"])
+        file_name = "JSONs/Laberinto_Wilson_B1_2_{0}x{1}.json".format(diccionario["rows"], diccionario["cols"])
 
         diccionario = GestionJson.leer_json(file_name)
 
