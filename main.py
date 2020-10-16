@@ -37,7 +37,10 @@ def open_file_dialog():
     root.call('wm', 'attributes', '.', '-topmost', True)
     ruta = os.getcwd()
     file_name = filedialog.askopenfilename(initialdir = ruta)
-    lab = Labyrinth(file_name)
+    try:
+        lab = Labyrinth(file_name)
+    except FileNotFoundError:
+        sys.exit()
     print(file_name)
 
     return lab, file_name
