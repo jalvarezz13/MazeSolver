@@ -9,27 +9,37 @@ import Cnfg
 import sys
 import os
 
-def pedir_filas_columnas():
-    valido = True
-    valido2 = True
-    row = None
-    cols = None
+def pedir_filas():
+    valido = False
 
-    while valido:
-        row = int(input("\nIntroduce el número de filas: "))
-        if(row <= 1):
-            print("ERROR: Introduce un número de filas mayor que 1\n")
-        else:
-            valido = False
-    
-    while valido2:
-        cols = int(input("\nIntroduce el número de columnas: "))
-        if(cols <= 1):
-            print("ERROR: Introduce un número de columnas mayor que 1")
-        else:
-            valido2 = False
+    while not valido:
+        try:
+            row = int(input("\nIntroduce el número de filas: "))
+            if row > 1:
+                valido = True
+            else:
+                print("ERROR: Introduce un número de filas mayor que 1\n")
+        except ValueError:
+            print("ERROR: Introduce un caracter válido")
 
-    return [row, cols]
+    return row
+
+
+def pedir_colmnas():
+    valido = False
+
+    while not valido:
+        try:
+            cols = int(input("\nIntroduce el número de columnas: "))
+            if cols > 1:
+                valido = True
+            else:
+                print("ERROR: Introduce un número de columnas mayor que 1\n")
+        except ValueError:
+            print("ERROR: Introduce un caracter válido")
+
+    return cols
+
 
 def open_file_dialog():
     root = tk.Tk()
@@ -60,10 +70,11 @@ def menu_inicial():
                 GestionJson.check_json(dict_to_check)
                 valido = True
             elif option == 2:
-                rows_cols = pedir_filas_columnas()
-                lab = Labyrinth(None, rows_cols[0], rows_cols[1])
+                rows = pedir_filas()
+                cols = pedir_colmnas()
+                lab = Labyrinth(None, rows, cols)
                 lab.create_labyrinth()
-                json = GestionJson(rows_cols[0], rows_cols[1])
+                json = GestionJson(rows, cols)
                 dict_manual = GestionJson.get_data(json)
                 lab.load_data(dict_manual)
                 dict_manual = AlgoritmoWilson.algoritmo_wilson(lab, dict_manual)
