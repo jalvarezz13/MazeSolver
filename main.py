@@ -48,7 +48,12 @@ def open_file_dialog():
     ruta = os.getcwd()
     file_name = filedialog.askopenfilename(initialdir = ruta)
     try:
-        lab = Labyrinth(file_name)
+        try:
+            lab = Labyrinth(file_name)
+
+        except KeyError:
+            print("Existen inconsistencias en la estructura del JSON")
+            sys.exit()
     except FileNotFoundError:
         sys.exit()
     print(file_name)
@@ -65,9 +70,9 @@ def menu_inicial():
                 "Elige una opción [1,2]:\n\t1. Elegir archivo existente\n\t2. Generar algoritmo automáticamente\n\n"))
             if option == 1:
                 lab, file_name = open_file_dialog()
-                lab.load_data(None)
                 dict_to_check = GestionJson.leer_json(file_name)
                 GestionJson.check_json(dict_to_check)
+                lab.load_data(None)
                 valido = True
             elif option == 2:
                 rows = pedir_filas()

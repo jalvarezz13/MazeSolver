@@ -33,7 +33,7 @@ class GestionJson:
                 dic_cell["({0}, {1})".format(i, j)] = dic_data_cell
         return dic_cell
         
-    def leer_json(file_name): # REVISAR
+    def leer_json(file_name):
         f = open(file_name, "r")
         content = f.read()
         diccionario = json.loads(content)
@@ -74,29 +74,34 @@ class GestionJson:
 
     def check_json(diccionario):
         token = True
-        for n in range(0, diccionario["cols"]):            
-            if(diccionario["cells"]["(0, {0})".format(n)]["neighbors"][0] == True or 
-            diccionario["cells"]["({0}, {1})".format(diccionario["rows"]-1, n)]["neighbors"][2] == True):
-                token = False  
-        
-        for n in range(0, diccionario["rows"]):            
-            if( diccionario["cells"]["({0}, 0)".format(n)]["neighbors"][3] == True or 
-            diccionario["cells"]["({0}, {1})".format(n, diccionario["cols"]-1)]["neighbors"][1] == True):
-                token = False           
+        try:
+            for n in range(0, diccionario["cols"]):
+                if(diccionario["cells"]["(0, {0})".format(n)]["neighbors"][0] == True or
+                diccionario["cells"]["({0}, {1})".format(diccionario["rows"]-1, n)]["neighbors"][2] == True):
+                    token = False
 
-        for i in range(0, diccionario["rows"]):
-            for j in range(0, diccionario["cols"]):
-                celdaAux1 = diccionario["cells"]["({0}, {1})".format(i, j)]
-                for z in range(0, len(diccionario["mov"])):
-                    coordFila = i + diccionario["mov"][z][0]
-                    coordCol = j + diccionario["mov"][z][1]
-                    try:
-                        celdaAux2 = diccionario["cells"]["({0}, {1})".format(coordFila, coordCol)]
-                        if (celdaAux1["neighbors"][z] != celdaAux2["neighbors"][(z+2)%4]):
-                            print("Inconsistencia en la pared de la celda({0}, {1}) con la celda({2},{3})".format(i, j, coordFila, coordCol))
-                            token = False
-                    except KeyError:
-                        pass
+            for n in range(0, diccionario["rows"]):
+                if( diccionario["cells"]["({0}, 0)".format(n)]["neighbors"][3] == True or
+                diccionario["cells"]["({0}, {1})".format(n, diccionario["cols"]-1)]["neighbors"][1] == True):
+                    token = False
+
+            for i in range(0, diccionario["rows"]):
+                for j in range(0, diccionario["cols"]):
+                    celdaAux1 = diccionario["cells"]["({0}, {1})".format(i, j)]
+                    for z in range(0, len(diccionario["mov"])):
+                        coordFila = i + diccionario["mov"][z][0]
+                        coordCol = j + diccionario["mov"][z][1]
+                        try:
+                            celdaAux2 = diccionario["cells"]["({0}, {1})".format(coordFila, coordCol)]
+                            if (celdaAux1["neighbors"][z] != celdaAux2["neighbors"][(z+2)%4]):
+                                print("Inconsistencia en la pared de la celda({0}, {1}) con la celda({2},{3})".format(i, j, coordFila, coordCol))
+                                token = False
+                        except KeyError:
+                            pass
+
+        except KeyError:
+            token = False
+            print("JSON INCONSISTENTE")
 
         if(token == False):                       
             sys.exit()        
