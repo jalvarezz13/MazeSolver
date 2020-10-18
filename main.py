@@ -46,16 +46,17 @@ def open_file_dialog():
     root.withdraw()
     root.call('wm', 'attributes', '.', '-topmost', True)
     ruta = os.getcwd()
-    file_name = filedialog.askopenfilename(initialdir = ruta)
+    file_name = filedialog.askopenfilename(initialdir=ruta, filetypes={("json files", "*.json")})
     try:
-        try:
-            lab = Labyrinth(file_name)
+        lab = Labyrinth(file_name)
 
-        except KeyError:
-            print("Existen inconsistencias en la estructura del JSON")
-            sys.exit()
+    except KeyError:
+        print("Existen inconsistencias en la estructura del JSON")
+        sys.exit()
+
     except FileNotFoundError:
         sys.exit()
+
     print(file_name)
 
     return lab, file_name
