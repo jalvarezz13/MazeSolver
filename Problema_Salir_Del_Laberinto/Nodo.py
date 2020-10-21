@@ -1,5 +1,5 @@
 class Nodo:
-    
+
     def __init__(self, id, costoAcumulado, estado, padre, accion, heuristica, estrategia):
         self.__id = id
         self.__nodoPadre = padre
@@ -40,3 +40,6 @@ class Nodo:
 
     def getValor(self):
         return self.__valor
+
+    def generarSucesores(diccionario):
+        return True # CREAR
