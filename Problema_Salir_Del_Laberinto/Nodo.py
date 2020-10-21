@@ -1,4 +1,5 @@
 class Nodo:
+    
     def __init__(self, id, costoAcumulado, estado, padre, accion, heuristica, estrategia):
         self.__id = id
         self.__nodoPadre = padre
