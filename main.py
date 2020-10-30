@@ -1,6 +1,8 @@
+from numpy.lib.twodim_base import triu_indices_from
 from Laberinto.Labyrinth import Labyrinth
 from Gestion_Json.GestionJson import GestionJson
 from Alg_Wilson.AlgoritmoWilson import AlgoritmoWilson
+from Problema_Salir_Del_Laberinto.Nodo import Nodo
 from Ventana.Ventana import Ventana
 from tkinter import filedialog
 import tkinter as tk
@@ -8,6 +10,7 @@ import pygame
 import Cnfg
 import sys
 import os
+
 
 def pedir_filas():
     valido = False
@@ -46,7 +49,8 @@ def open_file_dialog():
     root.withdraw()
     root.call('wm', 'attributes', '.', '-topmost', True)
     ruta = os.getcwd()
-    file_name = filedialog.askopenfilename(initialdir=ruta, filetypes={("json files", "*.json")})
+    file_name = filedialog.askopenfilename(
+        initialdir=ruta, filetypes={("json files", "*.json")})
     try:
         lab = Labyrinth(file_name)
 
@@ -60,6 +64,24 @@ def open_file_dialog():
     print(file_name)
 
     return lab, file_name
+
+
+def elegirEstrategia():
+    valido = False
+    option = 0
+    while not valido:
+        try:
+            option = int(input(
+                "Elige la estrategia [1,2,3,4,5]:\n\t1. Profundidad\n\t2. Anchura\n\t3. Voraz\n\t4. Costo uniforme\n\t5. A*\n\n"))
+            if option >= 1 and option <= 5:
+                valido = True
+            else:
+                print("Intruduce un valor válido [1, 2, 3, 4, 5]\n")
+        except ValueError:
+            print("Intruduce un valor válido [1, 2, 3, 4, 5]\n")
+
+    return option
+
 
 def menu_inicial():
     valido = False
@@ -83,7 +105,8 @@ def menu_inicial():
                 json = GestionJson(rows, cols)
                 dict_manual = GestionJson.get_data(json)
                 lab.load_data(dict_manual)
-                dict_manual = AlgoritmoWilson.algoritmo_wilson(lab, dict_manual)
+                dict_manual = AlgoritmoWilson.algoritmo_wilson(
+                    lab, dict_manual)
                 lab.load_data(dict_manual)
                 valido = True
             else:
@@ -93,6 +116,7 @@ def menu_inicial():
 
     return [lab, dict_manual]
 
+
 def checkear_dirs():
     if not os.path.exists("JSONs"):
         os.mkdir("JSONs")
@@ -100,21 +124,32 @@ def checkear_dirs():
     if not os.path.exists("JPGs"):
         os.mkdir("JPGs")
 
+
 def main():
     checkear_dirs()
     lab, dict_data_manual = menu_inicial()
     screen = Ventana.inicializar_ventana(lab)
+    token = True
 
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 name = "Laberinto_B1_2_" + str(lab.get_rows()) + "x" + str(lab.get_cols()) + ".jpg"
                 pygame.image.save(screen, "JPGs/{0}".format(name))
-                sys.exit()
+                token = False
+                pygame.quit()
+                break
+
+        if not token:
+            break
 
         screen.fill(Cnfg.WHITE)
         Ventana.dibujar(screen, lab)
         pygame.display.update()
+
+    elegirEstrategia()
+    Nodo.generarSucesores(dict_data_manual, lab)
+
 
 if __name__ == '__main__':
     main()
