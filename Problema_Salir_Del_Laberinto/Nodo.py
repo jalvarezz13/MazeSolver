@@ -1,3 +1,5 @@
+from Laberinto.Labyrinth import Labyrinth
+
 class Nodo:
 
     def __init__(self, id, costoAcumulado, estado, padre, accion, heuristica, estrategia):
@@ -50,9 +52,17 @@ class Nodo:
     def getValor(self):
         return self.__valor
 
-    def generarSucesores(diccionario, matriz):
-        print(diccionario)
-        print("\n--------------------------------------------\n")
-        print(matriz)
-        # file = open("sucesors_{0}X{1}_funcion.txt".format())
-        # return True # CREAR
+    def generarSucesores(diccionario):
+        file = open("SUCESORs/sucesors_{0}X{1}_funcion.txt".format(diccionario["rows"], diccionario["cols"]), "w")
+        sucesores = ""
+
+        for i in range(0, diccionario["rows"]):
+            for j in range(0, diccionario["cols"]):
+                for z in range(0, 4):
+                    if diccionario["cells"]["({0}, {1})".format(i, j)]["neighbors"][z]:
+                        coordFila = i + diccionario["mov"][z][0]
+                        coordCol = j + diccionario["mov"][z][1]
+                        sucesores = sucesores + "NODO " + "({0}, {1})".format(i, j) + ": " +str([diccionario["id_mov"][z], "({0}, {1})".format(coordFila, coordCol), 1]) + "\n"
+        
+        file.write(sucesores)
+        

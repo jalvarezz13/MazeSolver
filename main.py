@@ -1,4 +1,3 @@
-from numpy.lib.twodim_base import triu_indices_from
 from Laberinto.Labyrinth import Labyrinth
 from Gestion_Json.GestionJson import GestionJson
 from Alg_Wilson.AlgoritmoWilson import AlgoritmoWilson
@@ -93,8 +92,8 @@ def menu_inicial():
                 "Elige una opción [1,2]:\n\t1. Elegir archivo existente\n\t2. Generar algoritmo automáticamente\n\n"))
             if option == 1:
                 lab, file_name = open_file_dialog()
-                dict_to_check = GestionJson.leer_json(file_name)
-                GestionJson.check_json(dict_to_check)
+                dict_manual = GestionJson.leer_json(file_name)
+                GestionJson.check_json(dict_manual)
                 lab.load_data(None)
                 valido = True
             elif option == 2:
@@ -148,7 +147,7 @@ def main():
         pygame.display.update()
 
     elegirEstrategia()
-    Nodo.generarSucesores(dict_data_manual, lab)
+    Nodo.generarSucesores(dict_data_manual)
 
 
 if __name__ == '__main__':
