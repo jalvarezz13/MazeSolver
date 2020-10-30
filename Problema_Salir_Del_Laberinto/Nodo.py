@@ -18,7 +18,16 @@ class Nodo:
         self.__valor = self.generarValor(estrategia)
 
     def generarValor(self, estrategia):
-        return True  # Modificará la variable valor
+        if estrategia == 1:  # Profundidad
+            self.__valor = 1/(self.__profundidad+1)
+        elif estrategia == 2: # Anchura
+            self.__valor = self.__profundidad
+        elif estrategia == 3: # Voraz
+            self.__valor = self.__heuristica
+        elif estrategia == 4: # Costo uniforme
+            self.__valor = self.__costoAcumulado
+        else:   # A*
+            self.__valor = self.__costoAcumulado + self.__heuristica
 
     def getIdNodo(self):
         return self.__id
@@ -41,5 +50,9 @@ class Nodo:
     def getValor(self):
         return self.__valor
 
-    def generarSucesores(diccionario):
-        return True # CREAR
+    def generarSucesores(diccionario, matriz):
+        print(diccionario)
+        print("\n--------------------------------------------\n")
+        print(matriz)
+        # file = open("sucesors_{0}X{1}_funcion.txt".format())
+        # return True # CREAR

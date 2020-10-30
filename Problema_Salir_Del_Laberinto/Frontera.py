@@ -8,9 +8,9 @@ class Frontera:
 
     def insertar(self,nodoArbol):
         self.__listaFrontera.append(nodoArbol)
-        self.__listaFrontera=sorted(self.__listaFrontera, key= lambda Nodo: Nodo.getValor()) # Revisar KEY
-
-    def elimina(self):
+        self.__listaFrontera.sort(self.__listaFrontera, key= lambda Nodo: (Nodo.getValor(), Nodo.getIdNodo())) # Revisar KEY
+    
+    def elimina(self): # Devuelve y elimina el  nodo con menos valor
         return self.__listaFrontera.pop(0)
 
     def esVacia(self):
