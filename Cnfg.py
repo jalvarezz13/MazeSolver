@@ -1,6 +1,6 @@
 # DIMENSIONES VENTANA
-ancho = 800
-alto = 800
+ancho = 600
+alto = 600
 
 # COLORES
 WHITE = (255, 255, 255)

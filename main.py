@@ -1,7 +1,10 @@
+import random
+
 from Laberinto.Labyrinth import Labyrinth
 from Gestion_Json.GestionJson import GestionJson
+from Problema_Salir_Del_Laberinto.Problema import Problema
 from Alg_Wilson.AlgoritmoWilson import AlgoritmoWilson
-from Problema_Salir_Del_Laberinto.Nodo import Nodo
+from Gestion_Json.ProblemaJson import ProblemaJson
 from Ventana.Ventana import Ventana
 from tkinter import filedialog
 import tkinter as tk
@@ -123,6 +126,16 @@ def checkear_dirs():
     if not os.path.exists("JPGs"):
         os.mkdir("JPGs")
 
+    if not os.path.exists("SUCESORs"):
+        os.mkdir("SUCESORs")
+
+    if not os.path.exists("JSONs/PROBLEMAs"):
+        os.mkdir("JSONs/PROBLEMAs")
+
+def generar_celda_random(lab):
+    x = random.randrange(0, lab.get_cols())
+    y = random.randrange(0, lab.get_cols())
+    return "({0}, {1})".format(x, y)
 
 def main():
     checkear_dirs()
@@ -147,7 +160,9 @@ def main():
         pygame.display.update()
 
     elegirEstrategia()
-    Nodo.generarSucesores(dict_data_manual)
+
+    Problema.generarSucesores(dict_data_manual)
+    ProblemaJson(generar_celda_random(lab), generar_celda_random(lab), name)
 
 
 if __name__ == '__main__':
