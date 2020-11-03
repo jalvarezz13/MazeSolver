@@ -1,5 +1,3 @@
-import random
-
 from Laberinto.Labyrinth import Labyrinth
 from Gestion_Json.GestionJson import GestionJson
 from Problema_Salir_Del_Laberinto.Problema import Problema
@@ -8,6 +6,7 @@ from Gestion_Json.ProblemaJson import ProblemaJson
 from Ventana.Ventana import Ventana
 from tkinter import filedialog
 import tkinter as tk
+import random
 import pygame
 import Cnfg
 import sys
