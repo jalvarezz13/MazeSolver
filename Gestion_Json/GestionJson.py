@@ -16,7 +16,7 @@ class GestionJson:
         file_name = "Laberinto_Wilson_B1_2_{0}x{1}.json".format(self.rows, self.cols)
 
         with open(os.path.join("{0}/JSONs".format(os.getcwd()), file_name), 'w') as file:
-            json.dump(data, file)
+            json.dump(data, file, indent=4)
         
         self.data = data
 
@@ -43,7 +43,7 @@ class GestionJson:
     def escribir_json(file_name, diccionario):
         with open(file_name, 'r+') as f:
             f.seek(0)
-            f.write(json.dumps(diccionario))
+            f.write(json.dumps(diccionario, indent=4))
             f.truncate()
         
     def cambiar_vecinos(camino, lista_movimientos, diccionario):
