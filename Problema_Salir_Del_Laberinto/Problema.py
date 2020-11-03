@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 from Gestion_Json.ProblemaJson import ProblemaJson
 
+=======
+>>>>>>> origin/master
 class Problema:
     def generarSucesores(diccionario):
         file = open("SUCESORs/sucesors_{0}X{1}_funcion.txt".format(diccionario["rows"], diccionario["cols"]), "w")
