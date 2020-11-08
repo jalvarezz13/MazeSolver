@@ -1,6 +1,6 @@
 class Estado:
-    def __init__(self, fila, columna, mov, costeMovimiento):
-        self.__id = (self.fila, self.columna)
+    def __init__(self, fila, columna):
+        self.__id = (fila, columna)
 
     def getId(self):
         return self.__id

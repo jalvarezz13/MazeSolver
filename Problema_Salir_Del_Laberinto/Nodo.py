@@ -38,6 +38,9 @@ class Nodo:
     def getAccion(self):
         return self.__accion
 
+    def getEstado(self):
+        return self.__estado
+
     def getHeuristica(self):
         return self.__heuristica
 
@@ -49,4 +52,25 @@ class Nodo:
 
     def getValor(self):
         return self.__valor
+
+    def generarSucesores(self, diccionario):
+        file = open("SUCESORs/sucesors_{0}X{1}_funcion.txt".format(diccionario["rows"], diccionario["cols"]), "w")
+        sucesores = ""
+        tupla = []
+        estado=self.getEstado()
+
+        i=estado.getId()[0]
+        j=estado.getId()[1]
+
+        sucesores = "SUC(" + "({0}, {1})".format(i, j) + ")="
+
+        for z in range(0, 4):
+            if diccionario["cells"]["({0}, {1})".format(i, j)]["neighbors"][z]:
+                coordFila = i + diccionario["mov"][z][0]
+                coordCol = j + diccionario["mov"][z][1]
+                tupla.append((diccionario["id_mov"][z], "({0}, {1})".format(coordFila, coordCol), 1))
+        sucesores += str(tupla) + "\n"
+
+        file.write(sucesores)
+
         

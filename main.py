@@ -1,6 +1,7 @@
 from Laberinto.Labyrinth import Labyrinth
 from Gestion_Json.GestionJson import GestionJson
-from Problema_Salir_Del_Laberinto.Problema import Problema
+from Problema_Salir_Del_Laberinto.Nodo import Nodo
+from Problema_Salir_Del_Laberinto.Estado import Estado
 from Alg_Wilson.AlgoritmoWilson import AlgoritmoWilson
 from Gestion_Json.ProblemaJson import ProblemaJson
 from Ventana.Ventana import Ventana
@@ -160,9 +161,13 @@ def main():
 
     elegirEstrategia()
 
-    Problema.generarSucesores(dict_data_manual)
-    ProblemaJson(generar_celda_random(lab), generar_celda_random(lab), name)
 
+    estado = Estado(0, 1)
+    nodo = Nodo(0, 0, estado, None, 1, 1, 1)
+
+    nodo.generarSucesores(dict_data_manual)
+    ProblemaJson(generar_celda_random(lab), generar_celda_random(lab), name)
+    
 
 if __name__ == '__main__':
     main()
