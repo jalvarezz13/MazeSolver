@@ -173,7 +173,7 @@ def main():
         nodo = Nodo(0, 0, estado, None, 1, 1, random.randrange(1,5))
         nodo.generarSucesores(dict_data_manual)
 
-        frontera1.insertar(nodo, estado)
+        frontera1.insertar(nodo)
 
     iterable = frontera1.getFrontera()
 
