@@ -77,8 +77,9 @@ class Nodo:
 
     def toString(self):
         if self.getPadre() is None:
-            return f"[{self.getIdNodo()}][{self.getCosto()}][{self.getEstado().getId()}][{self.getPadre()}][{self.getAccion()}][{self.getProfundidad()}][{self.getHeuristica()}][{self.getValor()}]"
+            return (self.getIdNodo(), self.getCosto(), self.getEstado().getId(), self.getPadre(), self.getAccion(),
+                    self.getProfundidad(), self.getHeuristica(), self.getValor())
         else:
-            return f"[{self.getIdNodo()}][{self.getCosto()}][{self.getEstado().getId()}][{self.getPadre()}][{self.getAccion()}][{self.getProfundidad()}][{self.getHeuristica()}][{self.getValor()}]"
-
+            return (self.getIdNodo(), self.getCosto(), self.getEstado().getId(), self.getPadre(), self.getAccion(),
+                    self.getProfundidad(), self.getHeuristica(), self.getValor())
         

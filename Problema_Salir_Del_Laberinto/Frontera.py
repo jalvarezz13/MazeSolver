@@ -7,14 +7,11 @@ class Frontera:
         self.__listaFrontera = self.CreaFrontera()
 
     def insertar(self, nodoArbol, estado):
-        self.__listaFrontera.append(nodoArbol)
-        print("({0}, {1})".format(estado.getId()[0], estado.getId()[1]))
+        self.__listaFrontera.append(nodoArbol.toString())
+        id = (estado.getId()[0], estado.getId()[1])
+        idToString = [nodoArbol.getValor(), id]
 
-        def sort_key():
-            return [nodoArbol.getValor(), estado.getId()[0], estado.getId()[1]]
-
-        self.__listaFrontera.sort(key = lambda Nodo: nodoArbol.getValor())
-        self.__listaFrontera.sort(key=lambda Estado: (estado.getId()[0], estado.getId()[1]))
+        self.__listaFrontera.sort(key=lambda id: (0, id[0], id[1]))
 
     def elimina(self):  # Devuelve y elimina el  nodo con menos valor
         return self.__listaFrontera.pop(0)

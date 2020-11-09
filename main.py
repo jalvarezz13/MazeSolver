@@ -166,20 +166,24 @@ def main():
     celda_inicio = f"({0}, {1})".format(generar_celda_random(lab)[0], generar_celda_random(lab)[1])
     ProblemaJson(celda_inicio, celda_inicio, name)
 
-    frontera = Frontera()
+    frontera1 = Frontera()
+    frontera = []
 
     for i in range(10):
-
         estado = Estado(generar_celda_random(lab)[0], generar_celda_random(lab)[1])
-        nodo = Nodo(0, 0, estado, None, 1, 1, 1)
-
+        nodo = Nodo(0, 0, estado, None, 1, 1, random.randrange(1,5))
         nodo.generarSucesores(dict_data_manual)
 
-        frontera.insertar(nodo, estado)
+        id = (estado.getId()[0], estado.getId()[1])
+        idToString = [nodo.getValor(), id]
+        frontera.append(idToString)
+        frontera.sort(key=lambda id: (id[0], id[1]))
+        #frontera1.insertar(nodo, estado)
 
-    iterable = frontera.getFrontera()
-    for nodo in iterable:
-        print(nodo.toString())
+    #iterable = frontera1.getFrontera()
+
+    for nodo in frontera:
+        print(nodo)
     
 
 if __name__ == '__main__':
