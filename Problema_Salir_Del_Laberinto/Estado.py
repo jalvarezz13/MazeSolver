@@ -4,3 +4,4 @@ class Estado:
 
     def getId(self):
         return self.__id
+

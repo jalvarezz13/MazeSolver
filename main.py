@@ -2,6 +2,7 @@ from Laberinto.Labyrinth import Labyrinth
 from Gestion_Json.GestionJson import GestionJson
 from Problema_Salir_Del_Laberinto.Nodo import Nodo
 from Problema_Salir_Del_Laberinto.Estado import Estado
+from Problema_Salir_Del_Laberinto.Frontera import Frontera
 from Alg_Wilson.AlgoritmoWilson import AlgoritmoWilson
 from Gestion_Json.ProblemaJson import ProblemaJson
 from Ventana.Ventana import Ventana
@@ -133,9 +134,10 @@ def checkear_dirs():
         os.mkdir("JSONs/PROBLEMAs")
 
 def generar_celda_random(lab):
-    x = random.randrange(0, lab.get_cols())
-    y = random.randrange(0, lab.get_cols())
-    return "({0}, {1})".format(x, y)
+    array = []
+    array.append(random.randrange(0, lab.get_rows()))
+    array.append(random.randrange(0, lab.get_cols()))
+    return array
 
 def main():
     checkear_dirs()
@@ -161,12 +163,23 @@ def main():
 
     elegirEstrategia()
 
+    celda_inicio = f"({0}, {1})".format(generar_celda_random(lab)[0], generar_celda_random(lab)[1])
+    ProblemaJson(celda_inicio, celda_inicio, name)
 
-    estado = Estado(0, 1)
-    nodo = Nodo(0, 0, estado, None, 1, 1, 1)
+    frontera = Frontera()
 
-    nodo.generarSucesores(dict_data_manual)
-    ProblemaJson(generar_celda_random(lab), generar_celda_random(lab), name)
+    for i in range(10):
+
+        estado = Estado(generar_celda_random(lab)[0], generar_celda_random(lab)[1])
+        nodo = Nodo(0, 0, estado, None, 1, 1, 1)
+
+        nodo.generarSucesores(dict_data_manual)
+
+        frontera.insertar(nodo, estado)
+
+    iterable = frontera.getFrontera()
+    for nodo in iterable:
+        print(nodo.toString())
     
 
 if __name__ == '__main__':

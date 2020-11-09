@@ -29,6 +29,8 @@ class Nodo:
         else:   # A*
             self.__valor = self.__costoAcumulado + self.__heuristica
 
+        return self.__valor
+
     def getIdNodo(self):
         return self.__id
 
@@ -72,5 +74,11 @@ class Nodo:
         sucesores += str(tupla) + "\n"
 
         file.write(sucesores)
+
+    def toString(self):
+        if self.getPadre() is None:
+            return f"[{self.getIdNodo()}][{self.getCosto()}][{self.getEstado().getId()}][{self.getPadre()}][{self.getAccion()}][{self.getProfundidad()}][{self.getHeuristica()}][{self.getValor()}]"
+        else:
+            return f"[{self.getIdNodo()}][{self.getCosto()}][{self.getEstado().getId()}][{self.getPadre()}][{self.getAccion()}][{self.getProfundidad()}][{self.getHeuristica()}][{self.getValor()}]"
 
         
