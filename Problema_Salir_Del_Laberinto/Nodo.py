@@ -56,7 +56,7 @@ class Nodo:
         return self.__valor
 
     def generarSucesores(self, diccionario):
-        file = open("SUCESORs/sucesors_{0}X{1}_funcion.txt".format(diccionario["rows"], diccionario["cols"]), "w")
+        file = open("SUCESORs/sucesors_{0}X{1}_funcion.txt".format(diccionario["rows"], diccionario["cols"]), "a")
         sucesores = ""
         tupla = []
         estado=self.getEstado()
