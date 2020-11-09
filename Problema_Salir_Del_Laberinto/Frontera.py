@@ -11,9 +11,10 @@ class Frontera:
         print("({0}, {1})".format(estado.getId()[0], estado.getId()[1]))
 
         def sort_key():
-            return tuple(nodoArbol.getValor(), estado.getId()[0], estado.getId()[1])
+            return [nodoArbol.getValor(), estado.getId()[0], estado.getId()[1]]
 
-        self.__listaFrontera.sort(key=sort_key())
+        self.__listaFrontera.sort(key = lambda Nodo: nodoArbol.getValor())
+        self.__listaFrontera.sort(key=lambda Estado: (estado.getId()[0], estado.getId()[1]))
 
     def elimina(self):  # Devuelve y elimina el  nodo con menos valor
         return self.__listaFrontera.pop(0)
