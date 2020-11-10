@@ -22,11 +22,11 @@ class Nodo:
     def generarValor(self, estrategia):
         if estrategia == 1:  # Profundidad
             self.__valor = 1/(self.__profundidad+1)
-        elif estrategia == 2: # Anchura
+        elif estrategia == 2:  # Anchura
             self.__valor = self.__profundidad
-        elif estrategia == 3: # Voraz
+        elif estrategia == 3:  # Voraz
             self.__valor = self.__heuristica
-        elif estrategia == 4: # Costo uniforme
+        elif estrategia == 4:  # Costo uniforme
             self.__valor = self.__costoAcumulado
         else:   # A*
             self.__valor = self.__costoAcumulado + self.__heuristica
@@ -58,13 +58,14 @@ class Nodo:
         return self.__valor
 
     def generarSucesores(self, diccionario, frontera):
-        file = open("SUCESORs/sucesors_{0}X{1}_funcion.txt".format(diccionario["rows"], diccionario["cols"]), "a")
+        file = open("SUCESORs/sucesors_{0}X{1}_funcion.txt".format(
+            diccionario["rows"], diccionario["cols"]), "a")
         sucesores = ""
         tupla = []
-        estado= self.getEstado()
+        estado = self.getEstado()
 
-        i=estado.getId()[0]
-        j=estado.getId()[1]
+        i = estado.getId()[0]
+        j = estado.getId()[1]
 
         sucesores = "SUC(" + "({0}, {1})".format(i, j) + ")="
 
@@ -82,10 +83,5 @@ class Nodo:
         file.write(sucesores)
 
     def toString(self):
-        if self.getPadre() is None:
-            return (self.getIdNodo(), self.getCosto(), self.getEstado().getId(), self.getPadre(), self.getAccion(),
-                    self.getProfundidad(), self.getHeuristica(), self.getValor())
-        else:
-            return (self.getIdNodo(), self.getCosto(), self.getEstado().getId(), self.getPadre(), self.getAccion(),
-                    self.getProfundidad(), self.getHeuristica(), self.getValor())
-        
+        return (self.getIdNodo(), self.getCosto(), self.getEstado().getId(), self.getPadre(), self.getAccion(),
+                self.getProfundidad(), self.getHeuristica(), self.getValor())
