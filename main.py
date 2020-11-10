@@ -109,6 +109,10 @@ def menu_inicial():
                 GestionJson.check_json(dict_manual)
                 lab.load_data(None)
                 valido = True
+                guardarJpg(lab)
+                if preguntarResolver():
+                    elegirEstrategia()
+
             elif option == 2:
                 rows = pedir_filas()
                 cols = pedir_colmnas()
@@ -118,10 +122,13 @@ def menu_inicial():
                 dict_manual = GestionJson.get_data(json)
 
                 lab.load_data(dict_manual)
-                dict_manual = AlgoritmoWilson.algoritmo_wilson(
-                    lab, dict_manual)
+                dict_manual = AlgoritmoWilson.algoritmo_wilson(lab, dict_manual)
                 lab.load_data(dict_manual)
                 valido = True
+                guardarJpg(lab)
+                if preguntarResolver():
+                    elegirEstrategia()
+
             elif option == 3:
                 file_name_problema = open_file_dialog(True)
                 celda_inicial, celda_objetivo, file_name = LeerProblema.getData(file_name_problema)
@@ -142,21 +149,24 @@ def menu_inicial():
         except ValueError:
             print("Intruduce un valor válido [1, 2, 3]\n")
 
-    return [option, lab, dict_manual, file_name]
+    return [lab, dict_manual, file_name]
 
 
 def checkear_dirs():
-    if not os.path.exists("JSONs"):
-        os.mkdir("JSONs")
+    if not os.path.exists("Recursos"):
+        os.mkdir("Recursos")
 
-    if not os.path.exists("JPGs"):
-        os.mkdir("JPGs")
+    if not os.path.exists("Recursos/JSONs"):
+        os.mkdir("Recursos/JSONs")
+
+    if not os.path.exists("Recursos/JPGs"):
+        os.mkdir("Recursos/JPGs")
 
     if not os.path.exists("SUCESORs"):
         os.mkdir("SUCESORs")
 
-    if not os.path.exists("JSONs/PROBLEMAs"):
-        os.mkdir("JSONs/PROBLEMAs")
+    if not os.path.exists("Recursos/JSONs/PROBLEMAs"):
+        os.mkdir("Recursos/JSONs/PROBLEMAs")
 
 def generar_celda_random(lab):
     array = []
@@ -179,32 +189,31 @@ def preguntarResolver():
             print("Introduce datos válidos (Y/N)")
 
 
+def guardarJpg(lab):
+    screen = Ventana.inicializar_ventana(lab)
+    token = True
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                name = "Laberinto_B1_2_" + str(lab.get_rows()) + "x" + str(lab.get_cols()) + ".jpg"
+                pygame.image.save(screen, "Recursos/JPGs/{0}".format(name))
+                token = False
+                pygame.quit()
+                break
+
+        if not token:
+            break
+
+        screen.fill(Cnfg.WHITE)
+        Ventana.dibujar(screen, lab)
+        pygame.display.update()
+
 
 def main():
     checkear_dirs()
-    opcion, lab, dict_data_manual, name_fichero = menu_inicial()
-    if opcion == 1 or opcion == 2:
-        screen = Ventana.inicializar_ventana(lab)
-        token = True
+    lab, dict_data_manual, name_fichero = menu_inicial()
 
-        while True:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    name = "Laberinto_B1_2_" + str(lab.get_rows()) + "x" + str(lab.get_cols()) + ".jpg"
-                    pygame.image.save(screen, "JPGs/{0}".format(name))
-                    token = False
-                    pygame.quit()
-                    break
-
-            if not token:
-                break
-
-            screen.fill(Cnfg.WHITE)
-            Ventana.dibujar(screen, lab)
-            pygame.display.update()
-
-        if preguntarResolver():
-            elegirEstrategia()
 
     # celda_inicio = generar_celda_random(lab)
     # celda_fin = generar_celda_random(lab)
