@@ -1,5 +1,4 @@
-# import Frontera
-import random
+from Problema_Salir_Del_Laberinto.Estado import Estado
 
 class Nodo:
 
@@ -62,7 +61,7 @@ class Nodo:
         file = open("SUCESORs/sucesors_{0}X{1}_funcion.txt".format(diccionario["rows"], diccionario["cols"]), "a")
         sucesores = ""
         tupla = []
-        estado=self.getEstado()
+        estado= self.getEstado()
 
         i=estado.getId()[0]
         j=estado.getId()[1]
@@ -74,7 +73,8 @@ class Nodo:
             if diccionario["cells"]["({0}, {1})".format(i, j)]["neighbors"][z]:
                 coordFila = i + diccionario["mov"][z][0]
                 coordCol = j + diccionario["mov"][z][1]
-                nodo = Nodo(0, 0, estado, self.getEstado(), 1, 1, random.randrange(1,5))
+                estado = Estado(coordFila, coordCol)
+                nodo = Nodo(0, 0, estado, self, 1, 1, 0)
                 frontera.insertar(nodo)
                 tupla.append((diccionario["id_mov"][z], "({0}, {1})".format(coordFila, coordCol), 1))
         sucesores += str(tupla) + "\n"

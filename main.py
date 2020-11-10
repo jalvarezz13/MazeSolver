@@ -225,9 +225,10 @@ def main():
 
     frontera1 = Frontera()
     
-    for i in range(10):
-        estado = Estado(generar_celda_random(lab)[0], generar_celda_random(lab)[1])
-        nodo = Nodo(0, 0, estado, None, 1, 1, random.randrange(1,5))
+    for i in range(5):
+        celda = generar_celda_random(lab)
+        estado = Estado(celda[0], celda[1])
+        nodo = Nodo(0, 0, estado, None, 1, 1, 0)
         frontera1.insertar(nodo)
         nodo.generarSucesores(dict_data_manual, frontera1)
 
