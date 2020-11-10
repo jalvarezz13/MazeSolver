@@ -103,5 +103,4 @@ class AlgoritmoWilson:
         celda_final.set_visited(True)
         print("Generando laberinto...")
         camino, lista_movimientos, diccionario = AlgoritmoWilson.generar_laberinto(lab, matriz_laberinto, diccionario)
-
         return diccionario

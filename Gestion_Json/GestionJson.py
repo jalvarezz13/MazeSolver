@@ -1,6 +1,7 @@
 import os
 import json
 import sys
+import random
 
 class GestionJson:
     def __init__(self, rows, cols):
@@ -28,7 +29,7 @@ class GestionJson:
         dic_data_cell = {}
         for i in range(0, self.rows):
             for j in range(0, self.cols):
-                dic_data_cell["value"] = 0
+                dic_data_cell["value"] = random.randrange(0, 4)
                 dic_data_cell["neighbors"] = [False, False, False, False]
                 dic_cell["({0}, {1})".format(i, j)] = dic_data_cell
         return dic_cell
