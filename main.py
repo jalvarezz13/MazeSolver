@@ -168,15 +168,15 @@ def generar_celda_random(lab):
 def preguntarResolver():
     valido = False
     while not valido:
-        opcion = input("¿Quieres resolver el laberinto? (si/no)")
-        if opcion.lower() == "si":
+        opcion = input("¿Quieres resolver el laberinto? (Y/N)")
+        if opcion.lower() == "y" or opcion == "":
             valido == True
             return True
-        elif opcion.lower() == "no":
+        elif opcion.lower() == "n":
             valido == True
             return False
         else:
-            print("Introduce datos válidos (si/no)")
+            print("Introduce datos válidos (Y/N)")
 
 
 

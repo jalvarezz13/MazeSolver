@@ -27,6 +27,7 @@ class GestionJson:
     def crear_celdas(self):
         dic_cell = {}
         dic_data_cell = {}
+        random.seed(os.time())
         for i in range(0, self.rows):
             for j in range(0, self.cols):
                 dic_data_cell["value"] = random.randrange(0, 4)
