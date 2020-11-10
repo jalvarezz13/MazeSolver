@@ -1,3 +1,6 @@
+# import Frontera
+import random
+
 class Nodo:
 
     def __init__(self, id, costoAcumulado, estado, padre, accion, heuristica, estrategia):
@@ -55,7 +58,7 @@ class Nodo:
     def getValor(self):
         return self.__valor
 
-    def generarSucesores(self, diccionario):
+    def generarSucesores(self, diccionario, frontera):
         file = open("SUCESORs/sucesors_{0}X{1}_funcion.txt".format(diccionario["rows"], diccionario["cols"]), "a")
         sucesores = ""
         tupla = []
@@ -67,9 +70,12 @@ class Nodo:
         sucesores = "SUC(" + "({0}, {1})".format(i, j) + ")="
 
         for z in range(0, 4):
+            nodo = None
             if diccionario["cells"]["({0}, {1})".format(i, j)]["neighbors"][z]:
                 coordFila = i + diccionario["mov"][z][0]
                 coordCol = j + diccionario["mov"][z][1]
+                nodo = Nodo(0, 0, estado, self.getEstado(), 1, 1, random.randrange(1,5))
+                frontera.insertar(nodo)
                 tupla.append((diccionario["id_mov"][z], "({0}, {1})".format(coordFila, coordCol), 1))
         sucesores += str(tupla) + "\n"
 

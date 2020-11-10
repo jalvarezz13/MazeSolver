@@ -206,36 +206,33 @@ def main():
         if preguntarResolver():
             elegirEstrategia()
 
-    celda_inicio = generar_celda_random(lab)
-    celda_fin = generar_celda_random(lab)
+    # celda_inicio = generar_celda_random(lab)
+    # celda_fin = generar_celda_random(lab)
 
-    if name_fichero is None:
-        name_fichero = "Laberinto_Wilson_B1_2_{0}x{1}.json".format(dict_data_manual["rows"], dict_data_manual["cols"])
-    else:
-        dir = name_fichero.split("/")
-        name_fichero = dir[len(dir) - 1]
-    print("--------------------------")
+    # if name_fichero is None:
+    #     name_fichero = "Laberinto_Wilson_B1_2_{0}x{1}.json".format(dict_data_manual["rows"], dict_data_manual["cols"])
+    # else:
+    #     dir = name_fichero.split("/")
+    #     name_fichero = dir[len(dir) - 1]
+    # print("--------------------------")
 
-    ProblemaJson(celda_inicio, celda_fin, name_fichero)
+    # ProblemaJson(celda_inicio, celda_fin, name_fichero)
 
-    for nombre_directorio, dirs, ficheros in os.walk(os.getcwd()):
-        for nombre_fichero in ficheros:
-            if nombre_fichero == name_fichero:
-                print(nombre_fichero)
+    # for nombre_directorio, dirs, ficheros in os.walk(os.getcwd()):
+    #     for nombre_fichero in ficheros:
+    #         if nombre_fichero == name_fichero:
+    #             print(nombre_fichero)
 
-    # frontera1 = Frontera()
-    #
-    # for i in range(10):
-    #     estado = Estado(generar_celda_random(lab)[0], generar_celda_random(lab)[1])
-    #     nodo = Nodo(0, 0, estado, None, 1, 1, random.randrange(1,5))
-    #     nodo.generarSucesores(dict_data_manual)
-    #
-    #     frontera1.insertar(nodo)
-    #
-    # iterable = frontera1.getFrontera()
-    #
-    # for nodo in iterable:
-    #     print(nodo.toString())
+    frontera1 = Frontera()
+    
+    for i in range(10):
+        estado = Estado(generar_celda_random(lab)[0], generar_celda_random(lab)[1])
+        nodo = Nodo(0, 0, estado, None, 1, 1, random.randrange(1,5))
+        frontera1.insertar(nodo)
+        nodo.generarSucesores(dict_data_manual, frontera1)
+
+    for nodo in frontera1.getFrontera():
+        print(nodo.toString())
     
 
 if __name__ == '__main__':
