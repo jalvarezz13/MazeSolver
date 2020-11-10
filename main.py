@@ -1,5 +1,6 @@
 from Laberinto.Labyrinth import Labyrinth
 from Gestion_Json.GestionJson import GestionJson
+from Gestion_Json.LeerProblema import LeerProblema
 from Problema_Salir_Del_Laberinto.Nodo import Nodo
 from Problema_Salir_Del_Laberinto.Estado import Estado
 from Problema_Salir_Del_Laberinto.Frontera import Frontera
@@ -47,7 +48,7 @@ def pedir_colmnas():
     return cols
 
 
-def open_file_dialog():
+def open_file_dialog(leerProblema = None):
     root = tk.Tk()
     root.withdraw()
     root.call('wm', 'attributes', '.', '-topmost', True)
@@ -55,18 +56,25 @@ def open_file_dialog():
     file_name = filedialog.askopenfilename(
         initialdir=ruta, filetypes={("json files", "*.json")})
     try:
-        lab = Labyrinth(file_name)
+        if leerProblema == None:
+            try:
+                lab = Labyrinth(file_name)
+                print(file_name)
+                return lab, file_name
 
-    except KeyError:
-        print("Existen inconsistencias en la estructura del JSON")
-        sys.exit()
+            except KeyError:
+                print("Existen inconsistencias en la estructura del JSON")
+                sys.exit()
+        else:
+            print(file_name)
+            return file_name
 
     except FileNotFoundError:
         sys.exit()
 
-    print(file_name)
 
-    return lab, file_name
+
+
 
 
 def elegirEstrategia():
@@ -90,10 +98,11 @@ def menu_inicial():
     valido = False
     dict_manual = None
     lab = None
+    file_name = None
     while not valido:
         try:
             option = int(input(
-                "Elige una opción [1,2]:\n\t1. Elegir archivo existente\n\t2. Generar algoritmo automáticamente\n\n"))
+                "Elige una opción [1,2,3]:\n\t1. Visualizar laberinto existente\n\t2. Generar laberinto con el algortimo Wilson \n\t3. Resolver problema\n\n"))
             if option == 1:
                 lab, file_name = open_file_dialog()
                 dict_manual = GestionJson.leer_json(file_name)
@@ -107,17 +116,33 @@ def menu_inicial():
                 lab.create_labyrinth()
                 json = GestionJson(rows, cols)
                 dict_manual = GestionJson.get_data(json)
+
                 lab.load_data(dict_manual)
                 dict_manual = AlgoritmoWilson.algoritmo_wilson(
                     lab, dict_manual)
                 lab.load_data(dict_manual)
                 valido = True
-            else:
-                print("Intruduce un valor válido [1, 2]\n")
-        except ValueError:
-            print("Intruduce un valor válido [1, 2]\n")
+            elif option == 3:
+                file_name_problema = open_file_dialog(True)
+                celda_inicial, celda_objetivo, file_name = LeerProblema.getData(file_name_problema)
 
-    return [lab, dict_manual]
+
+
+                # lab = Labyrinth(file_name_problema)
+                # dict_manual = GestionJson.leer_json(file_name)
+                # GestionJson.check_json(dict_manual)
+                # lab.load_data(None)
+
+                elegirEstrategia()
+
+                valido = True
+                pass
+            else:
+                print("Intruduce un valor válido [1, 2, 3]\n")
+        except ValueError:
+            print("Intruduce un valor válido [1, 2, 3]\n")
+
+    return [option, lab, dict_manual, file_name]
 
 
 def checkear_dirs():
@@ -139,46 +164,78 @@ def generar_celda_random(lab):
     array.append(random.randrange(0, lab.get_cols()))
     return array
 
+
+def preguntarResolver():
+    valido = False
+    while not valido:
+        opcion = input("¿Quieres resolver el laberinto? (si/no)")
+        if opcion.lower() == "si":
+            valido == True
+            return True
+        elif opcion.lower() == "no":
+            valido == True
+            return False
+        else:
+            print("Introduce datos válidos (si/no)")
+
+
+
 def main():
     checkear_dirs()
-    lab, dict_data_manual = menu_inicial()
-    screen = Ventana.inicializar_ventana(lab)
-    token = True
+    opcion, lab, dict_data_manual, name_fichero = menu_inicial()
+    if opcion == 1 or opcion == 2:
+        screen = Ventana.inicializar_ventana(lab)
+        token = True
 
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                name = "Laberinto_B1_2_" + str(lab.get_rows()) + "x" + str(lab.get_cols()) + ".jpg"
-                pygame.image.save(screen, "JPGs/{0}".format(name))
-                token = False
-                pygame.quit()
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    name = "Laberinto_B1_2_" + str(lab.get_rows()) + "x" + str(lab.get_cols()) + ".jpg"
+                    pygame.image.save(screen, "JPGs/{0}".format(name))
+                    token = False
+                    pygame.quit()
+                    break
+
+            if not token:
                 break
 
-        if not token:
-            break
+            screen.fill(Cnfg.WHITE)
+            Ventana.dibujar(screen, lab)
+            pygame.display.update()
 
-        screen.fill(Cnfg.WHITE)
-        Ventana.dibujar(screen, lab)
-        pygame.display.update()
+        if preguntarResolver():
+            elegirEstrategia()
 
-    elegirEstrategia()
+    celda_inicio = generar_celda_random(lab)
+    celda_fin = generar_celda_random(lab)
 
-    celda_inicio = f"({0}, {1})".format(generar_celda_random(lab)[0], generar_celda_random(lab)[1])
-    ProblemaJson(celda_inicio, celda_inicio, name)
+    if name_fichero is None:
+        name_fichero = "Laberinto_Wilson_B1_2_{0}x{1}.json".format(dict_data_manual["rows"], dict_data_manual["cols"])
+    else:
+        dir = name_fichero.split("/")
+        name_fichero = dir[len(dir) - 1]
+    print("--------------------------")
 
-    frontera1 = Frontera()
+    ProblemaJson(celda_inicio, celda_fin, name_fichero)
 
-    for i in range(10):
-        estado = Estado(generar_celda_random(lab)[0], generar_celda_random(lab)[1])
-        nodo = Nodo(0, 0, estado, None, 1, 1, random.randrange(1,5))
-        nodo.generarSucesores(dict_data_manual)
+    for nombre_directorio, dirs, ficheros in os.walk(os.getcwd()):
+        for nombre_fichero in ficheros:
+            if nombre_fichero == name_fichero:
+                print(nombre_fichero)
 
-        frontera1.insertar(nodo)
-
-    iterable = frontera1.getFrontera()
-
-    for nodo in iterable:
-        print(nodo.toString())
+    # frontera1 = Frontera()
+    #
+    # for i in range(10):
+    #     estado = Estado(generar_celda_random(lab)[0], generar_celda_random(lab)[1])
+    #     nodo = Nodo(0, 0, estado, None, 1, 1, random.randrange(1,5))
+    #     nodo.generarSucesores(dict_data_manual)
+    #
+    #     frontera1.insertar(nodo)
+    #
+    # iterable = frontera1.getFrontera()
+    #
+    # for nodo in iterable:
+    #     print(nodo.toString())
     
 
 if __name__ == '__main__':

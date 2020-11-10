@@ -13,9 +13,9 @@ class GestionJson:
         data["mov"] = [[-1, 0], [0, 1], [1, 0], [0, -1]]
         data["id_mov"] = ["N", "E", "S", "O"]
         data["cells"] = self.crear_celdas()
-        file_name = "Laberinto_Wilson_B1_2_{0}x{1}.json".format(self.rows, self.cols)
+        self.file_name = "Laberinto_Wilson_B1_2_{0}x{1}.json".format(self.rows, self.cols)
 
-        with open(os.path.join("{0}/JSONs".format(os.getcwd()), file_name), 'w') as file:
+        with open(os.path.join("{0}/JSONs".format(os.getcwd()), self.file_name), 'w') as file:
             json.dump(data, file, indent=4)
         
         self.data = data
