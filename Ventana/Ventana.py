@@ -1,8 +1,9 @@
 import pygame
 import Cnfg
 
+
 class Ventana:
-    def dibujar(screen, lab):
+    def dibujarLineas (screen, lab):
         if lab.get_rows() > lab.get_cols():
             w = int(Cnfg.ancho / lab.get_rows())
         else:
@@ -21,14 +22,47 @@ class Ventana:
                     pygame.draw.line(screen, Cnfg.BLACK, [x, y], [x + w, y])
 
                 if not vecinos[1]:
-                    pygame.draw.line(screen, Cnfg.BLACK, [x + w, y], [x + w, y + w])
+                    pygame.draw.line(screen, Cnfg.BLACK, [
+                                     x + w, y], [x + w, y + w])
 
                 if not vecinos[2]:
-                    pygame.draw.line(screen, Cnfg.BLACK, [x + w, y + w], [x, y + w])
+                    pygame.draw.line(screen, Cnfg.BLACK, [
+                                     x + w, y + w], [x, y + w])
 
                 if not vecinos[3]:
                     pygame.draw.line(screen, Cnfg.BLACK, [x, y + w], [x, y])
                 x = x + w
+
+    def dibujarColores(screen, lab):
+        if lab.get_rows() > lab.get_cols():
+            w = int(Cnfg.ancho / lab.get_rows())
+        else:
+            w = int(Cnfg.alto / lab.get_cols())
+        y = -w + 20
+
+        for i in range(0, lab.get_rows()):
+            x = 20
+            y = y + w
+
+            for j in range(0, lab.get_cols()):
+                cell = lab.labyrinth[i][j]
+                value = cell.get_value()
+
+                if value == 0:
+                    pygame.draw.rect(screen, Cnfg.ASPHALT, [x, y, w, w], 0)
+
+                if value == 1:
+                    pygame.draw.rect(screen, Cnfg.GROUND, [x, y, w, w], 0)
+
+                if value == 2:
+                    pygame.draw.rect(screen, Cnfg.GRASS, [x, y, w, w], 0)
+
+                if value == 3:
+                    pygame.draw.rect(screen, Cnfg.WATER, [x, y, w, w], 0)
+
+    def dibujar (screen, lab):
+        dibujarColores(screen, lab)
+        dibujarLineas(screen, lab)
 
     def inicializar_ventana(lab):
         pygame.init()
