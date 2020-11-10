@@ -72,11 +72,6 @@ def open_file_dialog(leerProblema = None):
     except FileNotFoundError:
         sys.exit()
 
-
-
-
-
-
 def elegirEstrategia():
     valido = False
     option = 0
