@@ -1,4 +1,4 @@
-from Problema_Salir_Del_Laberinto.Estado import Estado
+from Problema.Estado import Estado
 
 class Nodo:
 
@@ -58,7 +58,7 @@ class Nodo:
         return self.__valor
 
     def generarSucesores(self, diccionario, frontera):
-        file = open("SUCESORs/sucesors_{0}X{1}_funcion.txt".format(
+        file = open("Recursos/SUCESORs/sucesors_{0}X{1}_funcion.txt".format(
             diccionario["rows"], diccionario["cols"]), "a")
         sucesores = ""
         tupla = []

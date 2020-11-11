@@ -14,7 +14,7 @@ class LaberintoJson:
         data["mov"] = [[-1, 0], [0, 1], [1, 0], [0, -1]]
         data["id_mov"] = ["N", "E", "S", "O"]
         data["cells"] = self.crear_celdas()
-        print(data["cells"])
+
         self.file_name = "Laberinto_Wilson_B1_2_{0}x{1}.json".format(self.rows, self.cols)
 
         with open(os.path.join("{0}/Recursos/JSONs".format(os.getcwd()), self.file_name), 'w') as file:
@@ -27,19 +27,15 @@ class LaberintoJson:
 
     def crear_celdas(self):
         dic_cell = {}
-
-        
+    
         for i in range(0, self.rows):
             for j in range(0, self.cols):
                 dic_data_cell = {}
                 dic_data_cell["value"] = random.randrange(0, 4)
-                print(dic_data_cell["value"])
                 dic_data_cell["neighbors"] = [False, False, False, False]
-
                 dic_cell["({0}, {1})".format(i, j)] = dic_data_cell
-
         return dic_cell
-        
+
     def leer_json(file_name):
         f = open(file_name, "r")
         content = f.read()

@@ -5,12 +5,13 @@ from Gestion_Json.LaberintoJson import LaberintoJson
 from Gestion_Json.LeerProblemaJson import LeerProblemaJson
 from Gestion_Json.CrearProblemaJson import CrearProblemaJson
 
-from Problema_Salir_Del_Laberinto.Nodo import Nodo
-from Problema_Salir_Del_Laberinto.Estado import Estado
-from Problema_Salir_Del_Laberinto.Frontera import Frontera
+from Problema.Nodo import Nodo
+from Problema.Estado import Estado
+from Problema.Frontera import Frontera
 
 from Dibujar.Ventana import Ventana
 
+from PIL import Image
 from tkinter import filedialog
 import tkinter as tk
 import random
@@ -52,7 +53,7 @@ def pedir_colmnas():
     return cols
 
 
-def open_file_dialog(leerProblema = None):
+def open_file_dialog(leerProblema=None):
     root = tk.Tk()
     root.withdraw()
     root.call('wm', 'attributes', '.', '-topmost', True)
@@ -76,12 +77,14 @@ def open_file_dialog(leerProblema = None):
     except FileNotFoundError:
         sys.exit()
 
+
 def elegirEstrategia():
     valido = False
     option = 0
     while not valido:
         try:
-            option = int(input("Elige la estrategia [1,2,3,4,5]:\n\t1. Profundidad\n\t2. Anchura\n\t3. Voraz\n\t4. Costo uniforme\n\t5. A*\n\n"))
+            option = int(input(
+                "\nElige la estrategia [1,2,3,4,5]:\n\t1. Profundidad\n\t2. Anchura\n\t3. Voraz\n\t4. Costo uniforme\n\t5. A*\n\n"))
             if option >= 1 and option <= 5:
                 valido = True
             else:
@@ -120,7 +123,8 @@ def menu_inicial():
                 dict_manual = LaberintoJson.get_data(json)
 
                 lab.load_data(dict_manual)
-                dict_manual = AlgoritmoWilson.algoritmo_wilson(lab, dict_manual)
+                dict_manual = AlgoritmoWilson.algoritmo_wilson(
+                    lab, dict_manual)
                 lab.load_data(dict_manual)
                 valido = True
                 guardarJpg(lab)
@@ -129,9 +133,8 @@ def menu_inicial():
 
             elif option == 3:
                 file_name_problema = open_file_dialog(True)
-                celda_inicial, celda_objetivo, file_name = LeerProblemaJson.getData(file_name_problema)
-
-
+                celda_inicial, celda_objetivo, file_name = LeerProblemaJson.getData(
+                    file_name_problema)
 
                 # lab = Labyrinth(file_name_problema)
                 # dict_manual = LaberintoJson.leer_json(file_name)
@@ -160,11 +163,12 @@ def checkear_dirs():
     if not os.path.exists("Recursos/JPGs"):
         os.mkdir("Recursos/JPGs")
 
-    if not os.path.exists("SUCESORs"):
-        os.mkdir("SUCESORs")
+    if not os.path.exists("Recursos/SUCESORs"):
+        os.mkdir("Recursos/SUCESORs")
 
     if not os.path.exists("Recursos/JSONs/PROBLEMAs"):
         os.mkdir("Recursos/JSONs/PROBLEMAs")
+
 
 def generar_celda_random(lab):
     array = []
@@ -176,7 +180,7 @@ def generar_celda_random(lab):
 def preguntarResolver():
     valido = False
     while not valido:
-        opcion = input("¿Quieres resolver el laberinto? (Y/N)")
+        opcion = input("¿Quieres resolver el laberinto? (Y/n)")
         if opcion.lower() == "y" or opcion == "":
             valido == True
             return True
@@ -184,64 +188,41 @@ def preguntarResolver():
             valido == True
             return False
         else:
-            print("Introduce datos válidos (Y/N)")
+            print("Introduce datos válidos (Y/n)")
 
 
 def guardarJpg(lab):
     screen = Ventana.inicializar_ventana(lab)
-    token = True
+    screen.fill(Cnfg.WHITE)
+    Ventana.dibujar(screen, lab)
+    pygame.display.update()
 
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                name = "Laberinto_B1_2_" + str(lab.get_rows()) + "x" + str(lab.get_cols()) + ".jpg"
-                pygame.image.save(screen, "Recursos/JPGs/{0}".format(name))
-                token = False
-                pygame.quit()
-                break
+    name = "Laberinto_B1_2_" + \
+        str(lab.get_rows()) + "x" + str(lab.get_cols()) + ".jpg"
+    pygame.image.save(screen, "Recursos/JPGs/{0}".format(name))
+    pygame.quit()
 
-        if not token:
-            break
-
-        screen.fill(Cnfg.WHITE)
-        Ventana.dibujar(screen, lab)
-        pygame.display.update()
+    img = Image.open(f"Recursos/JPGs/{name}")
+    img.show()
 
 
 def main():
     checkear_dirs()
-    lab, dict_data_manual, name_fichero = menu_inicial()
+    menu_inicial()
 
+    # lab, dict_data_manual, name_fichero = menu_inicial()
+    # frontera1 = Frontera()
 
-    # celda_inicio = generar_celda_random(lab)
-    # celda_fin = generar_celda_random(lab)
+    # for i in range(5):
+    #     celda = generar_celda_random(lab)
+    #     estado = Estado(celda[0], celda[1])
+    #     nodo = Nodo(0, 0, estado, None, 1, 1, 0)
+    #     frontera1.insertar(nodo)
+    #     nodo.generarSucesores(dict_data_manual, frontera1)
 
-    # if name_fichero is None:
-    #     name_fichero = "Laberinto_Wilson_B1_2_{0}x{1}.json".format(dict_data_manual["rows"], dict_data_manual["cols"])
-    # else:
-    #     dir = name_fichero.split("/")
-    #     name_fichero = dir[len(dir) - 1]
-    # print("--------------------------")
+    # for nodo in frontera1.getFrontera():
+    #     print(nodo.toString())
 
-    # ProblemaJson(celda_inicio, celda_fin, name_fichero)
-
-    # for nombre_directorio, dirs, ficheros in os.walk(os.getcwd()):
-    #     for nombre_fichero in ficheros:
-    #         if nombre_fichero == name_fichero:
-    #             print(nombre_fichero)
-
-    frontera1 = Frontera()
-    
-    for i in range(5):
-        celda = generar_celda_random(lab)
-        estado = Estado(celda[0], celda[1])
-        nodo = Nodo(0, 0, estado, None, 1, 1, 0)
-        frontera1.insertar(nodo)
-        nodo.generarSucesores(dict_data_manual, frontera1)
-
-    for nodo in frontera1.getFrontera():
-        print(nodo.toString())
-    
 
 if __name__ == '__main__':
     main()
