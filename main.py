@@ -103,7 +103,7 @@ def menu_inicial():
     while not valido:
         try:
             option = int(input(
-                "Elige una opción [1,2,3]:\n\t1. Visualizar laberinto existente\n\t2. Generar laberinto con el algortimo Wilson \n\t3. Resolver problema\n\n"))
+                "Elige una opción [1, 2, 3, 4]:\n\t1. Visualizar laberinto existente\n\t2. Generar laberinto con el algortimo Wilson \n\t3. Resolver problema\n\t4. Salir\n\n"))
             if option == 1:
                 lab, file_name = open_file_dialog()
                 dict_manual = LaberintoJson.leer_json(file_name)
@@ -145,12 +145,17 @@ def menu_inicial():
 
                 valido = True
                 pass
-            else:
-                print("Intruduce un valor válido [1, 2, 3]\n")
-        except ValueError:
-            print("Intruduce un valor válido [1, 2, 3]\n")
 
-    return [lab, dict_manual, file_name]
+            elif option==4:
+                print("Programa finalizado")
+                valido = True
+
+            else:
+                print("Intruduce un valor válido [1, 2, 3, 4]\n")
+        except ValueError:
+            print("Intruduce un valor válido [1, 2, 3, 4]\n")
+
+    return [option, lab, dict_manual, file_name]
 
 
 def checkear_dirs():
@@ -208,7 +213,12 @@ def guardarJpg(lab):
 
 def main():
     checkear_dirs()
-    menu_inicial()
+    
+    while True:
+        option, lab, dict_data_manual, name_fichero = menu_inicial()
+        if option==4:
+            break
+
 
     # lab, dict_data_manual, name_fichero = menu_inicial()
     # frontera1 = Frontera()
