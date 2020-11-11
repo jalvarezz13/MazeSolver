@@ -3,7 +3,7 @@ import json
 import sys
 import random
 
-class GestionJson:
+class LaberintoJson:
     def __init__(self, rows, cols):
         data = {}
         self.rows = rows
@@ -58,7 +58,7 @@ class GestionJson:
         posicion_vecino = None
         file_name = "Recursos/JSONs/Laberinto_Wilson_B1_2_{0}x{1}.json".format(diccionario["rows"], diccionario["cols"])
 
-        diccionario = GestionJson.leer_json(file_name)
+        diccionario = LaberintoJson.leer_json(file_name)
 
         for i in range(0, (len(camino) - 1)):
             if lista_movimientos[i] == movimiento[0]:
@@ -73,9 +73,9 @@ class GestionJson:
             diccionario["cells"][str(camino[i])]["neighbors"][posicion_vecino] = True
             diccionario["cells"][str(camino[i + 1])]["neighbors"][(posicion_vecino + 2) % 4] = True
 
-        GestionJson.escribir_json(file_name, diccionario)
+        LaberintoJson.escribir_json(file_name, diccionario)
 
-        diccionario =  GestionJson.leer_json(file_name)
+        diccionario =  LaberintoJson.leer_json(file_name)
 
         return diccionario
 

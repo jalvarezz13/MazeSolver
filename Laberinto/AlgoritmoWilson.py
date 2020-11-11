@@ -1,6 +1,6 @@
-from Celda.Cell import Cell
+from Laberinto.Cell import Cell
 from Laberinto.Labyrinth import Labyrinth
-from Gestion_Json.GestionJson import GestionJson
+from Gestion_Json.LaberintoJson import LaberintoJson
 import random
 import numpy
 
@@ -75,7 +75,7 @@ class AlgoritmoWilson:
             if celdas_no_visitadas.count(matriz_laberinto[coord[0]][coord[1]]) == 1:
                 celdas_no_visitadas.remove(matriz_laberinto[coord[0]][coord[1]])
 
-        diccionario = GestionJson.cambiar_vecinos(camino, lista_movimientos, diccionario)
+        diccionario = LaberintoJson.cambiar_vecinos(camino, lista_movimientos, diccionario)
 
         return celdas_no_visitadas, diccionario
 

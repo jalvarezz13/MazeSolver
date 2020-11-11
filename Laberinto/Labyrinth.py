@@ -1,4 +1,4 @@
-from Celda.Cell import Cell
+from Laberinto.Cell import Cell
 import json
 import numpy
 

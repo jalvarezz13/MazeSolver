@@ -1,6 +1,6 @@
 import json
 
-class LeerProblema:
+class LeerProblemaJson:
     def getData(file_name):
 
         f = open(file_name, "r")

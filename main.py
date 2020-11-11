@@ -1,12 +1,16 @@
 from Laberinto.Labyrinth import Labyrinth
-from Gestion_Json.GestionJson import GestionJson
-from Gestion_Json.LeerProblema import LeerProblema
+from Laberinto.AlgoritmoWilson import AlgoritmoWilson
+
+from Gestion_Json.LaberintoJson import LaberintoJson
+from Gestion_Json.LeerProblemaJson import LeerProblemaJson
+from Gestion_Json.CrearProblemaJson import CrearProblemaJson
+
 from Problema_Salir_Del_Laberinto.Nodo import Nodo
 from Problema_Salir_Del_Laberinto.Estado import Estado
 from Problema_Salir_Del_Laberinto.Frontera import Frontera
-from Alg_Wilson.AlgoritmoWilson import AlgoritmoWilson
-from Gestion_Json.ProblemaJson import ProblemaJson
-from Ventana.Ventana import Ventana
+
+from Dibujar.Ventana import Ventana
+
 from tkinter import filedialog
 import tkinter as tk
 import random
@@ -77,8 +81,7 @@ def elegirEstrategia():
     option = 0
     while not valido:
         try:
-            option = int(input(
-                "Elige la estrategia [1,2,3,4,5]:\n\t1. Profundidad\n\t2. Anchura\n\t3. Voraz\n\t4. Costo uniforme\n\t5. A*\n\n"))
+            option = int(input("Elige la estrategia [1,2,3,4,5]:\n\t1. Profundidad\n\t2. Anchura\n\t3. Voraz\n\t4. Costo uniforme\n\t5. A*\n\n"))
             if option >= 1 and option <= 5:
                 valido = True
             else:
@@ -100,8 +103,8 @@ def menu_inicial():
                 "Elige una opción [1,2,3]:\n\t1. Visualizar laberinto existente\n\t2. Generar laberinto con el algortimo Wilson \n\t3. Resolver problema\n\n"))
             if option == 1:
                 lab, file_name = open_file_dialog()
-                dict_manual = GestionJson.leer_json(file_name)
-                GestionJson.check_json(dict_manual)
+                dict_manual = LaberintoJson.leer_json(file_name)
+                LaberintoJson.check_json(dict_manual)
                 lab.load_data(None)
                 valido = True
                 guardarJpg(lab)
@@ -113,8 +116,8 @@ def menu_inicial():
                 cols = pedir_colmnas()
                 lab = Labyrinth(None, rows, cols)
                 lab.create_labyrinth()
-                json = GestionJson(rows, cols)
-                dict_manual = GestionJson.get_data(json)
+                json = LaberintoJson(rows, cols)
+                dict_manual = LaberintoJson.get_data(json)
 
                 lab.load_data(dict_manual)
                 dict_manual = AlgoritmoWilson.algoritmo_wilson(lab, dict_manual)
@@ -126,13 +129,13 @@ def menu_inicial():
 
             elif option == 3:
                 file_name_problema = open_file_dialog(True)
-                celda_inicial, celda_objetivo, file_name = LeerProblema.getData(file_name_problema)
+                celda_inicial, celda_objetivo, file_name = LeerProblemaJson.getData(file_name_problema)
 
 
 
                 # lab = Labyrinth(file_name_problema)
-                # dict_manual = GestionJson.leer_json(file_name)
-                # GestionJson.check_json(dict_manual)
+                # dict_manual = LaberintoJson.leer_json(file_name)
+                # LaberintoJson.check_json(dict_manual)
                 # lab.load_data(None)
 
                 elegirEstrategia()

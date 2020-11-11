@@ -1,7 +1,7 @@
 import os
 import json
 
-class ProblemaJson:
+class CrearProblemaJson:
 
     def __init__(self, inicial, final, maze):
         data = {}
