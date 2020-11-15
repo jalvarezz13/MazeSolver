@@ -1,4 +1,5 @@
 from Problema.Estado import Estado
+import Cnfg
 
 class Nodo:
 
@@ -6,15 +7,15 @@ class Nodo:
         self.__id = id
         self.__nodoPadre = padre
         self.__estado = estado
-        self.__accion = accion
-        self.__heuristica = heuristica
+        self.__accion = accion # [mov, id_destino, coste]
+        self.__heuristica = self.calcularHeuristica(Cnfg.objetivo, id)
 
         if self.__nodoPadre == None:
             self.__costoAcumulado = 0
             self.__profundidad = 0
         else:
             # Supones que será un entero siempre
-            self.__costoAcumulado = padre.getCosto() + costoAcumulado
+            self.__costoAcumulado = padre.getCosto() + accion[2] + 1
             self.__profundidad = padre.getProfundidad() + 1
 
         self.__valor = self.generarValor(estrategia)
@@ -56,6 +57,10 @@ class Nodo:
 
     def getValor(self):
         return self.__valor
+    
+    def calcularHeuristica(self, destino, actual):
+        heuristica = (abs(actual[0]-destino[0]) + abs(actual[0]-destino[0]))
+        return heuristica
 
     def generarSucesores(self, diccionario, frontera):
         file = open("Recursos/SUCESORs/sucesors_{0}X{1}_funcion.txt".format(

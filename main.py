@@ -157,6 +157,7 @@ def menu_inicial():
         except ValueError:
             print("Intruduce un valor válido [1, 2, 3, 4]\n")
 
+    #Cnfg.objetivo = None
     return [lab, dict_manual, file_name]
 
 
@@ -215,10 +216,8 @@ def guardarJpg(lab):
 
 def main():
     checkear_dirs()
-    
-
     lab, dict_data_manual, name_fichero = menu_inicial()
-
+   
 
 
     # lab, dict_data_manual, name_fichero = menu_inicial()

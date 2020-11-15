@@ -1,4 +1,5 @@
 import json
+import Cnfg
 
 class LeerProblemaJson:
     def getData(file_name):
@@ -11,5 +12,6 @@ class LeerProblemaJson:
         celda_objetivo = diccionario["OBJECTIVE"]
         maze = diccionario["MAZE"]
 
+        Cnfg.objetivo = celda_objetivo
         return celda_inicio, celda_objetivo, maze
 

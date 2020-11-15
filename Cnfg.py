@@ -13,3 +13,6 @@ ASPHALT = (213, 216, 220)
 GROUND = (220, 118, 51)
 GRASS = (46, 204, 113)
 WATER = (93, 173, 226)
+
+# OTRAS VARIABLE
+objetivo = None
