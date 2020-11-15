@@ -72,6 +72,8 @@ def open_file_dialog(leerProblema=None):
                 sys.exit()
         else:
             print(file_name)
+            if not file_name:
+                sys.exit()
             return file_name
 
     except FileNotFoundError:
@@ -100,10 +102,10 @@ def menu_inicial():
     dict_manual = None
     lab = None
     file_name = None
-    while not valido:
+    while not valido or option != 4:
         try:
             option = int(input(
-                "Elige una opción [1, 2, 3, 4]:\n\t1. Visualizar laberinto existente\n\t2. Generar laberinto con el algortimo Wilson \n\t3. Resolver problema\n\t4. Salir\n\n"))
+                "\nElige una opción [1, 2, 3, 4]:\n\t1. Visualizar laberinto existente\n\t2. Generar laberinto con el algortimo Wilson \n\t3. Resolver problema\n\t4. Salir\n\n"))
             if option == 1:
                 lab, file_name = open_file_dialog()
                 dict_manual = LaberintoJson.leer_json(file_name)
@@ -148,14 +150,14 @@ def menu_inicial():
 
             elif option==4:
                 print("Programa finalizado")
-                valido = True
+                sys.exit()
 
             else:
                 print("Intruduce un valor válido [1, 2, 3, 4]\n")
         except ValueError:
             print("Intruduce un valor válido [1, 2, 3, 4]\n")
 
-    return [option, lab, dict_manual, file_name]
+    return [lab, dict_manual, file_name]
 
 
 def checkear_dirs():
@@ -185,7 +187,7 @@ def generar_celda_random(lab):
 def preguntarResolver():
     valido = False
     while not valido:
-        opcion = input("¿Quieres resolver el laberinto? (Y/n)")
+        opcion = input("¿\nQuieres resolver el laberinto? (Y/n)\n")
         if opcion.lower() == "y" or opcion == "":
             valido == True
             return True
@@ -214,10 +216,9 @@ def guardarJpg(lab):
 def main():
     checkear_dirs()
     
-    while True:
-        option, lab, dict_data_manual, name_fichero = menu_inicial()
-        if option==4:
-            break
+
+    lab, dict_data_manual, name_fichero = menu_inicial()
+
 
 
     # lab, dict_data_manual, name_fichero = menu_inicial()
