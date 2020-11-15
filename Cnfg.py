@@ -16,3 +16,4 @@ WATER = (93, 173, 226)
 
 # OTRAS VARIABLE
 objetivo = None
+estrategia = None

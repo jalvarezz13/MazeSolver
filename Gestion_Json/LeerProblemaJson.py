@@ -13,5 +13,6 @@ class LeerProblemaJson:
         maze = diccionario["MAZE"]
 
         Cnfg.objetivo = celda_objetivo
+        print("MODIFICADO EL OBJETIVO: " + str(Cnfg.objetivo), flush=True)
         return celda_inicio, celda_objetivo, maze
 

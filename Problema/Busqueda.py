@@ -1,9 +1,11 @@
 from Problema.Nodo import Nodo
+import Cnfg
 
 class Busqueda:
-    def algoritmoBusqueda(problema, profundidad, estrategia):
+    def algoritmoBusqueda(problema, profundidad):
         visitado = set()
         frontera = []
+        estrategia = Cnfg.estrategia
         nodo = Nodo()
 
 # BUSQUEDA (Problema,profundidad,estrategia): solución

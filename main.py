@@ -23,7 +23,7 @@ import os
 
 def pedir_filas():
     valido = False
-
+    row = None
     while not valido:
         try:
             row = int(input("\nIntroduce el número de filas: "))
@@ -39,6 +39,7 @@ def pedir_filas():
 
 def pedir_colmnas():
     valido = False
+    cols = None
 
     while not valido:
         try:
@@ -89,12 +90,12 @@ def elegirEstrategia():
                 "\nElige la estrategia [1,2,3,4,5]:\n\t1. Profundidad\n\t2. Anchura\n\t3. Voraz\n\t4. Costo uniforme\n\t5. A*\n\n"))
             if option >= 1 and option <= 5:
                 valido = True
+                Cnfg.estrategia = option
+                print("MODIFICADA LA ESTRATEGIA: " + str(Cnfg.estrategia), flush=True)
             else:
                 print("Intruduce un valor válido [1, 2, 3, 4, 5]\n")
         except ValueError:
             print("Intruduce un valor válido [1, 2, 3, 4, 5]\n")
-
-    return option
 
 
 def menu_inicial():
@@ -102,6 +103,7 @@ def menu_inicial():
     dict_manual = None
     lab = None
     file_name = None
+    option = None
     while not valido or option != 4:
         try:
             option = int(input(
@@ -150,7 +152,8 @@ def menu_inicial():
 
             elif option==4:
                 print("Programa finalizado")
-                sys.exit()
+                break
+                #sys.exit()
 
             else:
                 print("Intruduce un valor válido [1, 2, 3, 4]\n")
@@ -188,7 +191,7 @@ def generar_celda_random(lab):
 def preguntarResolver():
     valido = False
     while not valido:
-        opcion = input("¿\nQuieres resolver el laberinto? (Y/n)\n")
+        opcion = input("\n¿Quieres resolver el laberinto? (Y/n)\n")
         if opcion.lower() == "y" or opcion == "":
             valido == True
             return True
@@ -218,20 +221,21 @@ def main():
     checkear_dirs()
     lab, dict_data_manual, name_fichero = menu_inicial()
    
+    ############ PRUEBAS ##############
 
+    frontera1 = Frontera()
 
-    # lab, dict_data_manual, name_fichero = menu_inicial()
-    # frontera1 = Frontera()
+    for i in range(5):
+        celda = generar_celda_random(lab)
+        estado = Estado(celda[0], celda[1])
+        nodo = Nodo(len(frontera1.getFrontera()), estado, None, None)
+        frontera1.insertar(nodo)
+        nodo.generarSucesores(dict_data_manual, frontera1)
 
-    # for i in range(5):
-    #     celda = generar_celda_random(lab)
-    #     estado = Estado(celda[0], celda[1])
-    #     nodo = Nodo(0, 0, estado, None, 1, 1, 0)
-    #     frontera1.insertar(nodo)
-    #     nodo.generarSucesores(dict_data_manual, frontera1)
-
-    # for nodo in frontera1.getFrontera():
-    #     print(nodo.toString())
+    for nodo in frontera1.getFrontera():
+        print(nodo.toString())
+    
+    ###############################################
 
 
 if __name__ == '__main__':

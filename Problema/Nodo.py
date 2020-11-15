@@ -3,7 +3,7 @@ import Cnfg
 
 class Nodo:
 
-    def __init__(self, id, costoAcumulado, estado, padre, accion, heuristica, estrategia):
+    def __init__(self, id, estado, padre, accion):
         self.__id = id
         self.__nodoPadre = padre
         self.__estado = estado
@@ -11,14 +11,14 @@ class Nodo:
         self.__heuristica = self.calcularHeuristica(Cnfg.objetivo, id)
 
         if self.__nodoPadre == None:
-            self.__costoAcumulado = 0
+            self.__costo = 0
             self.__profundidad = 0
         else:
             # Supones que será un entero siempre
-            self.__costoAcumulado = padre.getCosto() + accion[2] + 1
+            self.__costo = padre.getCosto() + accion[2] + 1
             self.__profundidad = padre.getProfundidad() + 1
 
-        self.__valor = self.generarValor(estrategia)
+        self.__valor = self.generarValor(Cnfg.estrategia)
 
     def generarValor(self, estrategia):
         if estrategia == 1:  # Profundidad
@@ -28,9 +28,9 @@ class Nodo:
         elif estrategia == 3:  # Voraz
             self.__valor = self.__heuristica
         elif estrategia == 4:  # Costo uniforme
-            self.__valor = self.__costoAcumulado
+            self.__valor = self.__costo
         else:   # A*
-            self.__valor = self.__costoAcumulado + self.__heuristica
+            self.__valor = self.__costo + self.__heuristica
 
         return self.__valor
 
@@ -50,7 +50,7 @@ class Nodo:
         return self.__heuristica
 
     def getCosto(self):
-        return self.__costoAcumulado
+        return self.__costo
 
     def getProfundidad(self):
         return self.__profundidad
@@ -59,7 +59,7 @@ class Nodo:
         return self.__valor
     
     def calcularHeuristica(self, destino, actual):
-        heuristica = (abs(actual[0]-destino[0]) + abs(actual[0]-destino[0]))
+        heuristica = (abs(int(actual[0])-int(destino[0])) + abs(int(actual[0])-int(destino[0])))
         return heuristica
 
     def generarSucesores(self, diccionario, frontera):
@@ -67,6 +67,7 @@ class Nodo:
             diccionario["rows"], diccionario["cols"]), "a")
         sucesores = ""
         tupla = []
+        fronteraProv = []
         estado = self.getEstado()
 
         i = estado.getId()[0]
@@ -75,15 +76,20 @@ class Nodo:
         sucesores = "SUC(" + "({0}, {1})".format(i, j) + ")="
 
         for z in range(0, 4):
-            nodo = None
             if diccionario["cells"]["({0}, {1})".format(i, j)]["neighbors"][z]:
                 coordFila = i + diccionario["mov"][z][0]
                 coordCol = j + diccionario["mov"][z][1]
                 estado = Estado(coordFila, coordCol)
-                nodo = Nodo(0, 0, estado, self, 1, 1, 0)
-                frontera.insertar(nodo)
+                fronteraProv.append(estado)
                 tupla.append((diccionario["id_mov"][z], "({0}, {1})".format(coordFila, coordCol), 1))
         sucesores += str(tupla) + "\n"
+
+        fronteraProv.sort(key=lambda estado: (estado.getId())) # estado.getId[0], estado.getId()[1]
+        idPadre = self.getId()
+        for i in range(0, len(fronteraProv)):
+            nodo = None
+            nodo = Nodo(idPadre+1+i, fronteraProv[i], self, tupla[i])
+            frontera.insertar(nodo)
 
         file.write(sucesores)
 
