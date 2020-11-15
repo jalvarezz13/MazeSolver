@@ -8,7 +8,7 @@ class Nodo:
         self.__nodoPadre = padre
         self.__estado = estado
         self.__accion = accion # [mov, id_destino, coste]
-        self.__heuristica = self.calcularHeuristica(Cnfg.objetivo, id)
+        self.__heuristica = self.calcularHeuristica(Cnfg.objetivo)
 
         if self.__nodoPadre == None:
             self.__costo = 0
@@ -58,9 +58,8 @@ class Nodo:
     def getValor(self):
         return self.__valor
     
-    def calcularHeuristica(self, destino, actual):
-        heuristica = (abs(int(actual[0])-int(destino[0])) + abs(int(actual[0])-int(destino[0])))
-        return heuristica
+    def calcularHeuristica(self, destino):
+        return (abs(self.__estado.getId()[0] - int(destino[1])) + abs(self.__estado.getId()[1] - int(destino[4])))
 
     def generarSucesores(self, diccionario, frontera):
         file = open("Recursos/SUCESORs/sucesors_{0}X{1}_funcion.txt".format(

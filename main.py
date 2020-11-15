@@ -139,11 +139,12 @@ def menu_inicial():
                 file_name_problema = open_file_dialog(True)
                 celda_inicial, celda_objetivo, file_name = LeerProblemaJson.getData(
                     file_name_problema)
-
-                # lab = Labyrinth(file_name_problema)
-                # dict_manual = LaberintoJson.leer_json(file_name)
-                # LaberintoJson.check_json(dict_manual)
-                # lab.load_data(None)
+                file_name=os.path.join("{0}/Recursos/JSONs/PROBLEMAs".format(os.getcwd()), file_name)
+                
+                lab = Labyrinth(file_name)
+                dict_manual = LaberintoJson.leer_json(file_name)
+                LaberintoJson.check_json(dict_manual)
+                lab.load_data(dict_manual)
 
                 elegirEstrategia()
 
