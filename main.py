@@ -1,3 +1,5 @@
+import time
+
 from Laberinto.Labyrinth import Labyrinth
 from Laberinto.AlgoritmoWilson import AlgoritmoWilson
 
@@ -83,7 +85,6 @@ def open_file_dialog(leerProblema=None):
 
 def elegirEstrategia():
     valido = False
-    option = 0
     while not valido:
         try:
             option = int(input(
@@ -91,11 +92,45 @@ def elegirEstrategia():
             if option >= 1 and option <= 5:
                 valido = True
                 Cnfg.estrategia = option
-                print("MODIFICADA LA ESTRATEGIA: " + str(Cnfg.estrategia), flush=True)
             else:
                 print("Intruduce un valor válido [1, 2, 3, 4, 5]\n")
         except ValueError:
             print("Intruduce un valor válido [1, 2, 3, 4, 5]\n")
+
+
+def generar_problema(lab, dict_data_manual):
+    celda_inicio = generar_celda_random(lab)
+    celda_fin = generar_celda_random(lab)
+
+    name_fichero = "Laberinto_Wilson_B1_2_{0}x{1}.json".format(dict_data_manual["rows"], dict_data_manual["cols"])
+    print("--------------------------")
+    print("Generando problema...")
+
+    problema = CrearProblemaJson(celda_inicio, celda_fin, name_fichero)
+
+    print("Problema generado: {0}".format(problema.get_nombre_problema()))
+
+    return problema.get_nombre_problema()
+
+
+def cargar_problema(option=None, nombre_problema=None):
+    if option == 3:
+        path_problema = open_file_dialog(True)
+        dir = path_problema.split("/")
+        nombre_problema = dir[len(dir) - 1]
+
+    path = os.getcwd()+"/Recursos/JSONs/PROBLEMAs/{0}".format(nombre_problema)
+    celda_inicial, celda_objetivo, maze = LeerProblemaJson.getData(path)
+    file_name = os.path.join("{0}/Recursos/JSONs/{1}".format(os.getcwd(), maze))
+
+    lab = Labyrinth(file_name)
+    dict_manual = LaberintoJson.leer_json(file_name)
+    LaberintoJson.check_json(dict_manual)
+    lab.load_data(dict_manual)
+
+    print("----------------------------")
+
+    return lab, dict_manual
 
 
 def menu_inicial():
@@ -115,8 +150,6 @@ def menu_inicial():
                 lab.load_data(None)
                 valido = True
                 guardarJpg(lab)
-                if preguntarResolver():
-                    elegirEstrategia()
 
             elif option == 2:
                 rows = pedir_filas()
@@ -132,20 +165,15 @@ def menu_inicial():
                 lab.load_data(dict_manual)
                 valido = True
                 guardarJpg(lab)
+
+                nombre_problema = generar_problema(lab, dict_manual)
+
                 if preguntarResolver():
+                    lab, dict_manual = cargar_problema(nombre_problema=nombre_problema)
                     elegirEstrategia()
 
             elif option == 3:
-                file_name_problema = open_file_dialog(True)
-                celda_inicial, celda_objetivo, file_name = LeerProblemaJson.getData(
-                    file_name_problema)
-                file_name=os.path.join("{0}/Recursos/JSONs/PROBLEMAs".format(os.getcwd()), file_name)
-                
-                lab = Labyrinth(file_name)
-                dict_manual = LaberintoJson.leer_json(file_name)
-                LaberintoJson.check_json(dict_manual)
-                lab.load_data(dict_manual)
-
+                lab, dict_manual = cargar_problema(option=3)
                 elegirEstrategia()
 
                 valido = True
