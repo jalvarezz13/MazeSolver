@@ -179,7 +179,7 @@ def menu_inicial():
                 valido = True
                 pass
 
-            elif option==4:
+            elif option == 4:
                 print("Programa finalizado")
                 break
                 #sys.exit()
