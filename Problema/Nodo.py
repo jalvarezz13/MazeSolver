@@ -59,15 +59,14 @@ class Nodo:
         return self.__valor
     
     def calcularHeuristica(self, destino):
-        heuristica = (abs(int(self.__estado.getId()[0])-int(destino[0])) + abs(int(self.__estado.getId()[0])-int(destino[0])))
-        return heuristica
+        return abs(int(self.__estado.getId()[0])-int(destino[0])) + abs(int(self.__estado.getId()[1])-int(destino[1]))
 
     def generarSucesores(self, diccionario, frontera):
         file = open("Recursos/SUCESORs/sucesors_{0}X{1}_funcion.txt".format(
             diccionario["rows"], diccionario["cols"]), "a")
         sucesores = ""
         tupla = []
-        fronteraProv = []
+        #fronteraProv = []
         estado = self.getEstado()
 
         i = estado.getId()[0]
@@ -79,17 +78,8 @@ class Nodo:
             if diccionario["cells"]["({0}, {1})".format(i, j)]["neighbors"][z]:
                 coordFila = i + diccionario["mov"][z][0]
                 coordCol = j + diccionario["mov"][z][1]
-                estado = Estado(coordFila, coordCol)
-                fronteraProv.append(estado)
                 tupla.append((diccionario["id_mov"][z], "({0}, {1})".format(coordFila, coordCol), 1))
         sucesores += str(tupla) + "\n"
-
-        fronteraProv.sort(key=lambda estado: (estado.getId())) # estado.getId[0], estado.getId()[1]
-        idPadre = self.getIdNodo()
-        for i in range(0, len(fronteraProv)):
-            nodo = None
-            nodo = Nodo(idPadre+1+i, fronteraProv[i], self, tupla[i])
-            frontera.insertar(nodo)
 
         file.write(sucesores)
 
