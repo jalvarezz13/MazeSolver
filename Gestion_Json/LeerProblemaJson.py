@@ -9,10 +9,10 @@ class LeerProblemaJson:
         diccionario = json.loads(content)
 
         celda_inicio = diccionario["INITIAL"]
-        celda_objetivo = diccionario["OBJETIVE"]
+        celda_objetivo = diccionario["OBJECTIVE"]
         maze = diccionario["MAZE"]
 
         Cnfg.objetivo = celda_objetivo
-        print("MODIFICADO EL OBJETIVO: " + str(Cnfg.objetivo), flush=True)
+
         return celda_inicio, celda_objetivo, maze
 
