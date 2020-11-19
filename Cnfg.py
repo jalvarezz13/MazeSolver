@@ -14,6 +14,7 @@ GROUND = (220, 118, 51)
 GRASS = (46, 204, 113)
 WATER = (93, 173, 226)
 
-# OTRAS VARIABLE
+# OTRAS VARIABLES
 objetivo = None
 estrategia = None
+profundidad = 1000000
