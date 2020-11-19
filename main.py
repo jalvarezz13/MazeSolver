@@ -88,8 +88,9 @@ def elegirEstrategia():
     while not valido:
         try:
             option = int(input(
-                "\nElige la estrategia [1,2,3,4,5]:\n\t1. Profundidad\n\t2. Anchura\n\t3. Voraz\n\t4. Costo uniforme\n\t5. A*\n\n"))
-            if option >= 1 and option <= 5:
+                "\nElige la estrategia [1,2,3,4,5]:\n\t1. Profundidad\n\t2. Anchura\n\t3. Voraz\n\t4. Costo "
+                "uniforme\n\t5. A*\n\n"))
+            if 1 <= option <= 5:
                 valido = True
                 Cnfg.estrategia = option
             else:
@@ -133,6 +134,39 @@ def cargar_problema(option=None, nombre_problema=None):
     return lab, dict_manual
 
 
+def escoger_laberinto():
+    lab, file_name = open_file_dialog()
+    dict = LaberintoJson.leer_json(file_name)
+    LaberintoJson.check_json(dict)
+    lab.load_data(None)
+    guardarJpg(lab)
+    return lab, dict
+
+
+def inicializar_laberinto():
+    rows = pedir_filas()
+    cols = pedir_colmnas()
+
+    lab = Labyrinth(None, rows, cols)
+    lab.create_labyrinth()
+
+    json = LaberintoJson(rows, cols)
+    dict_manual = LaberintoJson.get_data(json)
+
+    lab.load_data(dict_manual)
+
+    return lab, dict_manual
+
+
+def generar_laberinto_Wilson(lab, dict_manual):
+    dict_manual = AlgoritmoWilson.algoritmo_wilson(lab, dict_manual)
+    lab.load_data(dict_manual)
+
+    guardarJpg(lab)
+
+    return lab, dict_manual
+
+
 def menu_inicial():
     valido = False
     dict_manual = None
@@ -142,35 +176,22 @@ def menu_inicial():
     while not valido or option != 4:
         try:
             option = int(input(
-                "\nElige una opción [1, 2, 3, 4]:\n\t1. Visualizar laberinto existente\n\t2. Generar laberinto con el algortimo Wilson \n\t3. Resolver problema\n\t4. Salir\n\n"))
+                "\nElige una opción [1, 2, 3, 4]:\n\t1. Visualizar laberinto existente\n\t2. Generar laberinto con el "
+                "algortimo Wilson \n\t3. Resolver problema\n\t4. Salir\n\n"))
             if option == 1:
-                lab, file_name = open_file_dialog()
-                dict_manual = LaberintoJson.leer_json(file_name)
-                LaberintoJson.check_json(dict_manual)
-                lab.load_data(None)
+                lab, dict_manual = escoger_laberinto()
                 valido = True
-                guardarJpg(lab)
 
             elif option == 2:
-                rows = pedir_filas()
-                cols = pedir_colmnas()
-                lab = Labyrinth(None, rows, cols)
-                lab.create_labyrinth()
-                json = LaberintoJson(rows, cols)
-                dict_manual = LaberintoJson.get_data(json)
-
-                lab.load_data(dict_manual)
-                dict_manual = AlgoritmoWilson.algoritmo_wilson(
-                    lab, dict_manual)
-                lab.load_data(dict_manual)
-                valido = True
-                guardarJpg(lab)
-
+                lab, dict_manual = inicializar_laberinto()
+                lab, dict_manual = generar_laberinto_Wilson(lab, dict_manual)
                 nombre_problema = generar_problema(lab, dict_manual)
 
                 if preguntarResolver():
                     lab, dict_manual = cargar_problema(nombre_problema=nombre_problema)
                     elegirEstrategia()
+
+                valido = True
 
             elif option == 3:
                 lab, dict_manual = cargar_problema(option=3)
@@ -189,7 +210,6 @@ def menu_inicial():
         except ValueError:
             print("Intruduce un valor válido [1, 2, 3, 4]\n")
 
-    #Cnfg.objetivo = None
     return [lab, dict_manual, file_name]
 
 
