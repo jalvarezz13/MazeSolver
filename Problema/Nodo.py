@@ -10,11 +10,10 @@ class Nodo:
         self.__accion = accion # [mov, id_destino, coste]
         self.__heuristica = self.calcularHeuristica(Cnfg.objetivo)
 
-        if self.__nodoPadre == None:
+        if self.__nodoPadre is None:
             self.__costo = 0
             self.__profundidad = 0
         else:
-            # Supones que será un entero siempre
             self.__costo = padre.getCosto() + accion[2] + 1
             self.__profundidad = padre.getProfundidad() + 1
 
@@ -40,8 +39,17 @@ class Nodo:
     def getPadre(self):
         return self.__nodoPadre
 
+    def getIdPadre(self):
+        if self.getPadre() is None:
+            return None
+        else:
+            return self.getPadre().getIdNodo()
+
     def getAccion(self):
-        return self.__accion
+        if self.__accion is None:
+            return None
+        else:
+            return self.__accion[0]
 
     def getEstado(self):
         return self.__estado
@@ -61,12 +69,12 @@ class Nodo:
     def calcularHeuristica(self, destino):
         return abs(int(self.__estado.getId()[0])-int(destino[0])) + abs(int(self.__estado.getId()[1])-int(destino[1]))
 
-    def generarSucesores(self, diccionario, frontera):
+    def generarSucesores(self, diccionario):
         file = open("Recursos/SUCESORs/sucesors_{0}X{1}_funcion.txt".format(
             diccionario["rows"], diccionario["cols"]), "a")
-        sucesores = ""
-        tupla = []
-        #fronteraProv = []
+
+        lista_sucesores = []
+        lista_fichero = []
         estado = self.getEstado()
 
         i = estado.getId()[0]
@@ -78,11 +86,18 @@ class Nodo:
             if diccionario["cells"]["({0}, {1})".format(i, j)]["neighbors"][z]:
                 coordFila = i + diccionario["mov"][z][0]
                 coordCol = j + diccionario["mov"][z][1]
-                tupla.append((diccionario["id_mov"][z], "({0}, {1})".format(coordFila, coordCol), 1))
-        sucesores += str(tupla) + "\n"
+                lista_sucesores.append((diccionario["id_mov"][z], "({0}, {1})".format(coordFila, coordCol), 1))
+                lista_fichero.append((diccionario["id_mov"][z], "({0}, {1})".format(coordFila, coordCol), 1))
+        sucesores += str(lista_fichero) + "\n"
 
         file.write(sucesores)
 
+        return lista_sucesores
+
+
     def toString(self):
-        return (self.getIdNodo(), self.getCosto(), self.getEstado().getId(), self.getPadre(), self.getAccion(),
-                self.getProfundidad(), self.getHeuristica(), self.getValor())
+
+        return("[{0}] [{1}, {2}, {3}, {4}, {5}, {6}, {7}]".format(self.getIdNodo(), self.getCosto(),
+                                                                  self.getEstado().getId(), self.getIdPadre(),
+                                                                  self.getAccion(), self.getProfundidad(),
+                                                                  self.getHeuristica(), self.getValor()))
