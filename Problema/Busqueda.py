@@ -1,12 +1,77 @@
 from Problema.Nodo import Nodo
+from Problema.Frontera import Frontera
+from Problema.Estado import Estado
 import Cnfg
 
+
 class Busqueda:
-    def algoritmoBusqueda(problema, profundidad):
-        visitado = set()
-        frontera = []
-        estrategia = Cnfg.estrategia
-        nodo = Nodo()
+
+    def generar_camino(nodo):
+        camino = []
+        while nodo.getPadre() is not None:
+            camino.append(nodo)
+            nodo = nodo.getPadre()
+
+        return camino.reverse()
+
+    def algoritmoBusqueda(self, problema):
+        visitados = set()
+        frontera = Frontera()
+        id = 0
+        estado = Estado(problema[0][0], problema[0][1])
+        padre = None
+        accion = None
+        nodo = Nodo(id, estado, padre, accion)
+
+        frontera.insertar(nodo)
+        solucion = False
+
+        while not frontera.esVacia() and not solucion:
+            nodo = frontera.getPrimerElemento()
+
+            if problema[1] == nodo.getEstado():
+                solucion = True
+
+            elif nodo.getEstado() in visitados and nodo.getProfundidad() < Cnfg.profundidad:
+                visitados.add(nodo.getEstado())
+                lista_sucesores = nodo.generarSucesores()
+
+                for sucesor in lista_sucesores:
+                    id += 1
+                    estado = Estado(sucesor[1])
+                    nodo_hijo = Nodo(id, estado, nodo, sucesor[0])
+                    frontera.insertar(nodo_hijo)
+
+        if solucion:
+            return self.generar_camino(nodo)
+
+        else:
+            return None
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # BUSQUEDA (Problema,profundidad,estrategia): solución
 
