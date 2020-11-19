@@ -273,13 +273,18 @@ def main():
     ############ PRUEBAS ##############
 
     frontera1 = Frontera()
+    celda = generar_celda_random(lab)
+    estado = Estado(celda[0], celda[1])
+    accion = ["N", 4, 3]
+    nodo = Nodo(len(frontera1.getFrontera()), estado, None, None)
+    frontera1.insertar(nodo)
 
     for i in range(5):
         celda = generar_celda_random(lab)
         estado = Estado(celda[0], celda[1])
-        nodo = Nodo(len(frontera1.getFrontera()), estado, None, None)
+        nodo = Nodo(len(frontera1.getFrontera()), estado, nodo, accion)
         frontera1.insertar(nodo)
-        nodo.generarSucesores(dict_data_manual, frontera1)
+        nodo.generarSucesores(dict_data_manual)
 
     for nodo in frontera1.getFrontera():
         print(nodo.toString())
