@@ -1,4 +1,3 @@
-import time
 
 from Laberinto.Labyrinth import Labyrinth
 from Laberinto.AlgoritmoWilson import AlgoritmoWilson
@@ -10,6 +9,7 @@ from Gestion_Json.CrearProblemaJson import CrearProblemaJson
 from Problema.Nodo import Nodo
 from Problema.Estado import Estado
 from Problema.Frontera import Frontera
+from Problema.Busqueda import Busqueda
 
 from Dibujar.Ventana import Ventana
 
@@ -196,7 +196,7 @@ def menu_inicial():
             elif option == 3:
                 lab, dict_manual = cargar_problema(option=3)
                 elegirEstrategia()
-
+                print(Busqueda())
                 valido = True
                 pass
 
