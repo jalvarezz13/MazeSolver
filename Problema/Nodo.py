@@ -86,7 +86,7 @@ class Nodo:
             if diccionario["cells"]["({0}, {1})".format(i, j)]["neighbors"][z]:
                 coordFila = i + diccionario["mov"][z][0]
                 coordCol = j + diccionario["mov"][z][1]
-                lista_sucesores.append((diccionario["id_mov"][z], "({0}, {1})".format(coordFila, coordCol), 1))
+                lista_sucesores.append((diccionario["id_mov"][z], (coordFila, coordCol), 1))
                 lista_fichero.append((diccionario["id_mov"][z], "({0}, {1})".format(coordFila, coordCol), 1))
         sucesores += str(lista_fichero) + "\n"
 

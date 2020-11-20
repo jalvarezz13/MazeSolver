@@ -131,7 +131,7 @@ def cargar_problema(option=None, nombre_problema=None):
 
     print("----------------------------")
 
-    return lab, dict_manual
+    return lab, dict_manual, [celda_inicial, celda_objetivo, dict_manual]
 
 
 def escoger_laberinto():
@@ -194,23 +194,24 @@ def menu_inicial():
                 valido = True
 
             elif option == 3:
-                lab, dict_manual = cargar_problema(option=3)
+                lab, dict_manual, datos_problema = cargar_problema(option=3)
                 elegirEstrategia()
-                print(Busqueda())
+                busqueda = Busqueda(datos_problema)
+                busqueda.algoritmoBusqueda()
+                camino = busqueda.get_camino()
+                for nodo in camino:
+                    print(nodo.toString() + "\n")
                 valido = True
                 pass
 
             elif option == 4:
                 print("Programa finalizado")
-                break
-                #sys.exit()
+                sys.exit()
 
             else:
                 print("Intruduce un valor válido [1, 2, 3, 4]\n")
         except ValueError:
             print("Intruduce un valor válido [1, 2, 3, 4]\n")
-
-    return [lab, dict_manual, file_name]
 
 
 def checkear_dirs():
@@ -268,28 +269,7 @@ def guardarJpg(lab):
 
 def main():
     checkear_dirs()
-    lab, dict_data_manual, name_fichero = menu_inicial()
-   
-    ############ PRUEBAS ##############
-
-    frontera1 = Frontera()
-    celda = generar_celda_random(lab)
-    estado = Estado(celda[0], celda[1])
-    accion = ["N", 4, 3]
-    nodo = Nodo(len(frontera1.getFrontera()), estado, None, None)
-    frontera1.insertar(nodo)
-
-    for i in range(5):
-        celda = generar_celda_random(lab)
-        estado = Estado(celda[0], celda[1])
-        nodo = Nodo(len(frontera1.getFrontera()), estado, nodo, accion)
-        frontera1.insertar(nodo)
-        nodo.generarSucesores(dict_data_manual)
-
-    for nodo in frontera1.getFrontera():
-        print(nodo.toString())
-    
-    ###############################################
+    menu_inicial()
 
 
 if __name__ == '__main__':
