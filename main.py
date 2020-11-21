@@ -139,7 +139,7 @@ def escoger_laberinto():
     dict = LaberintoJson.leer_json(file_name)
     LaberintoJson.check_json(dict)
     lab.load_data(None)
-    guardarJpg(lab)
+    guardarJpg(lab, False, None)
     return lab, dict
 
 
@@ -162,7 +162,7 @@ def generar_laberinto_Wilson(lab, dict_manual):
     dict_manual = AlgoritmoWilson.algoritmo_wilson(lab, dict_manual)
     lab.load_data(dict_manual)
 
-    guardarJpg(lab)
+    guardarJpg(lab, False, None)
 
     return lab, dict_manual
 
@@ -198,9 +198,10 @@ def menu_inicial():
                 elegirEstrategia()
                 busqueda = Busqueda(datos_problema)
                 busqueda.algoritmoBusqueda()
-                camino = busqueda.get_camino()
-                for nodo in camino:
-                    print(nodo.toString() + "\n")
+                camino = busqueda.obtenerIDs()
+                # for nodo in camino:
+                #     print(nodo.toString() + "\n")
+                guardarJpg(lab, True, camino)
                 valido = True
                 pass
 
@@ -252,14 +253,21 @@ def preguntarResolver():
             print("Introduce datos válidos (Y/n)")
 
 
-def guardarJpg(lab):
+def guardarJpg(lab, solucion, camino):
     screen = Ventana.inicializar_ventana(lab)
     screen.fill(Cnfg.WHITE)
-    Ventana.dibujar(screen, lab)
+
+
+    if solucion:
+        name = "SOLUCION_Laberinto_B1_2_" + str(lab.get_rows()) + "x" + str(lab.get_cols()) + ".jpg"
+        Ventana.dibujarSol(screen, lab, camino)
+    else:
+        name = "Laberinto_B1_2_" + str(lab.get_rows()) + "x" + str(lab.get_cols()) + ".jpg"
+        Ventana.dibujar(screen, lab)
+
     pygame.display.update()
 
-    name = "Laberinto_B1_2_" + \
-        str(lab.get_rows()) + "x" + str(lab.get_cols()) + ".jpg"
+
     pygame.image.save(screen, "Recursos/JPGs/{0}".format(name))
     pygame.quit()
 

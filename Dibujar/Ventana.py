@@ -1,6 +1,7 @@
 import pygame
 import Cnfg
 
+
 class Ventana:
     def dibujarLineas(screen, lab):
         if lab.get_rows() > lab.get_cols():
@@ -39,6 +40,23 @@ class Ventana:
                                     x, y + w], [x, y], grosor)
                 x = x + w
 
+    def dibujarSolucion(screen, lab, solucion):
+        if lab.get_rows() > lab.get_cols():
+            w = int(Cnfg.ancho / lab.get_rows())
+        else:
+            w = int(Cnfg.alto / lab.get_cols())
+        y = -w + 20
+
+        for i in range(0, lab.get_rows()):
+            x = 20
+            y = y + w
+
+            for j in range(0, lab.get_cols()):
+                if solucion.count((i, j)) >= 1:
+                    pygame.draw.rect(screen, Cnfg.RED, [x, y, w, w], 0)
+
+                x = x + w
+
     def dibujarColores(screen, lab):
         if lab.get_rows() > lab.get_cols():
             w = int(Cnfg.ancho / lab.get_rows())
@@ -69,6 +87,11 @@ class Ventana:
 
     def dibujar(screen, lab):
         Ventana.dibujarColores(screen, lab)
+        Ventana.dibujarLineas(screen, lab)
+
+    def dibujarSol(screen, lab, solucion):
+        Ventana.dibujarColores(screen, lab)
+        Ventana.dibujarSolucion(screen, lab, solucion)
         Ventana.dibujarLineas(screen, lab)
 
     def inicializar_ventana(lab):

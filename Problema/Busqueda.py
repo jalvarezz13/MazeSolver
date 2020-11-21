@@ -24,6 +24,15 @@ class Busqueda:
 
         self.camino.reverse()
 
+    def obtenerIDs(self):
+        listaIDs = []
+        for i in range(0, len(self.camino)):
+            nodo = self.camino[i]
+            listaIDs.append(nodo.getEstado().getId())
+
+        return listaIDs
+
+
     def algoritmoBusqueda(self):
         visitados = set()
         frontera = Frontera()
@@ -45,7 +54,7 @@ class Busqueda:
             elif nodo.getEstado().getId() not in visitados and nodo.getProfundidad() < Cnfg.profundidad:
                 visitados.add(nodo.getEstado().getId())
                 lista_sucesores = nodo.generarSucesores(self.diccionario)
-
+                print(lista_sucesores)
                 for sucesor in lista_sucesores:
                     id += 1
                     estado = Estado(sucesor[1][0], sucesor[1][1])
