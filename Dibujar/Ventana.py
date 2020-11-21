@@ -11,7 +11,7 @@ class Ventana:
         y = -w + 20
 
         if(lab.get_rows() >= 75 or lab.get_cols() >= 75):
-            grosor = Cnfg.anchoLinea - 1
+            grosor = Cnfg.anchoLinea - 2
         else:
             grosor = Cnfg.anchoLinea
 
