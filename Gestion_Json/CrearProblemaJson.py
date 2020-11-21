@@ -6,10 +6,14 @@ import Cnfg
 class CrearProblemaJson:
 
     def __init__(self, inicial, final, maze):
+        self.__inicial=inicial
+        self.__final=final
+        self.__maze = maze
         data = {}
-        data["INITIAL"] = inicial
-        data["OBJECTIVE"] = final
-        data["MAZE"] = maze
+        data["INITIAL"] = self.__inicial
+        data["OBJECTIVE"] = self.__final
+        data["MAZE"] = self.__maze
+        
 
         self.file_name = "Problema_B1_2_{0}to{1}.json".format(inicial, final)
         Cnfg.objetivo = final
@@ -18,3 +22,6 @@ class CrearProblemaJson:
 
     def get_nombre_problema(self):
         return self.file_name
+
+    def get_datos_problema(self):
+        return [self.__inicial, self.__final]

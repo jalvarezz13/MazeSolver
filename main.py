@@ -111,7 +111,7 @@ def generar_problema(lab, dict_data_manual):
 
     print("Problema generado: {0}".format(problema.get_nombre_problema()))
 
-    return problema.get_nombre_problema()
+    return problema.get_nombre_problema(), problema.get_datos_problema()
 
 
 def cargar_problema(option=None, nombre_problema=None):
@@ -166,6 +166,16 @@ def generar_laberinto_Wilson(lab, dict_manual):
 
     return lab, dict_manual
 
+def resolverProblema(nombre_problema=None, lab=None, datos_problema=None):
+    if nombre_problema is None:
+        lab, dict_manual, datos_problema = cargar_problema(option=3)
+    
+    elegirEstrategia()
+    busqueda = Busqueda(datos_problema)
+    busqueda.algoritmoBusqueda()
+    camino = busqueda.obtenerIDs()
+    guardarJpg(lab, True, camino)
+
 
 def menu_inicial():
     valido = False
@@ -185,23 +195,16 @@ def menu_inicial():
             elif option == 2:
                 lab, dict_manual = inicializar_laberinto()
                 lab, dict_manual = generar_laberinto_Wilson(lab, dict_manual)
-                nombre_problema = generar_problema(lab, dict_manual)
+                nombre_problema, datos_problema = generar_problema(lab, dict_manual)
+                datos_problema.append(dict_manual)
 
                 if preguntarResolver():
-                    lab, dict_manual = cargar_problema(nombre_problema=nombre_problema)
-                    elegirEstrategia()
+                    resolverProblema(nombre_problema=nombre_problema, lab=lab, datos_problema=datos_problema)
 
                 valido = True
 
             elif option == 3:
-                lab, dict_manual, datos_problema = cargar_problema(option=3)
-                elegirEstrategia()
-                busqueda = Busqueda(datos_problema)
-                busqueda.algoritmoBusqueda()
-                camino = busqueda.obtenerIDs()
-                # for nodo in camino:
-                #     print(nodo.toString() + "\n")
-                guardarJpg(lab, True, camino)
+                resolverProblema()
                 valido = True
                 pass
 
