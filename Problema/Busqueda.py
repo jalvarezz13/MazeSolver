@@ -24,13 +24,13 @@ class Busqueda:
 
         self.camino.reverse()
 
-    def obtenerIDs(self):
-        listaIDs = []
+    def obtenerNodos(self):
+        listaNodos = []
         for i in range(0, len(self.camino)):
             nodo = self.camino[i]
-            listaIDs.append(nodo.getEstado().getId())
+            listaNodos.append(nodo.getEstado().getId())
 
-        return listaIDs
+        return listaNodos
 
 
     def algoritmoBusqueda(self):

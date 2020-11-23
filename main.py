@@ -169,22 +169,16 @@ def generar_laberinto_Wilson(lab, dict_manual):
 def resolverProblema(nombre_problema=None, lab=None, datos_problema=None):
     if nombre_problema is None:
         lab, dict_manual, datos_problema = cargar_problema(option=3)
-    
-    print(Cnfg.objetivo)
+
     elegirEstrategia()
     busqueda = Busqueda(datos_problema)
-    print("Hola 1")
     busqueda.algoritmoBusqueda()
-    print("Hola 2")
-    camino = busqueda.obtenerIDs()
+    camino = busqueda.obtenerNodos()
     guardarJpg(lab, True, camino)
 
 
 def menu_inicial():
     valido = False
-    dict_manual = None
-    lab = None
-    file_name = None
     option = None
     while not valido or option != 4:
         try:
@@ -192,7 +186,7 @@ def menu_inicial():
                 "\nElige una opción [1, 2, 3, 4]:\n\t1. Visualizar laberinto existente\n\t2. Generar laberinto con el "
                 "algortimo Wilson \n\t3. Resolver problema\n\t4. Salir\n\n"))
             if option == 1:
-                lab, dict_manual = escoger_laberinto()
+                escoger_laberinto()
                 valido = True
 
             elif option == 2:
