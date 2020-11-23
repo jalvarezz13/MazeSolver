@@ -41,7 +41,7 @@ class Busqueda:
         padre = None
         accion = None
         nodo = Nodo(id, estado, padre, accion)
-
+        
         # visitados.add(nodo.getEstado().getId())
         frontera.insertar(nodo)
         solucion = False

@@ -88,7 +88,7 @@ def elegirEstrategia():
     while not valido:
         try:
             option = int(input(
-                "\nElige la estrategia [1,2,3,4,5]:\n\t1. Profundidad\n\t2. Anchura\n\t3. Voraz\n\t4. Costo "
+                "\nElige la estrategia [1, 2, 3, 4, 5]:\n\t1. Profundidad\n\t2. Anchura\n\t3. Voraz\n\t4. Costo "
                 "uniforme\n\t5. A*\n\n"))
             if 1 <= option <= 5:
                 valido = True
@@ -170,9 +170,12 @@ def resolverProblema(nombre_problema=None, lab=None, datos_problema=None):
     if nombre_problema is None:
         lab, dict_manual, datos_problema = cargar_problema(option=3)
     
+    print(Cnfg.objetivo)
     elegirEstrategia()
     busqueda = Busqueda(datos_problema)
+    print("Hola 1")
     busqueda.algoritmoBusqueda()
+    print("Hola 2")
     camino = busqueda.obtenerIDs()
     guardarJpg(lab, True, camino)
 
@@ -209,13 +212,13 @@ def menu_inicial():
                 pass
 
             elif option == 4:
-                print("Programa finalizado")
+                print("Programa finalizado.")
                 sys.exit()
 
             else:
-                print("Intruduce un valor válido [1, 2, 3, 4]\n")
+                print("Intruduce un valor válido [1, 2, 3, 4]:\n")
         except ValueError:
-            print("Intruduce un valor válido [1, 2, 3, 4]\n")
+            print("Intruduce un valor válido [1, 2, 3, 4]:\n")
 
 
 def checkear_dirs():
