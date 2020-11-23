@@ -175,10 +175,14 @@ def resolverProblema(nombre_problema=None, lab=None, datos_problema=None):
     if nombre_problema is None:
         lab, dict_manual, datos_problema = cargar_problema(option=3)
 
-    estrategia = elegirEstrategia()
+    elegirEstrategia()
+    print("hey")
     busqueda = Busqueda(datos_problema)
+    print("hey 2 " + str(busqueda))
     busqueda.algoritmoBusqueda()
+    print("hey 3")
     camino = busqueda.obtenerNodos()
+    print("hey 4")
     guardarJpg(lab, camino=camino)
 
 
