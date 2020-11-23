@@ -127,7 +127,7 @@ def cargar_problema(option=None, nombre_problema=None):
 
     path = os.getcwd()+"/Recursos/JSONs/PROBLEMAs/{0}".format(nombre_problema)
     celda_inicial, celda_objetivo, maze = LeerProblemaJson.getData(path)
-    file_name = os.path.join("{0}/Recursos/JSONs/{1}".format(os.getcwd(), maze))
+    file_name = os.path.join("{0}/Recursos/JSONs/MAZEs/{1}".format(os.getcwd(), maze))
 
     lab = Labyrinth(file_name)
     dict_manual = LaberintoJson.leer_json(file_name)
@@ -282,21 +282,21 @@ def guardarJpg(lab, camino=None, estrategia=None):
     screen = Ventana.inicializar_ventana(lab)
     screen.fill(Cnfg.WHITE)
 
-
     if camino is not None:
         name = "SOLUCION_Laberinto_B1_2_" + str(lab.get_rows()) + "x" + str(lab.get_cols()) + estrategia + "_.jpg"
         Ventana.dibujarSol(screen, lab, camino)
+        pygame.display.update()
+        pygame.image.save(screen, "Recursos/JPGs/SOLUTIONs{0}".format(name))
+        pygame.quit()
+        img = Image.open(f"Recursos/JPGs/SOLUTIONs/{name}")
     else:
         name = "Laberinto_B1_2_" + str(lab.get_rows()) + "x" + str(lab.get_cols()) + ".jpg"
         Ventana.dibujar(screen, lab)
+        pygame.display.update()
+        pygame.image.save(screen, "Recursos/JPGs/MAZEs{0}".format(name))
+        pygame.quit()
+        img = Image.open(f"Recursos/JPGs/MAZEs/{name}")
 
-    pygame.display.update()
-
-
-    pygame.image.save(screen, "Recursos/JPGs/{0}".format(name))
-    pygame.quit()
-
-    img = Image.open(f"Recursos/JPGs/{name}")
     img.show()
 
 

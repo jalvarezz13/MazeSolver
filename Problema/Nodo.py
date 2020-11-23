@@ -70,7 +70,7 @@ class Nodo:
         return abs(int(self.__estado.getId()[0])-int(destino[0])) + abs(int(self.__estado.getId()[1])-int(destino[1]))
 
     def generarSucesores(self, diccionario):
-        file = open("Recursos/SUCESORs/sucesors_{0}X{1}_funcion.txt".format(
+        file = open("Recursos/TXTs/SUCESORs/sucesors_{0}X{1}_funcion.txt".format(
             diccionario["rows"], diccionario["cols"]), "a")
 
         lista_sucesores = []
