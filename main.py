@@ -179,7 +179,7 @@ def resolverProblema(nombre_problema=None, lab=None, datos_problema=None):
     busqueda = Busqueda(datos_problema)
     busqueda.algoritmoBusqueda()
     camino = busqueda.obtenerNodos()
-    guardarJpg(lab, camino=camino, estrategia=estrategia)
+    guardarJpg(lab, camino=camino)
 
 
 def menu_inicial():
@@ -278,12 +278,12 @@ def preguntarResolver():
             print("Introduce datos válidos (Y/n)")
 
 
-def guardarJpg(lab, camino=None, estrategia=None):
+def guardarJpg(lab, camino=None):
     screen = Ventana.inicializar_ventana(lab)
     screen.fill(Cnfg.WHITE)
 
     if camino is not None:
-        name = "SOLUCION_Laberinto_B1_2_" + str(lab.get_rows()) + "x" + str(lab.get_cols()) + estrategia + "_.jpg"
+        name = "SOLUCION_Laberinto_B1_2_" + str(lab.get_rows()) + "x" + str(lab.get_cols()) + Cnfg.estrategia + "_.jpg"
         Ventana.dibujarSol(screen, lab, camino)
         pygame.display.update()
         pygame.image.save(screen, "Recursos/JPGs/SOLUTIONs{0}".format(name))

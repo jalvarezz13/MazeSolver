@@ -21,8 +21,12 @@ class Busqueda:
             nodo = nodo.getPadre()
 
         self.camino.append(nodo)
-
         self.camino.reverse()
+        generarArchivoSolucion()
+
+    def generarArchivoSolucion(self):
+        file = open("Recursos/TXTs/SOLUTIONs/Solucion_{0}to{1}_{2}}.txt".format(self.inicio, self.objetivo, Cnfg.estrategia), "a")
+        file.write(self.camino)
 
     def obtenerNodos(self):
         listaNodos = []
@@ -42,7 +46,7 @@ class Busqueda:
         accion = None
         nodo = Nodo(id, estado, padre, accion)
         
-        # visitados.add(nodo.getEstado().getId())
+        visitados.add(nodo.getEstado().getId())
         frontera.insertar(nodo)
         solucion = False
 
