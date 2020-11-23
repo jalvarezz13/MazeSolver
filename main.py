@@ -93,6 +93,11 @@ def elegirEstrategia():
             if 1 <= option <= 5:
                 valido = True
                 Cnfg.estrategia = option
+                if option == 1: return "DEPTH"
+                elif option == 2: return "BREADTH"
+                elif option == 3: return "GREEDY"
+                elif option == 4: return "UNIFORM"
+                else: return "A*"
             else:
                 print("Intruduce un valor válido [1, 2, 3, 4, 5]\n")
         except ValueError:
@@ -139,7 +144,7 @@ def escoger_laberinto():
     dict = LaberintoJson.leer_json(file_name)
     LaberintoJson.check_json(dict)
     lab.load_data(None)
-    guardarJpg(lab, False, None)
+    guardarJpg(lab)
     return lab, dict
 
 
@@ -162,7 +167,7 @@ def generar_laberinto_Wilson(lab, dict_manual):
     dict_manual = AlgoritmoWilson.algoritmo_wilson(lab, dict_manual)
     lab.load_data(dict_manual)
 
-    guardarJpg(lab, False, None)
+    guardarJpg(lab)
 
     return lab, dict_manual
 
@@ -170,11 +175,11 @@ def resolverProblema(nombre_problema=None, lab=None, datos_problema=None):
     if nombre_problema is None:
         lab, dict_manual, datos_problema = cargar_problema(option=3)
 
-    elegirEstrategia()
+    estrategia = elegirEstrategia()
     busqueda = Busqueda(datos_problema)
     busqueda.algoritmoBusqueda()
     camino = busqueda.obtenerNodos()
-    guardarJpg(lab, True, camino)
+    guardarJpg(lab, camino=camino, estrategia=estrategia)
 
 
 def menu_inicial():
@@ -219,18 +224,38 @@ def checkear_dirs():
     if not os.path.exists("Recursos"):
         os.mkdir("Recursos")
 
-    if not os.path.exists("Recursos/JSONs"):
-        os.mkdir("Recursos/JSONs")
+    # JPGs
 
     if not os.path.exists("Recursos/JPGs"):
         os.mkdir("Recursos/JPGs")
 
-    if not os.path.exists("Recursos/SUCESORs"):
-        os.mkdir("Recursos/SUCESORs")
+    if not os.path.exists("Recursos/JPGs/MAZEs"):
+        os.mkdir("Recursos/JPGs/MAZEs")
+    
+    if not os.path.exists("Recursos/JPGs/SOLUTIONs"):
+        os.mkdir("Recursos/JPGs/SOLUTIONs")
+
+    # JSONs
+
+    if not os.path.exists("Recursos/JSONs"):
+        os.mkdir("Recursos/JSONs")
 
     if not os.path.exists("Recursos/JSONs/PROBLEMAs"):
         os.mkdir("Recursos/JSONs/PROBLEMAs")
+    
+    if not os.path.exists("Recursos/JSONs/MAZEs"):
+        os.mkdir("Recursos/JSONs/MAZEs")
+    
+    # TXTs
 
+    if not os.path.exists("Recursos/TXTs"):
+        os.mkdir("Recursos/TXTs")
+
+    if not os.path.exists("Recursos/TXTs/SOLUTIONs"):
+        os.mkdir("Recursos/TXTs/SOLUTIONs")
+    
+    if not os.path.exists("Recursos/TXTs/SUCESORs"):
+        os.mkdir("Recursos/JPGs/SUCESORs")
 
 def generar_celda_random(lab):
     array = []
@@ -253,13 +278,13 @@ def preguntarResolver():
             print("Introduce datos válidos (Y/n)")
 
 
-def guardarJpg(lab, solucion, camino):
+def guardarJpg(lab, camino=None, estrategia=None):
     screen = Ventana.inicializar_ventana(lab)
     screen.fill(Cnfg.WHITE)
 
 
-    if solucion:
-        name = "SOLUCION_Laberinto_B1_2_" + str(lab.get_rows()) + "x" + str(lab.get_cols()) + ".jpg"
+    if camino is not None:
+        name = "SOLUCION_Laberinto_B1_2_" + str(lab.get_rows()) + "x" + str(lab.get_cols()) + estrategia + "_.jpg"
         Ventana.dibujarSol(screen, lab, camino)
     else:
         name = "Laberinto_B1_2_" + str(lab.get_rows()) + "x" + str(lab.get_cols()) + ".jpg"
