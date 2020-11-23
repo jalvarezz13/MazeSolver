@@ -42,11 +42,12 @@ class Busqueda:
         frontera = Frontera()
         id = 0
         estado = Estado(self.inicio[0], self.inicio[1])
+        print("BUSQUEDA.estado inicial" + str(estado.getId()))
         padre = None
         accion = None
         nodo = Nodo(id, estado, padre, accion)
         
-        visitados.add(nodo.getEstado().getId())
+        #visitados.add(nodo.getEstado().getId()) // TIEEENE QUE ESTAR COMENTADA O NO?
         frontera.insertar(nodo)
         solucion = False
 

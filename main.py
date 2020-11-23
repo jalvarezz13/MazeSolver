@@ -126,6 +126,8 @@ def cargar_problema(option=None, nombre_problema=None):
         nombre_problema = dir[len(dir) - 1]
 
     path = os.getcwd()+"/Recursos/JSONs/PROBLEMAs/{0}".format(nombre_problema)
+    print(path)
+
     celda_inicial, celda_objetivo, maze = LeerProblemaJson.getData(path)
     file_name = os.path.join("{0}/Recursos/JSONs/MAZEs/{1}".format(os.getcwd(), maze))
 
@@ -176,9 +178,7 @@ def resolverProblema(nombre_problema=None, lab=None, datos_problema=None):
         lab, dict_manual, datos_problema = cargar_problema(option=3)
 
     elegirEstrategia()
-    print("hey")
     busqueda = Busqueda(datos_problema)
-    print("hey 2 " + str(busqueda))
     busqueda.algoritmoBusqueda()
     print("hey 3")
     camino = busqueda.obtenerNodos()

@@ -16,6 +16,7 @@ WATER = (93, 173, 226)
 RED = (255, 0, 0)
 
 # OTRAS VARIABLES
+inicial = None
 objetivo = None
 estrategia = None
 estrategiaName = None
