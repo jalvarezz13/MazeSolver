@@ -93,11 +93,11 @@ def elegirEstrategia():
             if 1 <= option <= 5:
                 valido = True
                 Cnfg.estrategia = option
-                if option == 1: return "DEPTH"
-                elif option == 2: return "BREADTH"
-                elif option == 3: return "GREEDY"
-                elif option == 4: return "UNIFORM"
-                else: return "A*"
+                if option == 1: Cnfg.estrategiaName = "DEPTH"
+                elif option == 2: Cnfg.estrategiaName = "BREADTH"
+                elif option == 3: Cnfg.estrategiaName = "GREEDY"
+                elif option == 4: Cnfg.estrategiaName = "UNIFORM"
+                else: Cnfg.estrategiaName = "A*"
             else:
                 print("Intruduce un valor válido [1, 2, 3, 4, 5]\n")
         except ValueError:
@@ -283,17 +283,17 @@ def guardarJpg(lab, camino=None):
     screen.fill(Cnfg.WHITE)
 
     if camino is not None:
-        name = "SOLUCION_Laberinto_B1_2_" + str(lab.get_rows()) + "x" + str(lab.get_cols()) + Cnfg.estrategia + "_.jpg"
+        name = "SOLUCION_Laberinto_B1_2_" + str(lab.get_rows()) + "x" + str(lab.get_cols()) + "_" + str(Cnfg.estrategiaName) + "_.jpg"
         Ventana.dibujarSol(screen, lab, camino)
         pygame.display.update()
-        pygame.image.save(screen, "Recursos/JPGs/SOLUTIONs{0}".format(name))
+        pygame.image.save(screen, "Recursos/JPGs/SOLUTIONs/{0}".format(name))
         pygame.quit()
         img = Image.open(f"Recursos/JPGs/SOLUTIONs/{name}")
     else:
         name = "Laberinto_B1_2_" + str(lab.get_rows()) + "x" + str(lab.get_cols()) + ".jpg"
         Ventana.dibujar(screen, lab)
         pygame.display.update()
-        pygame.image.save(screen, "Recursos/JPGs/MAZEs{0}".format(name))
+        pygame.image.save(screen, "Recursos/JPGs/MAZEs/{0}".format(name))
         pygame.quit()
         img = Image.open(f"Recursos/JPGs/MAZEs/{name}")
 

@@ -22,11 +22,11 @@ class Busqueda:
 
         self.camino.append(nodo)
         self.camino.reverse()
-        generarArchivoSolucion()
 
-    def generarArchivoSolucion(self):
+        # GUARDAR EN ARCHIVO DE TEXTO
         file = open("Recursos/TXTs/SOLUTIONs/Solucion_{0}to{1}_{2}}.txt".format(self.inicio, self.objetivo, Cnfg.estrategia), "a")
         file.write(self.camino)
+
 
     def obtenerNodos(self):
         listaNodos = []
@@ -58,7 +58,6 @@ class Busqueda:
             elif nodo.getEstado().getId() not in visitados and nodo.getProfundidad() < Cnfg.profundidad:
                 visitados.add(nodo.getEstado().getId())
                 lista_sucesores = nodo.generarSucesores(self.diccionario)
-                print(lista_sucesores)
                 for sucesor in lista_sucesores:
                     id += 1
                     estado = Estado(sucesor[1][0], sucesor[1][1])

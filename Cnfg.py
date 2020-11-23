@@ -18,4 +18,5 @@ RED = (255, 0, 0)
 # OTRAS VARIABLES
 objetivo = None
 estrategia = None
+estrategiaName = None
 profundidad = 1000000
