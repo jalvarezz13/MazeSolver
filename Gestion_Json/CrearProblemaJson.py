@@ -6,12 +6,12 @@ import Cnfg
 class CrearProblemaJson:
 
     def __init__(self, inicial, final, maze):
-        self.__inicial=inicial
-        self.__final=final
+        self.__inicial = tuple(inicial)
+        self.__final = tuple(final)
         self.__maze = maze
         data = {}
-        data["INITIAL"] = self.__inicial
-        data["OBJECTIVE"] = self.__final
+        data["INITIAL"] = str(self.__inicial)
+        data["OBJETIVE"] = str(self.__final)
         data["MAZE"] = self.__maze
         
 
