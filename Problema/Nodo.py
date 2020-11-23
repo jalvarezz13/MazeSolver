@@ -67,9 +67,6 @@ class Nodo:
         return self.__valor
     
     def calcularHeuristica(self, destino):
-        print(destino)
-        print(destino[0])
-        print(abs(int(self.__estado.getId()[0])-int(destino[0])) + abs(int(self.__estado.getId()[1])-int(destino[1])))
         return abs(int(self.__estado.getId()[0])-int(destino[0])) + abs(int(self.__estado.getId()[1])-int(destino[1]))
 
     def generarSucesores(self, diccionario):
