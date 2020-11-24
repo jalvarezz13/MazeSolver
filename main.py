@@ -59,7 +59,7 @@ def open_file_dialog(leerProblema=None):
     root = tk.Tk()
     root.withdraw()
     root.call('wm', 'attributes', '.', '-topmost', True)
-    ruta = os.getcwd()
+    ruta = os.getcwd()+"\\Recursos"
     file_name = filedialog.askopenfilename(initialdir=ruta, filetypes={("json files", "*.json")})
     try:
         if leerProblema == None:
@@ -123,9 +123,7 @@ def cargar_problema(option=None, nombre_problema=None):
         dir = path_problema.split("/")
         nombre_problema = dir[len(dir) - 1]
 
-    path = os.getcwd()+"/Recursos/JSONs/PROBLEMAs/{0}".format(nombre_problema)
-    print(path)
-
+    path = os.getcwd()+"\Recursos\JSONs\PROBLEMAs\{0}".format(nombre_problema)
     maze = LeerProblemaJson.getData(path)
     file_name = os.path.join("{0}/Recursos/JSONs/MAZEs/{1}".format(os.getcwd(), maze))
 
