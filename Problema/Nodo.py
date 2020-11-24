@@ -86,8 +86,8 @@ class Nodo:
             if diccionario["cells"]["({0}, {1})".format(i, j)]["neighbors"][z]:
                 coordFila = i + diccionario["mov"][z][0]
                 coordCol = j + diccionario["mov"][z][1]
-                lista_sucesores.append((diccionario["id_mov"][z], (coordFila, coordCol), 1))
-                lista_fichero.append((diccionario["id_mov"][z], "({0}, {1})".format(coordFila, coordCol), 1))
+                lista_sucesores.append((diccionario["id_mov"][z], (coordFila, coordCol), diccionario["cells"]["({0}, {1})".format(coordFila, coordCol)]["value"]))
+                lista_fichero.append((diccionario["id_mov"][z], "({0}, {1})".format(coordFila, coordCol), diccionario["cells"]["({0}, {1})".format(coordFila, coordCol)]["value"]))
         sucesores += str(lista_fichero) + "\n"
 
         file.write(sucesores)
@@ -97,7 +97,7 @@ class Nodo:
 
     def toString(self):
 
-        return("[{0}] [{1}, {2}, {3}, {4}, {5}, {6}, {7}]".format(self.getIdNodo(), self.getCosto(),
+        return("[{0}][{1},{2},{3},{4},{5},{6},{7}]".format(self.getIdNodo(), self.getCosto(),
                                                                   self.getEstado().getId(), self.getIdPadre(),
                                                                   self.getAccion(), self.getProfundidad(),
                                                                   self.getHeuristica(), self.getValor()))

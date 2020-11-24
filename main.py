@@ -1,4 +1,3 @@
-
 from Laberinto.Labyrinth import Labyrinth
 from Laberinto.AlgoritmoWilson import AlgoritmoWilson
 
@@ -60,7 +59,7 @@ def open_file_dialog(leerProblema=None):
     root = tk.Tk()
     root.withdraw()
     root.call('wm', 'attributes', '.', '-topmost', True)
-    ruta = os.getcwd()
+    ruta = os.getcwd()+"/Recursos"
     file_name = filedialog.askopenfilename(
         initialdir=ruta, filetypes={("json files", "*.json")})
     try:
