@@ -25,10 +25,10 @@ class Busqueda:
         self.camino.reverse()
 
         # GUARDAR EN ARCHIVO DE TEXTO
-        file = open("Recursos/TXTs/SOLUTIONs/Solucion_{0}to{1}_{2}.txt".format(self.inicio, self.objetivo, self.estrategia), "a")
+        file = open("Recursos/TXTs/SOLUTIONs/Solucion_{0}to{1}_{2}.txt".format(self.inicio, self.objetivo, self.estrategia), "w")
 
         for i in range(0, len(self.camino)):
-            file.write(str(self.camino[i].getEstado().getId()))
+            file.write(self.camino[i].toString() + "\n")
 
         file.close
 
