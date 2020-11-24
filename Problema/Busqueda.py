@@ -6,10 +6,11 @@ import Cnfg
 
 class Busqueda:
 
-    def __init__(self, problema):
-        self.inicio = problema[0]
-        self.objetivo = problema[1]
-        self.diccionario = problema[2]
+    def __init__(self, dict_manual):
+        self.diccionario = dict_manual
+        self.inicio = tuple(Cnfg.inicial)
+        self.objetivo = tuple(Cnfg.objetivo)
+        self.estrategia = Cnfg.estrategia
         self.camino = []
 
     def get_camino(self):
@@ -24,7 +25,7 @@ class Busqueda:
         self.camino.reverse()
 
         # GUARDAR EN ARCHIVO DE TEXTO
-        file = open("Recursos/TXTs/SOLUTIONs/Solucion_{0}to{1}_{2}}.txt".format(self.inicio, self.objetivo, Cnfg.estrategia), "a")
+        file = open("Recursos/TXTs/SOLUTIONs/Solucion_{0}to{1}_{2}}.txt".format(self.inicio, self.objetivo, self.estrategia), "a")
         file.write(self.camino)
 
 
@@ -42,10 +43,9 @@ class Busqueda:
         frontera = Frontera()
         id = 0
         estado = Estado(self.inicio[0], self.inicio[1])
-        print("BUSQUEDA.estado inicial" + str(estado.getId()))
         padre = None
         accion = None
-        nodo = Nodo(id, estado, padre, accion)
+        nodo = Nodo(id, estado, padre, accion)        
         
         #visitados.add(nodo.getEstado().getId()) // TIEEENE QUE ESTAR COMENTADA O NO?
         frontera.insertar(nodo)

@@ -128,7 +128,7 @@ def cargar_problema(option=None, nombre_problema=None):
     path = os.getcwd()+"/Recursos/JSONs/PROBLEMAs/{0}".format(nombre_problema)
     print(path)
 
-    celda_inicial, celda_objetivo, maze = LeerProblemaJson.getData(path)
+    maze = LeerProblemaJson.getData(path)
     file_name = os.path.join("{0}/Recursos/JSONs/MAZEs/{1}".format(os.getcwd(), maze))
 
     lab = Labyrinth(file_name)
@@ -138,7 +138,7 @@ def cargar_problema(option=None, nombre_problema=None):
 
     print("----------------------------")
 
-    return lab, dict_manual, [celda_inicial, celda_objetivo, dict_manual]
+    return lab, dict_manual
 
 
 def escoger_laberinto():
@@ -173,16 +173,14 @@ def generar_laberinto_Wilson(lab, dict_manual):
 
     return lab, dict_manual
 
-def resolverProblema(nombre_problema=None, lab=None, datos_problema=None):
+def resolverProblema(nombre_problema=None, lab=None, diccionario=None):
     if nombre_problema is None:
-        lab, dict_manual, datos_problema = cargar_problema(option=3)
+        lab, diccionario = cargar_problema(option=3)
 
     elegirEstrategia()
-    busqueda = Busqueda(datos_problema)
+    busqueda = Busqueda(diccionario)
     busqueda.algoritmoBusqueda()
-    print("hey 3")
     camino = busqueda.obtenerNodos()
-    print("hey 4")
     guardarJpg(lab, camino=camino)
 
 
@@ -205,7 +203,7 @@ def menu_inicial():
                 datos_problema.append(dict_manual)
 
                 if preguntarResolver():
-                    resolverProblema(nombre_problema=nombre_problema, lab=lab, datos_problema=datos_problema)
+                    resolverProblema(nombre_problema=nombre_problema, lab=lab, diccionario=dict_manual)
 
                 valido = True
 
@@ -259,7 +257,7 @@ def checkear_dirs():
         os.mkdir("Recursos/TXTs/SOLUTIONs")
     
     if not os.path.exists("Recursos/TXTs/SUCESORs"):
-        os.mkdir("Recursos/JPGs/SUCESORs")
+        os.mkdir("Recursos/TXTs/SUCESORs")
 
 def generar_celda_random(lab):
     array = []

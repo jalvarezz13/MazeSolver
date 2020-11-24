@@ -15,5 +15,5 @@ class LeerProblemaJson:
         Cnfg.inicial =  (int(celda_inicio[1]), int(celda_inicio[4]))
         Cnfg.objetivo = (int(celda_objetivo[1]), int(celda_objetivo[4]))
 
-        return Cnfg.inicial, Cnfg.objetivo, maze
+        return maze
 
