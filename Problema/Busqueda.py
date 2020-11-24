@@ -25,8 +25,12 @@ class Busqueda:
         self.camino.reverse()
 
         # GUARDAR EN ARCHIVO DE TEXTO
-        file = open("Recursos/TXTs/SOLUTIONs/Solucion_{0}to{1}_{2}}.txt".format(self.inicio, self.objetivo, self.estrategia), "a")
-        file.write(self.camino)
+        file = open("Recursos/TXTs/SOLUTIONs/Solucion_{0}to{1}_{2}.txt".format(self.inicio, self.objetivo, self.estrategia), "a")
+
+        for i in range(0, len(self.camino)):
+            file.write(str(self.camino[i].getEstado().getId()))
+
+        file.close
 
 
     def obtenerNodos(self):
