@@ -59,9 +59,8 @@ def open_file_dialog(leerProblema=None):
     root = tk.Tk()
     root.withdraw()
     root.call('wm', 'attributes', '.', '-topmost', True)
-    ruta = os.getcwd()+"/Recursos"
-    file_name = filedialog.askopenfilename(
-        initialdir=ruta, filetypes={("json files", "*.json")})
+    ruta = os.getcwd()
+    file_name = filedialog.askopenfilename(initialdir=ruta, filetypes={("json files", "*.json")})
     try:
         if leerProblema == None:
             try:
@@ -179,8 +178,12 @@ def resolverProblema(nombre_problema=None, lab=None, diccionario=None):
     elegirEstrategia()
     busqueda = Busqueda(diccionario)
     busqueda.algoritmoBusqueda()
+    
+    visitados = busqueda.getVisitados()
+    frontera = busqueda.getFrontera()
     camino = busqueda.obtenerNodos()
-    guardarJpg(lab, camino=camino)
+
+    guardarJpg(lab, visitados=visitados, frontera=frontera, camino=camino)
 
 
 def menu_inicial():
@@ -279,13 +282,13 @@ def preguntarResolver():
             print("Introduce datos válidos (Y/n)")
 
 
-def guardarJpg(lab, camino=None):
+def guardarJpg(lab, visitados=None, frontera=None, camino=None):
     screen = Ventana.inicializar_ventana(lab)
     screen.fill(Cnfg.WHITE)
 
     if camino is not None:
         name = "SOLUCION_Laberinto_B1_2_" + str(lab.get_rows()) + "x" + str(lab.get_cols()) + "_" + str(Cnfg.estrategiaName) + "_.jpg"
-        Ventana.dibujarSol(screen, lab, camino)
+        Ventana.dibujarSol(screen, lab, visitados, frontera, camino)
         pygame.display.update()
         pygame.image.save(screen, "Recursos/JPGs/SOLUTIONs/{0}".format(name))
         pygame.quit()

@@ -12,6 +12,8 @@ class Busqueda:
         self.objetivo = tuple(Cnfg.objetivo)
         self.estrategia = Cnfg.estrategia
         self.camino = []
+        self.visitados = set()
+        self.frontera = Frontera()
 
     def get_camino(self):
         return self.camino
@@ -34,6 +36,16 @@ class Busqueda:
 
         file.close
 
+    def getVisitados(self):
+        return self.visitados
+
+    def getFrontera(self):
+        listaFrontera = []
+        for i in range(0, len(self.frontera.getFrontera())):
+            nodo = self.frontera.getFrontera()[i]
+            listaFrontera.append(nodo.getEstado().getId())
+
+        return listaFrontera
 
     def obtenerNodos(self):
         listaNodos = []
@@ -45,8 +57,6 @@ class Busqueda:
 
 
     def algoritmoBusqueda(self):
-        visitados = set()
-        frontera = Frontera()
         id = 0
         estado = Estado(self.inicio[0], self.inicio[1])
         padre = None
@@ -54,22 +64,22 @@ class Busqueda:
         nodo = Nodo(id, estado, padre, accion)        
         
         #visitados.add(nodo.getEstado().getId()) // TIEEENE QUE ESTAR COMENTADA O NO?
-        frontera.insertar(nodo)
+        self.frontera.insertar(nodo)
         solucion = False
 
-        while not frontera.esVacia() and not solucion:
-            nodo = frontera.getPrimerElemento()
+        while not self.frontera.esVacia() and not solucion:
+            nodo = self.frontera.getPrimerElemento()
             if self.objetivo[0] == nodo.getEstado().getId()[0] and self.objetivo[1] == nodo.getEstado().getId()[1]:
                 solucion = True
 
-            elif nodo.getEstado().getId() not in visitados and nodo.getProfundidad() < Cnfg.profundidad:
-                visitados.add(nodo.getEstado().getId())
+            elif nodo.getEstado().getId() not in self.visitados and nodo.getProfundidad() < Cnfg.profundidad:
+                self.visitados.add(nodo.getEstado().getId())
                 lista_sucesores = nodo.generarSucesores(self.diccionario)
                 for sucesor in lista_sucesores:
                     id += 1
                     estado = Estado(sucesor[1][0], sucesor[1][1])
                     nodo_hijo = Nodo(id, estado, nodo, sucesor)
-                    frontera.insertar(nodo_hijo)
+                    self.frontera.insertar(nodo_hijo)
 
         if solucion:
             self.generar_camino(nodo)

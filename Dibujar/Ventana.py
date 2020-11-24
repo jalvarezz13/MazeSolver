@@ -40,7 +40,7 @@ class Ventana:
                                     x, y + w], [x, y], grosor)
                 x = x + w
 
-    def dibujarSolucion(screen, lab, solucion):
+    def dibujarVisitadosFronteraAndSolucion(screen, lab, visitados, frontera, solucion):
         if lab.get_rows() > lab.get_cols():
             w = int(Cnfg.ancho / lab.get_rows())
         else:
@@ -52,8 +52,31 @@ class Ventana:
             y = y + w
 
             for j in range(0, lab.get_cols()):
+                if (i, j) in visitados:
+                    pygame.draw.rect(screen, Cnfg.GREEN, [x, y, w, w], 0)
+                
+                if frontera.count((i, j)) >= 1:
+                    pygame.draw.rect(screen, Cnfg.BLUE, [x, y, w, w], 0)
+
                 if solucion.count((i, j)) >= 1:
                     pygame.draw.rect(screen, Cnfg.RED, [x, y, w, w], 0)
+
+                x = x + w
+
+    def dibujarVisitados(screen, lab, visitados):
+        if lab.get_rows() > lab.get_cols():
+            w = int(Cnfg.ancho / lab.get_rows())
+        else:
+            w = int(Cnfg.alto / lab.get_cols())
+        y = -w + 20
+
+        for i in range(0, lab.get_rows()):
+            x = 20
+            y = y + w
+
+            for j in range(0, lab.get_cols()):
+                if (i, j) in visitados:
+                    pygame.draw.rect(screen, Cnfg.GREEN, [x, y, w, w], 0)
 
                 x = x + w
 
@@ -89,9 +112,9 @@ class Ventana:
         Ventana.dibujarColores(screen, lab)
         Ventana.dibujarLineas(screen, lab)
 
-    def dibujarSol(screen, lab, solucion):
+    def dibujarSol(screen, lab, visitados, frontera, solucion):
         Ventana.dibujarColores(screen, lab)
-        Ventana.dibujarSolucion(screen, lab, solucion)
+        Ventana.dibujarVisitadosFronteraAndSolucion(screen, lab, visitados, frontera, solucion)
         Ventana.dibujarLineas(screen, lab)
 
     def inicializar_ventana(lab):
