@@ -52,11 +52,11 @@ class Ventana:
             y = y + w
 
             for j in range(0, lab.get_cols()):
-                if (i, j) in visitados:
-                    pygame.draw.rect(screen, Cnfg.GREEN, [x, y, w, w], 0)
-                
                 if frontera.count((i, j)) >= 1:
                     pygame.draw.rect(screen, Cnfg.BLUE, [x, y, w, w], 0)
+                    
+                if (i, j) in visitados:
+                    pygame.draw.rect(screen, Cnfg.GREEN, [x, y, w, w], 0)
 
                 if solucion.count((i, j)) >= 1:
                     pygame.draw.rect(screen, Cnfg.RED, [x, y, w, w], 0)

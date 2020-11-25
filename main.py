@@ -95,7 +95,7 @@ def elegirEstrategia():
                 elif option == 2: Cnfg.estrategiaName = "BREADTH"
                 elif option == 3: Cnfg.estrategiaName = "GREEDY"
                 elif option == 4: Cnfg.estrategiaName = "UNIFORM"
-                else: Cnfg.estrategiaName = "A*"
+                else: Cnfg.estrategiaName = "A"
             else:
                 print("Intruduce un valor válido [1, 2, 3, 4, 5]\n")
         except ValueError:
