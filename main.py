@@ -196,7 +196,7 @@ def menu_inicial():
     while not valido or option != 5:
         try:
             option = int(input(
-                "\nElige una opción [1, 2, 3, 4]:\n\t1. Visualizar laberinto existente\n\t2. Generar laberinto con el "
+                "\nElige una opción [1, 2, 3, 4, 5]:\n\t1. Visualizar laberinto existente\n\t2. Generar laberinto con el "
                 "algortimo Wilson (y resolver) \n\t3. Resolver problema\n\t4. Crear problema con laberinto existente\n\t5. Salir\n\n"))
 
             if option == 1:
