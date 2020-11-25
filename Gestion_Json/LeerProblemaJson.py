@@ -12,8 +12,8 @@ class LeerProblemaJson:
         celda_objetivo = diccionario["OBJETIVE"]
         maze = diccionario["MAZE"]
 
-        Cnfg.inicial =  (int(celda_inicio[1]), int(celda_inicio[4]))
-        Cnfg.objetivo = (int(celda_objetivo[1]), int(celda_objetivo[4]))
+        Cnfg.inicial = (int(celda_inicio[1:celda_inicio.find(",")]), int(celda_inicio[celda_inicio.find(",")+2:len(celda_inicio)-1]))
+        Cnfg.objetivo = (int(celda_objetivo[1:celda_objetivo.find(",")]), int(celda_objetivo[celda_objetivo.find(",")+2:len(celda_objetivo)-1]))
 
         return maze
 
