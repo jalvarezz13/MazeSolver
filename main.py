@@ -59,7 +59,14 @@ def open_file_dialog(leerProblema=None):
     root = tk.Tk()
     root.withdraw()
     root.call('wm', 'attributes', '.', '-topmost', True)
-    ruta = os.getcwd()+"\\Recursos"
+
+    if leerProblema == None:
+        ruta = os.getcwd() + "/Recursos/JSONs/MAZEs"
+
+    elif leerProblema == True:
+        ruta = os.getcwd() + "/Recursos/JSONs/PROBLEMAs"
+        
+
     file_name = filedialog.askopenfilename(initialdir=ruta, filetypes={("json files", "*.json")})
     try:
         if leerProblema == None:
@@ -137,12 +144,11 @@ def cargar_problema(option=None, nombre_problema=None):
     return lab, dict_manual
 
 
-def escoger_laberinto():
-    lab, file_name = open_file_dialog()
+def escoger_laberinto(token=None):
+    lab, file_name = open_file_dialog()        
     dict = LaberintoJson.leer_json(file_name)
     LaberintoJson.check_json(dict)
     lab.load_data(None)
-    guardarJpg(lab)
     return lab, dict
 
 
@@ -187,22 +193,24 @@ def resolverProblema(nombre_problema=None, lab=None, diccionario=None):
 def menu_inicial():
     valido = False
     option = None
-    while not valido or option != 4:
+    while not valido or option != 5:
         try:
             option = int(input(
                 "\nElige una opción [1, 2, 3, 4]:\n\t1. Visualizar laberinto existente\n\t2. Generar laberinto con el "
-                "algortimo Wilson \n\t3. Resolver problema\n\t4. Salir\n\n"))
+                "algortimo Wilson (y resolver) \n\t3. Resolver problema\n\t4. Crear problema con laberinto existente\n\t5. Salir\n\n"))
+
             if option == 1:
-                escoger_laberinto()
+                lab,dict_manual=escoger_laberinto()
+                guardarJpg(lab)
                 valido = True
 
             elif option == 2:
                 lab, dict_manual = inicializar_laberinto()
-                lab, dict_manual = generar_laberinto_Wilson(lab, dict_manual)
-                nombre_problema, datos_problema = generar_problema(lab, dict_manual)
-                datos_problema.append(dict_manual)
+                lab, dict_manual = generar_laberinto_Wilson(lab, dict_manual)                
 
                 if preguntarResolver():
+                    nombre_problema, datos_problema = generar_problema(lab, dict_manual)
+                    datos_problema.append(dict_manual)
                     resolverProblema(nombre_problema=nombre_problema, lab=lab, diccionario=dict_manual)
 
                 valido = True
@@ -213,6 +221,17 @@ def menu_inicial():
                 pass
 
             elif option == 4:
+                print("Seleccione el laberino sobre el cual quieres crear el problema.")
+                lab, dict_manual=escoger_laberinto(True)
+                nombre_problema, datos_problema = generar_problema(lab, dict_manual)
+                
+                if preguntarResolver():
+                    datos_problema.append(dict_manual)
+                    resolverProblema(nombre_problema=nombre_problema, lab=lab, diccionario=dict_manual)
+                
+                valido = True
+
+            elif option == 5:
                 print("Programa finalizado.")
                 sys.exit()
 
