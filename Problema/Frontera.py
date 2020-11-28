@@ -8,7 +8,7 @@ class Frontera:
         self.__listaFrontera.append(nodoArbol)
         self.__listaFrontera.sort(key=lambda nodoArbol: (nodoArbol.getValor(), nodoArbol.getEstado().getId()[0], nodoArbol.getEstado().getId()[1], nodoArbol.getIdNodo()))
 
-    def getPrimerElemento(self):  # Devuelve y elimina el  nodo con menos valor
+    def getPrimerElemento(self):
         return self.__listaFrontera.pop(0)
 
     def esVacia(self):

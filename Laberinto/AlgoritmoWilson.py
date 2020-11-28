@@ -35,7 +35,7 @@ class AlgoritmoWilson:
         if camino.count(celda) != 0:
             lim_superior = len(camino) - 1
             lim_inferior = camino.index(celda) + 1
-            for i in range(lim_superior, lim_inferior - 1, -1):  # Desde el final hasta la primera repetición de ese bucle
+            for i in range(lim_superior, lim_inferior - 1, -1):
                 camino.remove(camino[i])
 
             for i in range(0, lim_inferior - 1):

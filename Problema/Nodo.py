@@ -7,7 +7,7 @@ class Nodo:
         self.__id = id
         self.__nodoPadre = padre
         self.__estado = estado
-        self.__accion = accion # [mov, id_destino, coste]
+        self.__accion = accion
         self.__heuristica = self.calcularHeuristica(tuple(Cnfg.objetivo))
 
         if self.__nodoPadre is None:

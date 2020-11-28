@@ -26,7 +26,6 @@ class Busqueda:
         self.camino.append(nodo)
         self.camino.reverse()
 
-        # GUARDAR EN ARCHIVO DE TEXTO
         file = open("Recursos/TXTs/SOLUTIONs/Solucion_{0}to{1}_{2}.txt".format(self.inicio, self.objetivo, Cnfg.estrategiaName), "w+")
 
         file.write("[id][cost,state,father_id,action,depth,h,value]")
@@ -62,8 +61,7 @@ class Busqueda:
         padre = None
         accion = None
         nodo = Nodo(id, estado, padre, accion)        
-        
-        #visitados.add(nodo.getEstado().getId()) // TIEEENE QUE ESTAR COMENTADA O NO?
+
         self.frontera.insertar(nodo)
         solucion = False
 
