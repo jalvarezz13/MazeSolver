@@ -1,8 +1,15 @@
-<img src="https://github.com/jalvarezz13/MazeSolver/images/logo.png" width="" height="80" align = "left">
+<img src="https://github.com/jalvarezz13/MazeSolver/blob/master/images/logo.png" width="" height="80" align = "left">
 
 # Maze Solver
 ## Contenido
-Este trabajo nace con la idea de poner en practica la resolución de laberintos mediante algoritmos voraces, en profundidad, A*, ... Dichos laberintos son creados de forma aleatoría con el algoritmo de Wilson
+Este trabajo nace con la idea de poner en practica la resolución de laberintos mediante los siguientes algoritmos:
+  1. Profundidad
+  2. Anchura
+  3. Voraz
+  4. Costo uniforme
+  5. A*
+
+Dichos laberintos son creados de forma aleatoría con el algoritmo de Wilson y contienen casillas que ofrecen un mayor o menor coste a la solución.
 
 ## Como usar
 Contiene todo el código y los recursos multimedia para la correcta ejecución de la aplicación. Para ello:
@@ -18,22 +25,40 @@ pip install -r requirements.txt
 ```
 python3 main.py
 ```
-  4. Selecciona la opción que desees del menú
-<img src="https://github.com/jalvarezz13/MazeSolver/images/menu.png" width="" height="60%" align = "left">
-
+  4. Selecciona la opción que desee del menú
+<div align="center">
+<img src="https://github.com/jalvarezz13/MazeSolver/blob/master/images/menu.png" width="" height="60%" align = "left">
+ <br />
+</div>
+<br />
+<br />
+<br />
+<br />
 
 ## Capturas
 <div align="center">
-<h2>Algoritmo voraz</h2>
-<img src="https://github.com/jalvarezz13/MazeSolver/images/greedy.png" width="60%" height="">
+<h2>Laberinto inicial</h2>
+<img src="https://github.com/jalvarezz13/MazeSolver/blob/master/images/maze.jpg" width="40%" height="">
 </div>
 <div align="center">
-  <h2>Algoritmo en profundidad</h2>
-  <img src="https://github.com/jalvarezz13/MazeSolver/images/depth.png" width="60%" height="">
+<h2>Solución: Algoritmo en Profundidad</h2>
+<img src="https://github.com/jalvarezz13/MazeSolver/blob/master/images/depth.jpg" width="40%" height="">
 </div>
 <div align="center">
-  <h2>Algoritmo en A*</h2>
-  <img src="https://github.com/jalvarezz13/MazeSolver/images/star.png" width="60%" height="">
+  <h2>Solución: Algoritmo en Anchura</h2>
+  <img src="https://github.com/jalvarezz13/MazeSolver/blob/master/images/breadth.jpg" width="40%" height="">
+</div>
+<div align="center">
+  <h2>Solución: Algoritmo Voraz</h2>
+  <img src="https://github.com/jalvarezz13/MazeSolver/blob/master/images/greedy.jpg" width="40%" height="">
+</div>
+<div align="center">
+  <h2>Solución: Algoritmo de Costo Uniforme</h2>
+  <img src="https://github.com/jalvarezz13/MazeSolver/blob/master/images/uniform.jpg" width="40%" height="">
+</div>
+<div align="center">
+  <h2>Solución: Algoritmo A*</h2>
+  <img src="https://github.com/jalvarezz13/MazeSolver/blob/master/images/a.jpg" width="40%" height="">
 </div>
 
 ## Tecnologías
